@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "239753855417",
+    "project_id": "tdtubank",
+    "storage_bucket": "tdtubank.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:239753855417:android:0beb4cb99fcab320b7b668",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOLcjmUEKEYk3CEKYyqnUy361JaNS6QPE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:239753855417:android:99c604be5eb96f5bb7b668",
+        "android_client_info": {
+          "package_name": "com.example.tad_bank_t1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOLcjmUEKEYk3CEKYyqnUy361JaNS6QPE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

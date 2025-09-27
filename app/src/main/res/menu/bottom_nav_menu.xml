@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home_bottom_home"
+
+        android:title="@string/trang_chu"/>
+    <item
+        android:id="@+id/nav_transfer"
+        android:icon="@drawable/ic_home_money_qrcode"
+        android:title="@string/quet_ma_nav"/>
+    <item
+        android:id="@+id/nav_setting"
+        android:icon="@drawable/ic_home_settings"
+        android:title="@string/cai_dat_nav"/>
+</menu>

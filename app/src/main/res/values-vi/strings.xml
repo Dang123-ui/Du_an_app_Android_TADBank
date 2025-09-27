@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TAD_Bank_T1</string>
+    <string name="title">Từ nơi đây ánh sáng sẽ chiếu rọi đến mọi nơi trong vũ trụ</string>
+    <string name="login">Đăng nhập</string>
+    <string name="new_customer">Tôi là khách hàng mới</string>
+    <string name="password">Mật khẩu</string>
+    <string name="hello">Xin chào,</string>
+    <string name="Other_accounts">Tài khoản khác?</string>
+    <string name="Forgot_password">Quên mật khẩu?</string>
+    <string name="no_account">Bạn chưa có tài khoản?</string>
+    <string name="signup">Đăng ký</string>
+
+</resources>

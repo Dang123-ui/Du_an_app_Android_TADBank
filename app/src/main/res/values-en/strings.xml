@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TAD_Bank_T1</string>
+    <string name="title">From this place, light shall radiate to every corner of the cosmos</string>
+    <string name="login">Login</string>
+    <string name="new_customer">I\'m a new customer</string>
+    <string name="password">Password</string>
+    <string name="hello">Hello,</string>
+    <string name="Other_accounts">Other accounts?</string>
+    <string name="Forgot_password">Forgot password?</string>
+    <string name="no_account">You don\'t have an account yet?</string>
+    <string name="signup">Sign up</string>
+</resources>

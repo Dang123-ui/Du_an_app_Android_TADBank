@@ -1,5 +1,15 @@
 <resources>
-    <string name="app_name">TAD_Bank_T1</string>
+    <string name="app_name" translatable="false">TAD_Bank_T1</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="title">From this place, light shall radiate to every corner of the cosmos</string>
+    <string name="login">login</string>
+    <string name="password">password</string>
+    <string name="hello">hello</string>
+    <string name="Other_accounts">Other accounts?</string>
+    <string name="Forgot_password">Forgot password</string>
+    <string name="new_customer">I\'m a new customer</string>
+    <string name="no_account">You don\'t have an account yet?</string>
+    <string name="signup">Sign up</string>
+    <string name="underlined_text"><u>- Lưu ý: Bạn cần CCCD gắn chíp để tiếp tục.</u></string>
 </resources>

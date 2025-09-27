@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.FaceVerifyFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <ImageView
+        android:id="@+id/imageView13"
+        android:layout_width="86dp"
+        android:layout_height="86dp"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="4dp"
+        android:transitionName="app_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo" />
+
+    <ImageView
+        android:id="@+id/imageView14"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/ic_scan_cus"
+        android:clipToOutline="true"
+        android:padding="5dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_signup_face_recognition"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView13" />
+
+    <ImageView
+        android:id="@+id/imageView15"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/ic_scan_cus"
+        android:clipToOutline="true"
+        android:padding="5dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_signup_face_recognition"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+    <ImageView
+        android:id="@+id/imageView16"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/ic_scan_cus"
+        android:clipToOutline="true"
+        android:padding="5dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_signup_face_recognition_4"
+        app:layout_constraintEnd_toStartOf="@+id/imageView17"
+        app:layout_constraintStart_toEndOf="@+id/imageView15"
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+    <ImageView
+        android:id="@+id/imageView17"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="60dp"
+        android:background="@drawable/ic_scan_cus"
+        android:clipToOutline="true"
+        android:padding="5dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_signup_face_recognition_3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="210dp"
+        android:layout_height="63dp"
+        android:layout_marginStart="108dp"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:text="Bắt đầu chụp ảnh để nhận diện khuôn mặt"
+        android:textColor="#C32349"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView14" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="76dp"
+        android:layout_height="129dp"
+        android:layout_marginStart="52dp"
+        android:gravity="center"
+        android:paddingTop="0dp"
+        android:text="Khuôn mặt nằm gọn trong khuôn hình"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView15" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="76dp"
+        android:layout_height="129dp"
+        android:gravity="center"
+        android:paddingTop="0dp"
+        android:text="Đảm bảo hình không quá sáng hoặc tối"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/textView15"
+        app:layout_constraintStart_toEndOf="@+id/textView14"
+        app:layout_constraintTop_toBottomOf="@+id/imageView16" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="76dp"
+        android:layout_height="129dp"
+        android:layout_marginEnd="52dp"
+        android:gravity="center"
+        android:paddingTop="0dp"
+        android:text="Không đội mũ, đeo kính hoặc khẩu trang"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView17" />
+
+    <Button
+        android:id="@+id/btnBatDauChup"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#C32349"
+        android:text="Bắt đầu chụp"
+        app:cornerRadius="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+</androidx.constraintlayout.widget.ConstraintLayout>

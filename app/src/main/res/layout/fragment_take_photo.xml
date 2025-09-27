@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.TakePhotoFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <Button
+        android:id="@+id/btn_XacThuc"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_selector"
+        android:backgroundTint="@null"
+        android:enabled="true"
+        android:text="Xác thực"
+        app:backgroundTint="@null"
+        tools:layout_editor_absoluteX="40dp"
+        tools:layout_editor_absoluteY="657dp" />
+
+    <ImageView
+        android:id="@+id/imageView11"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="128dp"
+        android:transitionName="app_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:text="Mặt trước căn cước công dân (*)"
+        android:textColor="#C32349"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView11" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="352dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="24dp"
+        android:background="@drawable/dashed_box"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView11">
+
+        <ImageView
+            android:id="@+id/imgFront"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerCrop" />
+
+        <ImageButton
+            android:id="@+id/btnFrontCamera"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="8dp"
+            android:background="@drawable/cam_btn_bg"
+            android:src="@android:drawable/ic_menu_camera" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        android:text="Mặt sau căn cước công dân (*)"
+        android:textColor="#C32349"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+
+    <FrameLayout
+        android:layout_width="352dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="24dp"
+        android:background="@drawable/dashed_box"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView13">
+        <ImageView
+            android:id="@+id/imgBack"
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:scaleType="centerCrop" android:contentDescription="@string/app_name"/>
+        <ImageButton
+            android:id="@+id/btnBackCamera"
+            android:layout_width="44dp" android:layout_height="44dp"
+            android:layout_gravity="bottom|end" android:layout_margin="8dp"
+            android:background="@drawable/cam_btn_bg"
+            android:src="@android:drawable/ic_menu_camera"/>
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

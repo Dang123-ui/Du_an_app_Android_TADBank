@@ -14,6 +14,9 @@
         android:theme="@style/Theme.TAD_Bank_T1"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activity.LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.MainActivity"
             android:exported="true"
             android:label="TransferBank"
@@ -23,7 +26,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".ui.activity.TransferBankActivity"
@@ -36,15 +38,13 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".ui.activity.DashBoardActivity"
             android:exported="false"
             android:label="@string/title_activity_dash_board"
             android:theme="@style/Theme.TAD_Bank_T1.NoActionBar"
-            tools:ignore="IntentFilterExportedReceiver"
-            >
+            tools:ignore="IntentFilterExportedReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

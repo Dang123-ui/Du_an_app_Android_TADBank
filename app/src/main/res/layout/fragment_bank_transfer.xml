@@ -7,9 +7,9 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:paddingBottom="0dp"
-    tools:context=".ui.fragment.BankTransferFragment">
-
+    tools:context=".ui.fragment.BankTransferFragment"
     >
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,168 +17,193 @@
         android:background="#FFF2F6"
         android:padding="20dp">
 
-        <LinearLayout
-            android:id="@+id/lnloTransferHeader"
+        <FrameLayout
+            android:id="@+id/fragment_action_title"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
+            android:layout_marginTop="0dp"
 
+            />
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/lnloTransferHeader"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintVertical_bias="0.0"-->
+
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginBottom="0dp"-->
+<!--            android:gravity="center_vertical"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            &lt;!&ndash; Logo nằm bên trái &ndash;&gt;-->
+<!--            <ImageButton-->
+<!--                android:id="@+id/imbtBackPrevious"-->
+<!--                android:layout_width="30dp"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:background="@android:color/transparent"-->
+<!--                android:src="@drawable/ic_back_previous_activity" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/txtTransferTitle"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/chuyen_tien"-->
+<!--                android:textSize="30sp"-->
+<!--                android:textStyle="bold"-->
+
+<!--                />-->
+
+<!--            <View-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:layout_weight="1" />-->
+
+<!--            <ImageButton-->
+<!--                android:id="@+id/imbtHomeBack"-->
+<!--                android:layout_width="35dp"-->
+<!--                android:layout_height="35dp"-->
+<!--                android:layout_marginLeft="5dp"-->
+<!--                android:background="@drawable/ic_home_back"-->
+
+<!--                />-->
+
+<!--        </LinearLayout>-->
+        <FrameLayout
+            android:id="@+id/fragment_card_transfer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="0dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
 
-            <!-- Logo nằm bên trái -->
-            <ImageButton
-                android:id="@+id/imbtBackPrevious"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_back_previous_activity" />
-
-            <TextView
-                android:id="@+id/txtTransferTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Chuyển tiền"
-                android:textSize="30sp"
-                android:textStyle="bold"
-
-                />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <ImageButton
-                android:id="@+id/imbtHomeBack"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginLeft="5dp"
-                android:background="@drawable/ic_home_back"
-
-                />
-
-        </LinearLayout>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cviewTransferCardInfo"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lnloTransferHeader"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_action_title"
+            app:layout_constraintVertical_bias="0.0"
+            android:layout_marginTop="0dp"
+            />
 
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_marginTop="30dp"
-            android:padding="0dp"
+<!--        <com.google.android.material.card.MaterialCardView-->
+<!--            android:id="@+id/cviewTransferCardInfo"-->
+<!--            app:cardCornerRadius="16dp"-->
+<!--            app:cardElevation="4dp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/fragment_card_transfer"-->
 
-            >
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="120dp"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:padding="0dp"-->
 
-            <LinearLayout
-                android:id="@+id/lnloTransferCardInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_transfer_card_tad"
-                android:orientation="vertical"
-                android:padding="10dp">
+<!--            >-->
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingEnd="15dp">
+<!--            <LinearLayout-->
+<!--                android:id="@+id/lnloTransferCardInfo"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@drawable/bg_transfer_card_tad"-->
+<!--                android:orientation="vertical"-->
+<!--                android:padding="10dp">-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Tài khoản nguồn"
-                        android:textColor="@color/white"
-                        android:textSize="25sp" />
+<!--                <LinearLayout-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:paddingEnd="15dp">-->
 
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="@string/tai_khoan_nguon"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textSize="25sp" />-->
 
-                    <TextView
-                        android:id="@+id/txtTransferAccNumber"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="T123567"
-                        android:textColor="@color/white"
-                        android:textSize="25sp" />
+<!--                    <View-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="0dp"-->
+<!--                        android:layout_weight="1" />-->
 
-                </LinearLayout>
+<!--                    <TextView-->
+<!--                        android:id="@+id/txtTransferAccNumber"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="T123567"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textSize="25sp" />-->
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:gravity="center_vertical">
+<!--                </LinearLayout>-->
 
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        tools:ignore="NestedWeights" />
+<!--                <LinearLayout-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:gravity="center_vertical">-->
 
-                    <ImageButton
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:background="@android:color/transparent"
-                        android:src="@drawable/ic_transfer_downarrow_white"
-                        android:textColor="@color/white"
-                        android:textSize="25sp" />
+<!--                    <View-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="0dp"-->
+<!--                        android:layout_weight="1"-->
+<!--                        tools:ignore="NestedWeights" />-->
 
-                </LinearLayout>
+<!--                    <ImageButton-->
+<!--                        android:layout_width="35dp"-->
+<!--                        android:layout_height="35dp"-->
+<!--                        android:background="@android:color/transparent"-->
+<!--                        android:src="@drawable/ic_transfer_downarrow_white"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textSize="25sp" />-->
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="0dp"
-                    android:paddingEnd="15dp">
+<!--                </LinearLayout>-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Số dư"
-                        android:textColor="@color/white"
-                        android:textSize="25sp" />
+<!--                <LinearLayout-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:paddingStart="0dp"-->
+<!--                    android:paddingEnd="15dp">-->
 
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="@string/so_du_de_chuyen_khoan"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textSize="25sp" />-->
 
-                    <TextView
-                        android:id="@+id/txtTransferAccBalance"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="10,000,000 VNĐ"
-                        android:textColor="@color/white"
-                        android:textSize="25sp" />
+<!--                    <View-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="0dp"-->
+<!--                        android:layout_weight="1" />-->
 
-                </LinearLayout>
-            </LinearLayout>
+<!--                    <TextView-->
+<!--                        android:id="@+id/txtTransferAccBalance"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="10,000,000 VNĐ"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textSize="25sp" />-->
 
-        </com.google.android.material.card.MaterialCardView>
+<!--                </LinearLayout>-->
+<!--            </LinearLayout>-->
+
+<!--        </com.google.android.material.card.MaterialCardView>-->
 
         <TextView
             android:id="@+id/txtTranferInfoReceiverText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cviewTransferCardInfo"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_card_transfer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginTop="20dp"
-            android:text="Thông tin người nhận"
+            android:layout_marginTop="10dp"
+            android:text="@string/thong_tin_nguoi_nhan_ck"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -209,7 +234,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ngân hàng nhận"
+                    android:text="@string/ngan_hang_nhan_ck"
                     android:textSize="12sp"
                     android:textStyle="bold"
 
@@ -225,8 +250,11 @@
                     style="@style/TextAppearance.Material3.BodySmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="VCB Ngân hàng TMCP ngoại thương Việt Nam "
-                    android:textSize="15sp" />
+                    android:hint="@string/hint_chon_ngan_hang_nhan"
+                    android:textSize="15sp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    />
             </LinearLayout>
 
             <View
@@ -270,7 +298,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tài khoản nhận"
+                    android:text="@string/tai_khoan_nguon"
                     android:textSize="12sp"
                     android:textStyle="bold"
 
@@ -281,12 +309,15 @@
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
-                <TextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txtReceiverAccNumber"
                     style="@style/TextAppearance.Material3.BodySmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1234676788"
+                    android:background="@null"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:hint="@string/hint_chon_tai_khoan_nhan_ck"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -334,7 +365,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tên người nhận"
+                    android:text="@string/ten_nguoi_nhan_ck"
                     android:textSize="12sp"
                     android:textStyle="bold"
 
@@ -350,8 +381,9 @@
                     style="@style/TextAppearance.Material3.BodySmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="NGUYEN HAI DANG"
-                    android:textSize="15sp" />
+                    android:hint="@string/hint_ten_nguoi_nhan_ck"
+                    android:textSize="15sp"
+                    />
             </LinearLayout>
 
             <View
@@ -371,8 +403,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginTop="20dp"
-            android:text="Thông tin chuyển khoản"
+            android:layout_marginTop="10dp"
+            android:text="@string/thong_tin_ck_tieu_de"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -403,7 +435,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Số tiền chuyển khoản"
+                    android:text="@string/so_tien_chuyen_khoan"
                     android:textSize="12sp"
                     android:textStyle="bold"
 
@@ -414,13 +446,15 @@
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
-                <TextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txtTransferAmount"
                     style="@style/TextAppearance.Material3.BodyLarge.Emphasized"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1,000,000"
+                    android:background="@null"
+                    android:hint="@string/hint_so_tien_ck"
                     android:textColor="#E46868"
+                    android:inputType="number"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -433,7 +467,7 @@
                 style="@style/TextAppearance.Material3.BodyLarge.Emphasized"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="VNĐ"
+                android:text="@string/bank_currency_vnd"
                 android:textColor="#E46868"
                 android:textSize="20sp" />
 
@@ -465,7 +499,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Mô tả"
+                    android:text="@string/noi_dung_chuyen_khoan"
                     android:textSize="12sp"
                     android:textStyle="bold"
 
@@ -476,11 +510,12 @@
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
-                <TextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txtTransferDescription"
                     style="@style/TextAppearance.Material3.BodySmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@null"
                     android:text="TRAN MINH THUYEN chuyen tien"
                     android:textSize="15sp" />
             </LinearLayout>
@@ -506,7 +541,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:layout_marginBottom="10dp"
-            android:text="Lưu người nhận"
+            android:text="@string/luu_nguoi_nhan_ck"
             android:textColor="#E46868"
             android:textSize="16sp" />
 
@@ -523,10 +558,10 @@
             app:rippleColor="#40FFFFFF"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/bg_button_transfer_gradient"
             android:letterSpacing="0.05"
-            android:text="Tiếp tục"
+            android:text="@string/tiep_tuc"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="20sp"

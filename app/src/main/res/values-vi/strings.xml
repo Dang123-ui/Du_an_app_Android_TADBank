@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">TAD_Bank_T1</string>
+    <string name="title_activity_dash_board">Trang chủ</string>
 
+    <string name="action_settings">Settings</string>
+    <string name="trang_chu">Trang chủ</string>
+    <string name="quet_ma_nav">Quét mã QR</string>
+    <string name="cai_dat_nav">Cài đặt</string>
     <string name="hello_blank_fragment">Hellsxssxsxst</string>
+    <string name="tai_khoan_nguon">Tài khoản nguồn</string>
+    <string name="noi_dung_chuyen_khoan">Nội dung</string>
+    <string name="chuyen_tien">Chuyển tiền</string>
+    <string name="so_du_de_chuyen_khoan">Số dư</string>
+    <string name="thong_tin_nguoi_nhan_ck">Thông tin người nhận</string>
+    <string name="ngan_hang_nhan_ck">Ngân hàng nhận</string>
+    <string name="tai_khoan_nhan_ck">Tài khoản nhận</string>
+    <string name="ten_nguoi_nhan_ck">Tên người nhận</string>
+    <string name="thong_tin_ck_tieu_de">Thông tin chuyển khoản</string>
+    <string name="so_tien_chuyen_khoan">Số tiền chuyển khoản</string>
+    <string name="bank_currency_vnd">VNĐ</string>
+    <string name="luu_nguoi_nhan_ck">Lưu người nhận</string>
+    <string name="tiep_tuc">Tiếp tục</string>
+    <string name="so_tai_khoan">Số tài khoản</string>
+    <string name="so_du">Số dư</string>
+    <string name="lich_su_giao_dich">Lịch sử giao dịch</string>
+    <string name="tai_khoan_cua_ban">Tài khoản của bạn</string>
+    <string name="nap_tien_dien_thoai">Nạp tiền điện thoại</string>
+    <string name="thanh_toan_hoa_don">Thanh toán hóa đơn</string>
+    <string name="thanh_toan_ve_may_bay">Thanh toán vé máy bay</string>
+    <string name="thanh_toan_hoc_phi">Thanh toán học phí</string>
+    <string name="nap_rut_tien">Nạp/rút tiền</string>
+    <string name="hint_chon_ngan_hang_nhan">Chọn ngân hàng người nhận</string>
+    <string name="hint_chon_tai_khoan_nhan_ck">Hãy nhập/chọn tài khoản người nhận</string>
+    <string name="hint_ten_nguoi_nhan_ck">Tên người nhận</string>
+    <string name="hint_so_tien_ck">Nhập số tiền</string>
 </resources>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.EmailVerifyFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <Button
+        android:id="@+id/btn_ChupLai2"
+        android:layout_width="330dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/btn_stransparent_ripple_black"
+        android:text="Thay email khác"
+        android:textColor="#050505"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnNextToPhoneVerify"
+        app:strokeColor="#050505" />
+
+    <Button
+        android:id="@+id/btnNextToPhoneVerify"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_selector"
+        android:backgroundTint="@null"
+        android:enabled="true"
+        android:text="Xác nhân(30s)"
+        app:backgroundTint="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvOTPAgain" />
+
+    <TextView
+        android:id="@+id/tvOTPAgain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="276dp"
+        android:layout_marginTop="12dp"
+        android:text="Gửi lại mã OTP"
+        android:textColor="#020202"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="313dp"
+        android:layout_height="60dp"
+
+        android:layout_marginTop="72dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView2">
+
+        <EditText
+            android:id="@+id/et1"
+            style="@style/OtpEditTextStyle" />
+
+        <EditText
+            android:id="@+id/et2"
+            style="@style/OtpEditTextStyle" />
+
+        <EditText
+            android:id="@+id/et3"
+            style="@style/OtpEditTextStyle" />
+
+        <EditText
+            android:id="@+id/et4"
+            style="@style/OtpEditTextStyle" />
+
+        <EditText
+            android:id="@+id/et5"
+            style="@style/OtpEditTextStyle" />
+
+        <EditText
+            android:id="@+id/et6"
+            style="@style/OtpEditTextStyle" />
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="308dp"
+        android:layout_height="99dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="36dp"
+        app:cardBackgroundColor="#FFC7D5"
+        app:cardCornerRadius="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView20">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="264dp"
+                android:layout_height="39dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Chúng tôi đã gửi một mã OTP đến email"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvEmail"
+                android:layout_width="272dp"
+                android:layout_height="38dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="60dp"
+                android:text="dang0882366729@gmail.com"
+                android:textColor="#C32349"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/imageView20"
+        android:layout_width="86dp"
+        android:layout_height="86dp"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="4dp"
+        android:transitionName="app_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo" />
+</androidx.constraintlayout.widget.ConstraintLayout>

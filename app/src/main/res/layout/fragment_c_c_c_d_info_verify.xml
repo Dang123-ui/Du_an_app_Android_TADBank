@@ -52,7 +52,7 @@
                 tools:layout_editor_absoluteY="300dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etFullName"
+                    android:id="@+id/etUsername"
                     android:layout_width="330dp"
                     android:layout_height="60dp"
                     android:drawableEnd="@drawable/ic_user_cus"

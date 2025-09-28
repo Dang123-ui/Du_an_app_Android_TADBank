@@ -33,11 +33,13 @@ android {
 }
 
 dependencies {
-    implementation(platform("com.google.firebase:firebase-bom:32.8.0")) // hoặc latest.release
+    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
     implementation ("com.google.android.material:material:1.13.0")
+    implementation ("androidx.media3:media3-exoplayer:1.8.0")
+    implementation ("androidx.media3:media3-ui:1.8.0")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

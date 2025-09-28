@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00000000"
+    android:backgroundTint="#00000000"
+    tools:context=".ui.fragment.FaceVerify1Fragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="208dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:text="Mặt đúng vị trí giữ vững tay"
+        android:textColor="#C32349"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView19" />
+
+    <ImageView
+        android:id="@+id/imageView19"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="136dp"
+        android:background="@drawable/ic_scan_cus"
+        android:clipToOutline="true"
+        android:padding="5dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_signup_face_recognition"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView18" />
+
+    <ImageView
+        android:id="@+id/imageView18"
+        android:layout_width="86dp"
+        android:layout_height="86dp"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="16dp"
+        android:transitionName="app_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="57dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="152dp"
+        android:layout_marginTop="200dp"
+        android:background="#00000000"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_signup_camera"
+        app:layout_constraintStart_toStartOf="@+id/imageView19"
+        app:layout_constraintTop_toTopOf="@+id/imageView19" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

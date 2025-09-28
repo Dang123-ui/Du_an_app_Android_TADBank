@@ -63,12 +63,11 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView10"
+                android:id="@+id/tvEmail"
                 android:layout_width="272dp"
                 android:layout_height="38dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="60dp"
-                android:paintFlags="underline"
                 android:text="@string/underlined_text"
                 android:textColor="#040303"
                 android:textSize="16sp"

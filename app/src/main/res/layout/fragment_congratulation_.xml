@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.Congratulation_Fragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <Button
+        android:id="@+id/btnBatDauChup3"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="168dp"
+        android:backgroundTint="#C32349"
+        android:text="Trang chủ"
+        app:cornerRadius="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView24" />
+
+    <TextView
+        android:id="@+id/textView24"
+        android:layout_width="261dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="44dp"
+        android:gravity="center"
+        android:text="Chúc mừng bạn đã đăng ký sử dụng ứng dụng của TADBank trên ứng dụng này thành công."
+        android:textColor="#C32349"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/playerView" />
+
+    <ImageView
+        android:id="@+id/imageView28"
+        android:layout_width="86dp"
+        android:layout_height="86dp"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="4dp"
+        android:transitionName="app_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo" />
+
+    <androidx.media3.ui.PlayerView
+        android:id="@+id/playerView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:use_controller="false"
+        android:visibility="invisible"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView28">
+    </androidx.media3.ui.PlayerView>
+    <ImageView
+        android:id="@+id/imageView31"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/ic_signup_accept"
+        app:layout_constraintBottom_toBottomOf="@+id/playerView"
+        app:layout_constraintEnd_toEndOf="@+id/playerView"
+        app:layout_constraintStart_toStartOf="@+id/playerView" />
+</androidx.constraintlayout.widget.ConstraintLayout>

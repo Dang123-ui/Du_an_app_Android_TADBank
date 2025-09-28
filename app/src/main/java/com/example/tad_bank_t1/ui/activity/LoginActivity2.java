@@ -26,14 +26,14 @@ public class LoginActivity2 extends AppCompatActivity {
                     .addTransition(new ChangeBounds())
                     .addTransition(new ChangeTransform())
                     .addTransition(new ChangeImageTransform());
-            shared.setDuration(500);
+            shared.setDuration(1500);
 
             getWindow().setSharedElementEnterTransition(shared);
             getWindow().setSharedElementReturnTransition(shared);
 
             // (tuỳ chọn) hiệu ứng mờ cho phần còn lại
-            getWindow().setEnterTransition(new Fade().setDuration(200));
-            getWindow().setExitTransition(new Fade().setDuration(200));
+            getWindow().setEnterTransition(null);
+            getWindow().setExitTransition(null);
         }
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);

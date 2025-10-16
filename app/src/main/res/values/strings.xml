@@ -8,7 +8,7 @@
     <string name="trang_chu">Home</string>
     <string name="quet_ma_nav">Scan QR</string>
     <string name="cai_dat_nav">Setting</string>
-    <string name="tai_khoan_nguon">Source Account</string>
+    <string name="tai_khoan_nguon">Debit Account</string>
     <string name="noi_dung_chuyen_khoan">Content</string>
     <string name="chuyen_tien">Transfer</string>
     <string name="so_du_de_chuyen_khoan">Balance</string>
@@ -20,7 +20,7 @@
     <string name="so_tien_chuyen_khoan">Transfer Amount</string>
     <string name="bank_currency_vnd">VND</string>
     <string name="luu_nguoi_nhan_ck">Save Beneficiary</string>
-    <string name="tiep_tuc">Tiếp tục</string>
+    <string name="tiep_tuc">Continue</string>
     <string name="so_tai_khoan">Account Number</string>
     <string name="so_du">Balance</string>
     <string name="lich_su_giao_dich">History Transfer</string>
@@ -34,4 +34,23 @@
     <string name="hint_chon_tai_khoan_nhan_ck">Select or Enter beneficiary account number</string>
     <string name="hint_ten_nguoi_nhan_ck">Beneficiary name</string>
     <string name="hint_so_tien_ck">Enter amount</string>
+    <string name="so_dien_thoai_nhan">Beneficiary Phone Number</string>
+    <string name="hint_chon_sdt_nap_tien">Select or Enter topup phone number</string>
+    <string name="nha_cung_cap">Provider</string>
+    <string name="ma_khach_hang">Customer Code</string>
+    <string name="nhap_ma_kh">Enter customer code</string>
+    <string name="chon_nha_cung_cap">Select provider</string>
+    <string name="thanh_toan_tien_dien">Electricity bill payment</string>
+    <string name="xac_nhan_giao_dich">Confirm transaction</string>
+    <string name="giao_dich_thanh_cong">Transaction success</string>
+    <string name="service">Service</string>
+    <string name="tien_dien">Electricity</string>
+    <string name="tien_nuoc">Water</string>
+    <string name="hoc_phi">Tuition</string>
+    <string name="ve_may_bay">Air ticket</string>
+    <string name="ve_tau">Train ticket</string>
+    <string name="xac_nhan_gd">Transaction confirm</string>
+    <string name="phi_chuyen_tien">Fee</string>
+    <string name="phuong_thuc_xac_thuc">Payment method</string>
+    <string name="xac_nhan">Confirm</string>
 </resources>

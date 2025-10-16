@@ -11,17 +11,19 @@
     <!-- Logo nằm bên trái -->
     <ImageButton
         android:id="@+id/imbtBackPrevious"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:background="@android:color/transparent"
-        android:src="@drawable/ic_back_previous_activity" />
+        android:src="@drawable/ic_back_previous_activity"
+        android:scaleType="fitCenter"
+        />
 
     <TextView
         android:id="@+id/txtTransferTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/chuyen_tien"
-        android:textSize="30sp"
+        android:textSize="25sp"
         android:textStyle="bold"
 
         />
@@ -33,10 +35,11 @@
 
     <ImageButton
         android:id="@+id/imbtHomeBack"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginLeft="5dp"
         android:background="@drawable/ic_home_back"
+        android:scaleType="fitCenter"
 
         />
 

@@ -24,4 +24,18 @@ public class FragmentUtil {
         }
         fragmentTransaction.commit();
     }
+
+    public static void destroyFragment(Fragment fragment, FragmentManager fragmentManager){
+
+        // Kiểm tra xem Fragment hiện tại có được thêm vào Back Stack không
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            // Nếu có, chỉ cần pop back stack
+            fragmentManager.popBackStack();
+        } else {
+            // Nếu không, sử dụng FragmentTransaction để gỡ bỏ Fragment
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.remove(fragment); // `this` ở đây là Fragment hiện tại
+            transaction.commit();
+        }
+    }
 }

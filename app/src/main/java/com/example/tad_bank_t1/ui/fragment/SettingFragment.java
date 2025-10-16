@@ -71,7 +71,7 @@ public class SettingFragment extends Fragment {
         super.onStart();
         // Hide the bottom navigation bar when this fragment starts
         Log.d("TAG", "SETTING onstart");
-        ((MainActivity) requireActivity()).setBottomNavigationVisibility(View.GONE);
+//        ((MainActivity) requireActivity()).setBottomNavigationVisibility(View.GONE);
     }
 
     @Override
@@ -80,6 +80,6 @@ public class SettingFragment extends Fragment {
         Log.d("TAG", "SETTING onstop");
 
         // Show the bottom navigation bar when the user leaves this fragment
-        ((MainActivity) requireActivity()).setBottomNavigationVisibility(View.VISIBLE);
+//        ((MainActivity) requireActivity()).setBottomNavigationVisibility(View.VISIBLE);
     }
 }

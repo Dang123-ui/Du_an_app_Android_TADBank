@@ -34,4 +34,23 @@
     <string name="hint_chon_tai_khoan_nhan_ck">Hãy nhập/chọn tài khoản người nhận</string>
     <string name="hint_ten_nguoi_nhan_ck">Tên người nhận</string>
     <string name="hint_so_tien_ck">Nhập số tiền</string>
+    <string name="so_dien_thoai_nhan">Số điện thoại nạp tiền</string>
+    <string name="hint_chon_sdt_nap_tien">Chọn hoặc nhận số điện thoại nạp tiền</string>
+    <string name="nha_cung_cap">Nhà cung cấp</string>
+    <string name="ma_khach_hang">Mã khách hàng</string>
+    <string name="nhap_ma_kh">Nhập mã khách hàng</string>
+    <string name="chon_nha_cung_cap">Chọn nhà cung cấp</string>
+    <string name="thanh_toan_tien_dien">Thanh toán tiền điện</string>
+    <string name="xac_nhan_giao_dich">Xác nhận giao dịch</string>
+    <string name="giao_dich_thanh_cong">Giao dịch thành công</string>
+    <string name="service">Dịch vụ</string>
+    <string name="tien_dien">Tiền điện</string>
+    <string name="tien_nuoc">Tiền nước</string>
+    <string name="hoc_phi">Học phí</string>
+    <string name="ve_may_bay">Vé máy bay</string>
+    <string name="ve_tau">Vé tàu</string>
+    <string name="xac_nhan_gd">Xác nhận giao dịch</string>
+    <string name="phi_chuyen_tien">Phí chuyển tiền</string>
+    <string name="phuong_thuc_xac_thuc">Phương thức xác thực</string>
+    <string name="xac_nhan">Xác nhận</string>
 </resources>

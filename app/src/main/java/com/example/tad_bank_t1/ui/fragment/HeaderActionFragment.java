@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.ui.activity.MainActivity;
@@ -25,7 +26,9 @@ public class HeaderActionFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "title";
 
+
     private ImageButton imbtBackPrevious, imbtHomeBack;
+    private TextView txtTransferTitle;
 
     private String fragment_action_title;
     public HeaderActionFragment() {
@@ -58,6 +61,10 @@ public class HeaderActionFragment extends Fragment {
         imbtBackPrevious = view.findViewById(R.id.imbtBackPrevious);
         imbtHomeBack = view.findViewById(R.id.imbtHomeBack);
 
+        // Set title
+        txtTransferTitle = view.findViewById(R.id.txtTransferTitle);
+        txtTransferTitle.setText(fragment_action_title);
+
         // Bắt sự kiện click
         imbtBackPrevious.setOnClickListener(v -> {
             if (getParentFragmentManager().getBackStackEntryCount() > 0) {
@@ -80,7 +87,7 @@ public class HeaderActionFragment extends Fragment {
         // Hide the bottom navigation bar when this fragment starts
         Log.d("TAG", "HEADER ACTION TRANSFER onstart");
 
-        ((MainActivity) requireActivity()).setBottomNavigationVisibility(View.GONE);
+//        ((MainActivity) requireActivity()).setBottomNavigationVisibility(View.GONE);
     }
 
     @Override

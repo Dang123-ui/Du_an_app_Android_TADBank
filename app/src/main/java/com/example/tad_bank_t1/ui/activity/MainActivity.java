@@ -1,78 +1,140 @@
 package com.example.tad_bank_t1.ui.activity;
 
-
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.tad_bank_t1.R;
-import com.example.tad_bank_t1.databinding.ActivityMainBinding;
 import com.example.tad_bank_t1.ui.fragment.BankTransferFragment;
 import com.example.tad_bank_t1.ui.fragment.HomeCustomerFragment;
 import com.example.tad_bank_t1.ui.fragment.SettingFragment;
-import com.example.tad_bank_t1.util.FragmentUtil;
-import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
-    ActivityMainBinding mainBinding;
+
+    private Toolbar toolbar;
+    private BottomNavigationView bottomNav;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
 
-        mainBinding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(mainBinding.getRoot());
-        replaceFragment(new HomeCustomerFragment());
-//        setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        toolbar = findViewById(R.id.toolbar);
+        bottomNav = findViewById(R.id.bottom_nav);
+        setSupportActionBar(toolbar);
 
-        mainBinding.bottomNav.setVisibility(View.VISIBLE);
-        mainBinding.bottomNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId(); // Get the ID once
+            public void handleOnBackPressed() {
+                if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    getSupportFragmentManager().popBackStack();
+                    getSupportFragmentManager().executePendingTransactions();
 
-                if (itemId == R.id.nav_home) {
-                    FragmentUtil.replaceFragment(new HomeCustomerFragment(), getSupportFragmentManager(), R.id.frame_main_container);
-                } else if (itemId == R.id.nav_transfer) {
-                    FragmentUtil.replaceFragment(new BankTransferFragment(), getSupportFragmentManager(), R.id.frame_main_container);
-                } else if (itemId == R.id.nav_setting) {
-                    FragmentUtil.replaceFragment(new SettingFragment(), getSupportFragmentManager(), R.id.frame_main_container);
+                    Fragment current = getSupportFragmentManager()
+                            .findFragmentById(R.id.frame_main_container);
+                    updateUIForFragment(current);
                 } else {
-                    return false; // Or handle as appropriate
+                    // Cho phép hành vi mặc định (thoát app)
+                    setEnabled(false);
+                    getOnBackPressedDispatcher().onBackPressed();
                 }
-                return true;
             }
         });
+
+        // Hiển thị Home mặc định
+        replaceFragment(new HomeCustomerFragment(), false);
+        updateUIForFragment(new HomeCustomerFragment());
+
+
+
+        // Sự kiện chọn bottom navigation
+        bottomNav.setOnItemSelectedListener(item -> {
+            Fragment fragment;
+            int id = item.getItemId();
+            if (id == R.id.nav_home) {
+                fragment = new HomeCustomerFragment();
+                replaceFragment(fragment, false);
+                updateUIForFragment(fragment);
+                return true;
+            } else if (id == R.id.nav_transfer) {
+                fragment = new BankTransferFragment();
+                replaceFragment(fragment, true);
+                setupToolbar("Chuyển tiền", true);
+                bottomNav.setVisibility(View.GONE);
+                return true;
+            } else if (id == R.id.nav_setting) {
+                fragment = new SettingFragment();
+                replaceFragment(fragment, true);
+                setupToolbar("Cài đặt", true);
+                bottomNav.setVisibility(View.GONE);
+                return true;
+            }
+            return false;
+        });
+
+        // Nút back trên toolbar
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu); // 👈 nạp menu có icon home
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+        if (item.getItemId() == R.id.action_home) {
+            // Khi bấm icon home → quay lại Home
+            replaceFragment(new HomeCustomerFragment(), false);
+            updateUIForFragment(new HomeCustomerFragment());
+            bottomNav.setSelectedItemId(R.id.nav_home);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void openFeatureFragment(Fragment fragment, String title) {
+        replaceFragment(fragment, true);
+        setupToolbar(title, true);
+        bottomNav.setVisibility(View.GONE);
     }
 
 
-    private void replaceFragment(Fragment fragment){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_main_container, fragment);
-        fragmentTransaction.commit();
+    public void setupToolbar(String title, boolean showBackButton) {
+        toolbar.setVisibility(View.VISIBLE);
+        toolbar.setTitle(title);
+        if (showBackButton) {
+            toolbar.setNavigationIcon(R.drawable.ic_back_previous_activity);
+        } else {
+            toolbar.setNavigationIcon(null);
+        }
     }
 
-    // Inside MainActivity.java
-    // su dung de toggle hien thi Navigation
-    public void setBottomNavigationVisibility(int visibility) {
-        // You can also add an animation here if you want
-        mainBinding.bottomNav.setVisibility(visibility);
+    private void replaceFragment(Fragment fragment, boolean addToBackStack) {
+        var ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.frame_main_container, fragment);
+        if (addToBackStack) ft.addToBackStack(null);
+        ft.commit();
+
+        getSupportFragmentManager().executePendingTransactions();
+        updateUIForFragment(fragment);
     }
+
+    private void updateUIForFragment(Fragment fragment) {
+        if (fragment instanceof HomeCustomerFragment) {
+            toolbar.setVisibility(View.GONE);
+            bottomNav.setVisibility(View.VISIBLE);
+        } else {
+            toolbar.setVisibility(View.VISIBLE);
+            bottomNav.setVisibility(View.GONE);
+        }
+    }
+
 }

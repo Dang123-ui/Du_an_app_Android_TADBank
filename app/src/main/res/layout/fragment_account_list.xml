@@ -5,48 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context=".ui.fragment.TransactionHistoryFragment">
-
-    <FrameLayout
-        android:id="@+id/fragment_card_transaction_history_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/txtTransactionHistoryTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/lich_su_giao_dich"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_card_transaction_history_container" />
+    tools:context=".ui.fragment.AccountListFragment">
 
     <com.google.android.material.button.MaterialButtonToggleGroup
-        android:id="@+id/toggleGroupTxnHistory"
+        android:id="@+id/toggleGroupAccList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@android:color/transparent"
         android:padding="0dp"
         android:layout_marginTop="10dp"
-        app:checkedButton="@id/btnTxnHistoryAll"
+        app:checkedButton="@id/btnAccListAccount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtTransactionHistoryTitle"
+        app:layout_constraintTop_toTopOf="parent"
         app:singleSelection="true">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnTxnHistoryAll"
+            android:id="@+id/btnAccListAccount"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:text="@string/tat_ca"
+            android:text="Account"
             android:textColor="@color/card_text_color"
             app:cornerRadius="10dp"
             app:iconTint="@color/black"
@@ -55,12 +35,12 @@
             app:strokeWidth="1dp" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnTxnHistoryIncoming"
+            android:id="@+id/btnAccListSaving"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:text="@string/tien_vao"
+            android:text="Saving"
             android:textColor="@color/card_text_color"
             app:backgroundTint="@color/bg_topup_card_amount"
             app:cornerRadius="20dp"
@@ -68,12 +48,12 @@
             app:strokeWidth="1dp" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnTxnHistoryOutgoing"
+            android:id="@+id/btnAccListLoan"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:text="@string/tien_ra"
+            android:text="Loan"
             android:textColor="@color/card_text_color"
             app:backgroundTint="@color/bg_topup_card_amount"
             app:cornerRadius="10dp"
@@ -82,13 +62,13 @@
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvTxnHistory"
+        android:id="@+id/rvAccList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toggleGroupTxnHistory" />
+        app:layout_constraintTop_toBottomOf="@+id/toggleGroupAccList" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    tools:context=".ui.fragment.HomeCustomerFragment">-->
 
-<!--    &lt;!&ndash; TODO: Update blank fragment layout &ndash;&gt;-->
-<!--    <TextView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:text="HOME CUSTOMER" />-->
-
-<!--</FrameLayout>-->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -29,7 +18,7 @@
             android:id="@+id/lnloHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:layout_marginBottom="40dp"
 
             android:gravity="center_vertical"
@@ -346,12 +335,12 @@
                     android:layout_rowWeight="1"
                     android:layout_columnWeight="1"
                     android:layout_margin="10dp"
-                    android:background="@drawable/bg_card_white"
+                    android:background="@drawable/bg_card_white_with_ripple"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="10dp"
+                    android:padding="8dp"
                     android:elevation="8dp"
                     >
 
@@ -382,12 +371,12 @@
                     android:layout_rowWeight="1"
                     android:layout_columnWeight="1"
                     android:layout_margin="10dp"
-                    android:background="@drawable/bg_card_white"
+                    android:background="@drawable/bg_card_white_with_ripple"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="5dp"
+                    android:padding="8dp"
                     android:elevation="8dp"
                     >
 
@@ -416,13 +405,13 @@
                     android:layout_rowWeight="1"
                     android:layout_columnWeight="1"
                     android:layout_margin="10dp"
-                    android:background="@drawable/bg_card_white"
+                    android:background="@drawable/bg_card_white_with_ripple"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
 
                     android:orientation="vertical"
-                    android:padding="5dp"
+                    android:padding="8dp"
                     android:elevation="8dp"
                     >
 
@@ -452,12 +441,12 @@
                     android:layout_rowWeight="1"
                     android:layout_columnWeight="1"
                     android:layout_margin="10dp"
-                    android:background="@drawable/bg_card_white"
+                    android:background="@drawable/bg_card_white_with_ripple"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="5dp"
+                    android:padding="8dp"
                     android:elevation="8dp"
                     >
 
@@ -488,12 +477,12 @@
                     android:layout_rowWeight="1"
                     android:layout_columnWeight="1"
                     android:layout_margin="10dp"
-                    android:background="@drawable/bg_card_white"
+                    android:background="@drawable/bg_card_white_with_ripple"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="5dp"
+                    android:padding="8dp"
                     android:elevation="8dp"
                     >
 
@@ -524,12 +513,12 @@
                     android:layout_rowWeight="1"
                     android:layout_columnWeight="1"
                     android:layout_margin="10dp"
-                    android:background="@drawable/bg_card_white"
+                    android:background="@drawable/bg_card_white_with_ripple"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="5dp"
+                    android:padding="8dp"
                     android:elevation="8dp"
                     >
 
@@ -553,18 +542,18 @@
 
                 <!-- Ô 7 -->
                 <LinearLayout
-                    android:id="@+id/lnloCarO7"
+                    android:id="@+id/lnloCardFindBranch"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_rowWeight="1"
                     android:layout_columnWeight="1"
                     android:layout_margin="10dp"
-                    android:background="@drawable/bg_card_white"
+                    android:background="@drawable/bg_card_white_with_ripple"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="5dp"
+                    android:padding="8dp"
                     android:elevation="8dp"
                     >
 
@@ -572,14 +561,14 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:background="@android:color/transparent"
-                        android:src="@drawable/ic_home_card_creditdeposit" />
+                        android:src="@drawable/ic_home_find_branch" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:gravity="center"
-                        android:text="Nạp/rút tiền"
+                        android:text="Tìm chi nhánh"
                         android:textStyle="bold"
                         android:minLines="2"
                         android:ellipsize="middle"
@@ -594,12 +583,12 @@
                     android:layout_rowWeight="1"
                     android:layout_columnWeight="1"
                     android:layout_margin="10dp"
-                    android:background="@drawable/bg_card_white"
+                    android:background="@drawable/bg_card_white_with_ripple"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="5dp"
+                    android:padding="8dp"
                     android:elevation="8dp"
                     >
 
@@ -629,12 +618,12 @@
                     android:layout_rowWeight="1"
                     android:layout_columnWeight="1"
                     android:layout_margin="10dp"
-                    android:background="@drawable/bg_card_white"
+                    android:background="@drawable/bg_card_white_with_ripple"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="5dp"
+                    android:padding="8dp"
                     android:elevation="8dp"
                     >
 
@@ -668,6 +657,4 @@
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </ScrollView>

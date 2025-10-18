@@ -6,6 +6,9 @@ import android.view.View;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.tad_bank_t1.R;
@@ -25,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         toolbar = findViewById(R.id.toolbar);
         bottomNav = findViewById(R.id.bottom_nav);
         setSupportActionBar(toolbar);
@@ -39,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
                     Fragment current = getSupportFragmentManager()
                             .findFragmentById(R.id.frame_main_container);
                     updateUIForFragment(current);
+                    checkCurrentFragment();
                 } else {
                     // Cho phép hành vi mặc định (thoát app)
                     setEnabled(false);
@@ -50,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         // Hiển thị Home mặc định
         replaceFragment(new HomeCustomerFragment(), false);
         updateUIForFragment(new HomeCustomerFragment());
-
+        checkCurrentFragment();
 
 
         // Sự kiện chọn bottom navigation
@@ -123,8 +129,10 @@ public class MainActivity extends AppCompatActivity {
         if (addToBackStack) ft.addToBackStack(null);
         ft.commit();
 
+
         getSupportFragmentManager().executePendingTransactions();
         updateUIForFragment(fragment);
+        checkCurrentFragment();
     }
 
     private void updateUIForFragment(Fragment fragment) {
@@ -134,6 +142,37 @@ public class MainActivity extends AppCompatActivity {
         } else {
             toolbar.setVisibility(View.VISIBLE);
             bottomNav.setVisibility(View.GONE);
+        }
+    }
+
+
+    public void checkCurrentFragment() {
+        // ID của container mà bạn dùng để host các Fragment (ví dụ: R.id.fragment_container)
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_main_container);
+
+        if (currentFragment instanceof HomeCustomerFragment) {
+            // Fragment hiện tại là HomeCustomerFragment
+            // Trong Activity/Fragment, sau khi View được tạo
+            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.appbar), (v, insets) -> {
+                // Lấy chiều cao của thanh trạng thái
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+                // Áp dụng padding: Padding cũ + Chiều cao thanh trạng thái + Thêm khoảng cách 10dp
+                v.setPadding(v.getPaddingLeft(), 0, v.getPaddingRight(), v.getPaddingBottom());
+
+                return insets;
+            });
+        } else{
+            // Trong Activity/Fragment, sau khi View được tạo
+            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.appbar), (v, insets) -> {
+                // Lấy chiều cao của thanh trạng thái
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+                // Áp dụng padding: Padding cũ + Chiều cao thanh trạng thái + Thêm khoảng cách 10dp
+                v.setPadding(v.getPaddingLeft(), (int)(systemBars.top * 0.75), v.getPaddingRight(), v.getPaddingBottom());
+
+                return insets;
+            });
         }
     }
 

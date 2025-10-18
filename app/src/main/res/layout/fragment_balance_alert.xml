@@ -33,7 +33,7 @@
 
             android:background="@null"
             android:lines="1"
-            android:hint="Nhập thong tin"
+            android:hint="@string/nhap_tt_tim_kiem"
             android:textSize="15sp"
             android:layout_gravity="center_vertical"
 

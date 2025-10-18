@@ -14,16 +14,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="visible"
-        android:background="@color/white"
-        android:elevation="4dp">
+        android:background="@color/primaryBackgroundColor"
+        android:elevation="0dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:titleTextColor="@color/black"
+            android:layout_height="49dp"
+            app:menu="@menu/toolbar_menu"
+            android:background="@color/primaryBackgroundColor"
             app:navigationIconTint="@color/primaryColor"
-            app:menu="@menu/toolbar_menu" />
+            app:titleTextColor="@color/primaryColor" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- Nội dung chính -->

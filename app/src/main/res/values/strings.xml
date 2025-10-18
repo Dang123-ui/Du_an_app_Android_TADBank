@@ -53,4 +53,13 @@
     <string name="phi_chuyen_tien">Fee</string>
     <string name="phuong_thuc_xac_thuc">Payment method</string>
     <string name="xac_nhan">Confirm</string>
+    <string name="nhap_tt_tim_kiem">Enter infomation</string>
+    <string name="tat_ca">All</string>
+    <string name="tien_vao">Incoming</string>
+    <string name="tien_ra">Outgoing</string>
+    <string name="danh_sach_tai_khoan">Account List</string>
+    <string name="tai_khoan_hien_tai">Current Account</string>
+    <string name="thong_bao">Notification</string>
+    <string name="gg_map_api_key">AIzaSyD7I9HRj8fBn6cc5Iw6GxfeZWpewHEleV4</string>
+    <string name="tim_kiem_chi_nhanh">Search Branch</string>
 </resources>

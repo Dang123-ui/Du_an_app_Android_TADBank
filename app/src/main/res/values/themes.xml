@@ -10,6 +10,11 @@
     <style name="Theme.TAD_Bank_T1.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <style name="Theme.TAD_Bank_T1.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

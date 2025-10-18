@@ -53,4 +53,13 @@
     <string name="phi_chuyen_tien">Phí chuyển tiền</string>
     <string name="phuong_thuc_xac_thuc">Phương thức xác thực</string>
     <string name="xac_nhan">Xác nhận</string>
+    <string name="nhap_tt_tim_kiem">Nhập thông tin</string>
+    <string name="tat_ca">Tất cả</string>
+    <string name="tien_vao">Tiền vào</string>
+    <string name="tien_ra">Tiền ra</string>
+    <string name="danh_sach_tai_khoan">Danh sách tài khoản</string>
+    <string name="tai_khoan_hien_tai">Tài khoản hiện tại</string>
+    <string name="thong_bao">Thông báo</string>
+    <string name="gg_map_api_key">AIzaSyD7I9HRj8fBn6cc5Iw6GxfeZWpewHEleV4</string>
+    <string name="tim_kiem_chi_nhanh">Tìm chi nhánh</string>
 </resources>

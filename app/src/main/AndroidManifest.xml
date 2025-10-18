@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -13,6 +16,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TAD_Bank_T1"
         tools:targetApi="31">
+        <meta-data
+                android:name="com.google.android.geo.API_KEY"
+                android:value="AIzaSyD7I9HRj8fBn6cc5Iw6GxfeZWpewHEleV4"
+            />
+
         <activity
             android:name=".ui.activity.LoginActivity"
             android:exported="false" />
@@ -27,30 +35,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.activity.TransferBankActivity"
-            android:exported="false"
-            android:label="TransferBank"
-            android:theme="@style/Theme.TAD_Bank_T1.NoActionBar"
-            tools:ignore="IntentFilterExportedReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.activity.DashBoardActivity"
-            android:exported="false"
-            android:label="@string/title_activity_dash_board"
-            android:theme="@style/Theme.TAD_Bank_T1.NoActionBar"
-            tools:ignore="IntentFilterExportedReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".MainActivity1"
             android:exported="false">

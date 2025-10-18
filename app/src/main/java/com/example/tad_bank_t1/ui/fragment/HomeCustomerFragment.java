@@ -19,8 +19,10 @@ import com.example.tad_bank_t1.util.FragmentUtil;
 
 public class HomeCustomerFragment extends Fragment {
     private LinearLayout lnloCardDepositPhone,
-            lnloCardTranfer,
-            lnloCardBillPayment;
+            lnloCardTranfer, lnloCardBillPayment,
+            lnloHomeHistoryTransac, lnloHomeAccManagement,
+            lnloCardFindBranch
+    ;
     private ImageButton imbtHomeNotify;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,16 +37,22 @@ public class HomeCustomerFragment extends Fragment {
         // Inflate layout cho fragment
         View view = inflater.inflate(R.layout.fragment_home_customer, container, false);
 
+        lnloHomeHistoryTransac = view.findViewById(R.id.lnloHomeHistoryTransac);
+        lnloHomeAccManagement = view.findViewById(R.id.lnloHomeAccManagement);
+        lnloCardFindBranch = view.findViewById(R.id.lnloCardFindBranch);
+
         lnloCardDepositPhone = view.findViewById(R.id.lnloCardDepositPhone);
         lnloCardTranfer = view.findViewById(R.id.lnloCardTranfer);
         lnloCardBillPayment = view.findViewById(R.id.lnloCardBillPayment);
         imbtHomeNotify = view.findViewById(R.id.imbtHomeNotify);
 
-
+        lnloCardFindBranch.setOnClickListener(v -> featureCardOnClick(new MapBranchFragment(), getString(R.string.tim_kiem_chi_nhanh)));
+        lnloHomeAccManagement.setOnClickListener(v -> featureCardOnClick(new AccountListFragment(), getString(R.string.danh_sach_tai_khoan)));
+        lnloHomeHistoryTransac.setOnClickListener(v -> featureCardOnClick(new TransactionHistoryFragment(), getString(R.string.tai_khoan_hien_tai)));
         lnloCardDepositPhone.setOnClickListener(v -> featureCardOnClick(new MobileTopupTransferFragment(), getString(R.string.nap_tien_dien_thoai)));
         lnloCardTranfer.setOnClickListener(v-> featureCardOnClick(new BankTransferFragment(), getString(R.string.chuyen_tien)));
         lnloCardBillPayment.setOnClickListener(v-> featureCardOnClick(new BillsPaymentFragment(), getString(R.string.thanh_toan_hoa_don)));
-        imbtHomeNotify.setOnClickListener(v -> featureCardOnClick(new NotiFragment(), "Thông báo"));
+        imbtHomeNotify.setOnClickListener(v -> featureCardOnClick(new NotiFragment(), getString(R.string.thong_bao)));
         return view;
     }
 

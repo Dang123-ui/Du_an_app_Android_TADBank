@@ -3,14 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:background="@color/primaryBackgroundColor"
     tools:context=".ui.fragment.NotiFragment">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tloNoti"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        app:tabTextColor="@color/black"
+        app:tabSelectedTextColor="@color/primaryColor"
+        app:tabIndicatorColor="@color/primaryColor"
+        app:tabIndicatorHeight="3dp"
+        app:tabIndicatorGravity="bottom"
+        android:background="@color/primaryBackgroundColor"
+        app:tabMode="fixed">
         <com.google.android.material.tabs.TabItem
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

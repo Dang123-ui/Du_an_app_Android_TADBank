@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.tad_bank_t1"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -43,6 +43,9 @@ dependencies {
     implementation ("com.google.android.material:material:1.13.0")
     implementation("de.hdodenhof:circleimageview:3.1.0")
     implementation ("com.airbnb.android:lottie:6.0.0")
+    implementation("com.google.android.gms:play-services-maps:19.2.0")
+    implementation("com.google.android.libraries.places:places:5.0.0")
+//    implementation("com.google.android.gms:play-services-location:21.3.0")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

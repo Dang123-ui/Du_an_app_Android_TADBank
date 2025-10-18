@@ -9,7 +9,6 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-
     <ImageView
         android:id="@+id/imageView6"
         android:layout_width="150dp"
@@ -27,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="Vui lòng nhập thông tin,"
+        android:text="@string/sinfo_sign_up_title"
         android:textColor="#C32349"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -65,7 +64,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_user_cus"
-                android:hint="Họ và tên"
+                android:hint="@string/info_sign_up_hint_name"
+                android:focusableInTouchMode="true"
                 android:inputType="text"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp" />
@@ -92,7 +92,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_phone_cus"
-                android:hint="Số điện thoại"
+                android:hint="@string/info_sign_up_hint_phone_number"
+                android:focusableInTouchMode="true"
                 android:inputType="phone"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp" />
@@ -119,6 +120,7 @@
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_email_cus"
                 android:hint="Email"
+                android:focusableInTouchMode="true"
                 android:inputType="textEmailAddress"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp" />
@@ -131,7 +133,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="16dp"
-        android:text="Bạn đông ý với"
+        android:text="@string/info_sign_up_ban_dong_y"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
@@ -141,7 +143,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="3dp"
         android:layout_marginTop="31dp"
-        android:text="Chính sách và điều khoản"
+        android:text="@string/info_sign_up_policy"
         android:textColor="#C32349"
         android:textColorLink="#C32349"
         android:textStyle="bold"
@@ -169,7 +171,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
         android:layout_marginTop="30dp"
-        android:text="của chúng tôi"
+        android:text="@string/info_sign_up_cua_chung_toi"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/cbArgreeWithPolicy" />
 
@@ -188,29 +190,27 @@
             android:background="@drawable/btn_selector"
             android:backgroundTint="@null"
             android:enabled="false"
-            android:text="Tiếp tục"
+            android:text="@string/continue_"
             app:backgroundTint="@null"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.457" />
-
-        <androidx.media3.ui.PlayerView
-            android:id="@+id/playerView2"
-            android:layout_width="40dp"
-            android:layout_height="39dp"
-            android:layout_marginEnd="108dp"
-            android:layout_marginBottom="3dp"
-            app:use_controller="false"
-            app:resize_mode="fit"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-
-        </androidx.media3.ui.PlayerView>
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loading"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            app:layout_constraintBottom_toBottomOf="@+id/btnNextToPhoneVerify"
+            app:layout_constraintEnd_toEndOf="@+id/btnNextToPhoneVerify"
+            app:layout_constraintHorizontal_bias="0.712"
+            app:layout_constraintStart_toStartOf="@+id/btnNextToPhoneVerify"
+            app:layout_constraintTop_toTopOf="@+id/btnNextToPhoneVerify"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading"
+            android:visibility="invisible"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView

@@ -68,7 +68,6 @@
                 android:layout_height="38dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="60dp"
-                android:text="@string/underlined_text"
                 android:textColor="#040303"
                 android:textSize="16sp"
                 android:textStyle="italic"

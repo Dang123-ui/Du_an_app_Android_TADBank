@@ -1,5 +1,6 @@
 package com.example.tad_bank_t1.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,18 +10,24 @@ import android.transition.ChangeTransform;
 import android.transition.Fade;
 import android.transition.TransitionInflater;
 import android.transition.TransitionSet;
+import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.tad_bank_t1.R;
+import com.example.tad_bank_t1.ui.fragment.CCCDInfoVerifyFragment;
 import com.example.tad_bank_t1.ui.fragment.CCCDVerifyFragment;
 import com.example.tad_bank_t1.ui.fragment.Congratulation_Fragment;
 import com.example.tad_bank_t1.ui.fragment.CreatePinCodeFragment;
@@ -66,19 +73,9 @@ public class SignUpActivity extends AppCompatActivity {
         }
         btnImageView = findViewById(R.id.btn_SignUp_to_Sigin);
         tvTextView = findViewById(R.id.tvSignupToSignUp);
-        btnImageView.setOnClickListener(v -> {
-            Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-            startActivity(intent);
-        });
-        tvTextView.setOnClickListener(v -> {
-            Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-            startActivity(intent);
-        });
     }
-    public void goToPhoneVerify(String phone) {
-        navigateTo(new InfoSignUpFragment(), true);
-    }
-    public void goToCCCDVerify() {
-        navigateTo(new CCCDVerifyFragment(), true);
+    public void setHeaderBackEnabled(boolean enabled) {
+        if(btnImageView != null) btnImageView.setEnabled(enabled);
+        if (tvTextView   != null) tvTextView.setEnabled(enabled);
     }
 }

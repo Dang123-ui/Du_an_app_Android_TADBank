@@ -12,6 +12,7 @@ import androidx.media3.ui.PlayerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,15 +20,24 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.tad_bank_t1.R;
+import com.example.tad_bank_t1.data.model.User;
+import com.example.tad_bank_t1.data.model.enums.Role;
+import com.example.tad_bank_t1.data.model.enums.UserStatus;
+import com.example.tad_bank_t1.data.repository.users.FirebaseUserRepository;
+import com.example.tad_bank_t1.data.repository.users.UserRepository;
+import com.example.tad_bank_t1.ui.activity.SignUpActivity;
 import com.google.android.material.internal.TextWatcherAdapter;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.ktx.Firebase;
+
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 public class InfoSignUpFragment extends Fragment {
@@ -40,6 +50,8 @@ public class InfoSignUpFragment extends Fragment {
     private PlayerView playerView;
     private ExoPlayer player;
     private TextView tvPolicy;
+    private LottieAnimationView animationView;
+    private final UserRepository userRepository = new FirebaseUserRepository();
     public InfoSignUpFragment() {}
     @SuppressLint("MissingInflatedId")
     @Override
@@ -48,6 +60,7 @@ public class InfoSignUpFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_info_sign_up, container, false);
         tlUsername = view.findViewById(R.id.tlUsername);
         tlEmail = view.findViewById(R.id.tlEmail);
+        animationView = view.findViewById(R.id.loading);
         tlPhone = view.findViewById(R.id.tlPhone);
         etUsername = view.findViewById(R.id.etUsername);
         etEmail = view.findViewById(R.id.etEmail);
@@ -72,8 +85,24 @@ public class InfoSignUpFragment extends Fragment {
                 final String phone = etPhone.getText().toString().trim();
                 final String username = etUsername.getText().toString().trim();
                 btnNextToPhoneVerify.setEnabled(false);
-                btnNextToPhoneVerify.setText("Đang tải...");
-
+                btnNextToPhoneVerify.setText(getString(R.string.info_sign_up_loading));
+                animationView.setVisibility(View.VISIBLE);
+                tlPhone.setError(null);
+                userRepository.phoneExists(phone).addOnSuccessListener(exists -> {
+                    if (Boolean.TRUE.equals(exists)) {
+                        tlPhone.setError(getString(R.string.info_sign_up_err_phone_exist));
+                        btnNextToPhoneVerify.setEnabled(true);
+                        btnNextToPhoneVerify.setText(getString(R.string.continue_));
+                        animationView.setVisibility(View.GONE);
+                    } else {
+                        ((SignUpActivity) requireActivity()).navigateTo(PhoneVerifyFragment.newInstance(email, phone, username), true);
+                    }
+                }).addOnFailureListener(e -> {
+                    tlPhone.setError(getString(R.string.info_sign_up_err_general));
+                    btnNextToPhoneVerify.setEnabled(true);
+                    btnNextToPhoneVerify.setText(getString(R.string.continue_));
+                    animationView.setVisibility(View.GONE);
+                });
             }
         });
         return view;
@@ -95,14 +124,14 @@ public class InfoSignUpFragment extends Fragment {
 
         // KIỂM TRA HỌ VÀ TÊN (BẮT BUỘC)
         if (username.isEmpty()) {
-            tlUsername.setError("Họ và tên không được để trống");
+            tlUsername.setError(getString(R.string.info_sign_up_name_empty));
             valid = false;
         }
 
         // KIỂM TRA EMAIL (BẮT BUỘC + HỢP LỆ)
         String emailPattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
         if (email.isEmpty()) {
-            tlEmail.setError("Email không được để trống");
+            tlEmail.setError(getString(R.string.info_sign_up_err_email_empty));
             valid = false;
         } else if (!email.matches(emailPattern)) {
             // Chỉ kiểm tra regex nếu email không bị trống
@@ -113,11 +142,11 @@ public class InfoSignUpFragment extends Fragment {
         // KIỂM TRA SỐ ĐIỆN THOẠI (BẮT BUỘC + HỢP LỆ)
         String phonePattern = "^(0|\\+84)\\d{9}$";
         if (phone.isEmpty()) {
-            tlPhone.setError("Số điện thoại không được để trống");
+            tlPhone.setError(getString(R.string.info_sign_up_err_phone_empty));
             valid = false;
         } else if (!phone.matches(phonePattern)) {
             // Chỉ kiểm tra regex nếu số điện thoại không bị trống
-            tlPhone.setError("Số điện thoại không hợp lệ.Số điện thoại phải có dạng 0123456789");
+            tlPhone.setError(getString(R.string.info_sign_up_invalid_phone));
             valid = false;
         }
 

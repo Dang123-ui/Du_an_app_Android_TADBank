@@ -17,8 +17,10 @@
         android:enabled="true"
         android:text="Xác thực"
         app:backgroundTint="@null"
-        tools:layout_editor_absoluteX="40dp"
-        tools:layout_editor_absoluteY="657dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout3" />
 
     <ImageView
         android:id="@+id/imageView11"
@@ -83,22 +85,29 @@
         app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 
     <FrameLayout
+        android:id="@+id/frameLayout3"
         android:layout_width="352dp"
         android:layout_height="200dp"
         android:layout_marginStart="24dp"
         android:background="@drawable/dashed_box"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13">
+
         <ImageView
             android:id="@+id/imgBack"
-            android:layout_width="match_parent" android:layout_height="match_parent"
-            android:scaleType="centerCrop" android:contentDescription="@string/app_name"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerCrop" />
+
         <ImageButton
             android:id="@+id/btnBackCamera"
-            android:layout_width="44dp" android:layout_height="44dp"
-            android:layout_gravity="bottom|end" android:layout_margin="8dp"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="8dp"
             android:background="@drawable/cam_btn_bg"
-            android:src="@android:drawable/ic_menu_camera"/>
+            android:src="@android:drawable/ic_menu_camera" />
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

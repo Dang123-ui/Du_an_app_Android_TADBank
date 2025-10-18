@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="25dp"
-        android:text="Đăng ký"
+        android:text="@string/signup"
         android:textColor="#F6F3F3"
         android:textSize="20sp"
         android:textStyle="bold"

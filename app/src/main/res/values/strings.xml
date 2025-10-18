@@ -60,6 +60,5 @@
     <string name="danh_sach_tai_khoan">Account List</string>
     <string name="tai_khoan_hien_tai">Current Account</string>
     <string name="thong_bao">Notification</string>
-    <string name="gg_map_api_key">AIzaSyD7I9HRj8fBn6cc5Iw6GxfeZWpewHEleV4</string>
     <string name="tim_kiem_chi_nhanh">Search Branch</string>
 </resources>

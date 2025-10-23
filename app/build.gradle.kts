@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "com.example.tad_bank_t1"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.tad_bank_t1"

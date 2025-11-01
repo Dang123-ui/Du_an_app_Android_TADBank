@@ -29,6 +29,7 @@ import com.example.tad_bank_t1.R;
 public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private AppCompatButton btnSignUp;
+
     private ImageView logoSplash;
     @SuppressLint("MissingInflatedId")
     @Override

@@ -6,7 +6,7 @@
 
     </style>
 
-    <style name="Theme.TAD_Bank_T1" parent="Base.Theme.TAD_Bank_T1" />
+<!--    <style name="Theme.TAD_Bank_T1" parent="Base.Theme.TAD_Bank_T1" />-->
 
     <style name="Theme.TAD_Bank_T1.NoActionBar">
         <item name="windowActionBar">false</item>

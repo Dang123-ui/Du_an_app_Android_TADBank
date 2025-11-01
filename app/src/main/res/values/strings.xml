@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">TAD_Bank_T1</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_dash_board">Dash Board</string>
 
     <string name="action_settings">Settings</string>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.CreatePinCodeFragment">
+
+    <Button
+        android:id="@+id/btn_Next_to_SDT2"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#C32349"
+        android:text="Tiếp tục"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="313dp"
+        android:layout_height="60dp"
+
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/cardView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView27">
+
+        <EditText
+            android:id="@+id/et1"
+            style="@style/OtpEditTextStyle" />
+
+        <EditText
+            android:id="@+id/et2"
+            style="@style/OtpEditTextStyle" />
+
+        <EditText
+            android:id="@+id/et3"
+            style="@style/OtpEditTextStyle" />
+
+        <EditText
+            android:id="@+id/et4"
+            style="@style/OtpEditTextStyle" />
+
+        <EditText
+            android:id="@+id/et5"
+            style="@style/OtpEditTextStyle" />
+
+        <EditText
+            android:id="@+id/et6"
+            style="@style/OtpEditTextStyle" />
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="326dp"
+        android:layout_height="132dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="172dp"
+        app:cardBackgroundColor="#FFC7D5"
+        app:cardCornerRadius="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView27">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="314dp"
+            android:layout_height="122dp">
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="294dp"
+                android:layout_height="26dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="16dp"
+                android:gravity="left"
+                android:text="Không chọn các dãy số đơn giản như:"
+                android:textColor="#070707"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="232dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="40dp"
+                android:gravity="left"
+                android:text="- 111111"
+                android:textColor="#070707"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="232dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="40dp"
+                android:gravity="left"
+                android:text="- 123456"
+                android:textColor="#040303"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
+            <TextView
+                android:id="@+id/textView23"
+                android:layout_width="232dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="40dp"
+                android:gravity="left"
+                android:text="- Ngày sinh "
+                android:textColor="#0B0A0A"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView22" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="277dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="Xin vui lòng tạo mã pin"
+        android:textColor="#C32349"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView27"
+        android:layout_width="86dp"
+        android:layout_height="86dp"
+        android:layout_marginTop="36dp"
+        android:transitionName="app_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView20"
+        app:srcCompat="@drawable/logo" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

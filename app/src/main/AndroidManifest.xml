@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature android:name="android.hardware.camera.any" android:required="false" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -21,6 +24,27 @@
                 android:value="AIzaSyD7I9HRj8fBn6cc5Iw6GxfeZWpewHEleV4"
             />
 
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+        <activity
+            android:name=".ui.activity.LoginActivity2"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.SignUpActivity"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".ui.activity.SplashActivity"
+            android:exported="false">
+
+        </activity>
         <activity
             android:name=".ui.activity.LoginActivity"
             android:exported="false" />
@@ -29,12 +53,15 @@
             android:exported="true"
             android:label="TransferBank"
             android:theme="@style/Theme.TAD_Bank_T1.NoActionBar">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

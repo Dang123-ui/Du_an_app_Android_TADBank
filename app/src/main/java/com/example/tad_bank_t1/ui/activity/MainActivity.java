@@ -18,7 +18,6 @@ import com.example.tad_bank_t1.ui.fragment.SettingFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
-
     private Toolbar toolbar;
     private BottomNavigationView bottomNav;
 

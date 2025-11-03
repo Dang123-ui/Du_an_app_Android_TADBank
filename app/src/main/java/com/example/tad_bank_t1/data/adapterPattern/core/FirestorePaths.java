@@ -7,6 +7,7 @@ public final class FirestorePaths {
     public static final String MFA_FACTORS = "mfaFactors";
     public static final String OTP_CODES = "otpCodes";
     public static final String BRANCHES = "branches";
+    public static final String BANKS = "banks";
     public static final String ACCOUNTS = "accounts";
     public static final String SAVING_RATE_POLICIES = "savingRatePolicies";
     public static final String SAVING_ACCOUNTS = "savingAccounts";

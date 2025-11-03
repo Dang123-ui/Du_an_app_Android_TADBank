@@ -12,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.tad_bank_t1.R;
+import com.example.tad_bank_t1.data.fake_data.CurrentUser;
 import com.example.tad_bank_t1.ui.fragment.BankTransferFragment;
 import com.example.tad_bank_t1.ui.fragment.HomeCustomerFragment;
 import com.example.tad_bank_t1.ui.fragment.SettingFragment;
@@ -52,6 +53,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        // test USER ACC
+        CurrentUser.getCurrentUserAndAccounts();
+
         // Hiển thị Home mặc định
         replaceFragment(new HomeCustomerFragment(), false);
         updateUIForFragment(new HomeCustomerFragment());
@@ -85,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Nút back trên toolbar
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
+
     }
 
     @Override

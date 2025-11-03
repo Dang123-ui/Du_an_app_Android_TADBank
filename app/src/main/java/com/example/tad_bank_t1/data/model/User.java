@@ -4,6 +4,7 @@ import com.example.tad_bank_t1.data.model.enums.Role;
 import com.example.tad_bank_t1.data.model.enums.UserStatus;
 
 import com.google.firebase.Timestamp;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +31,23 @@ public class User {
         this.status = UserStatus.ACTIVE;
         this.role = Role.CUSTOMER;
         this.createdAt = Timestamp.now();
+    }
+
+    public User(String id, String username, String email, String phone, Role role, UserStatus status,
+                Timestamp createdAt, String idNumber, String fullName, String address,
+                Timestamp dateOfBirth, String avatar) {
+        this.userId = id;
+        this.username = username;
+        this.email = email;
+        this.phone = phone;
+        this.role = role;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.idNumber = idNumber;
+        this.fullName = fullName;
+        this.address = address;
+        this.dateOfBirth = dateOfBirth;
+        this.avatar = avatar;
     }
 
     public String getUserId() {
@@ -127,15 +145,9 @@ public class User {
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
-    public User(String id, String username, String email, String phone, Role role, UserStatus status,
-                Timestamp createdAt, String idNumber, String fullName, String address,
-                Timestamp dateOfBirth, String avatar) {
-        this.userId = id; this.username = username; this.email = email; this.phone = phone;
-        this.role = role; this.status = status; this.createdAt = createdAt; this.idNumber = idNumber;
-        this.fullName = fullName; this.address = address; this.dateOfBirth = dateOfBirth; this.avatar = avatar;
-    }
-    public Map<String,Object> toMap() {
-        Map<String,Object> m = new HashMap<>();
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> m = new HashMap<>();
         m.put("username", username);
         m.put("email", email);
         m.put("phone", phone);

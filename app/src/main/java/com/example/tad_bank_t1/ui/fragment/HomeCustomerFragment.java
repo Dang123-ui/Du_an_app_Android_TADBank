@@ -12,9 +12,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.tad_bank_t1.R;
+import com.example.tad_bank_t1.data.session.SessionManager;
 import com.example.tad_bank_t1.ui.activity.LoginActivity;
 import com.example.tad_bank_t1.ui.activity.MainActivity;
 import com.example.tad_bank_t1.util.FragmentUtil;
@@ -26,6 +28,7 @@ public class HomeCustomerFragment extends Fragment {
             lnloCardFindBranch
     ;
     private ImageButton imbtHomeNotify, imbtLogout;
+    private TextView txtHomeUsername, txtHomeAccNumber, txtHomeBalance;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +52,11 @@ public class HomeCustomerFragment extends Fragment {
 
         imbtHomeNotify = view.findViewById(R.id.imbtHomeNotify);
         imbtLogout = view.findViewById(R.id.imbtLogout);
+        // account default
+        txtHomeUsername = view.findViewById(R.id.txtHomeUsername);
+        txtHomeAccNumber = view.findViewById(R.id.txtHomeAccNumber);
+        txtHomeBalance = view.findViewById(R.id.txtHomeBalance);
+        // layout account
         lnloHomeHistoryTransac = view.findViewById(R.id.lnloHomeHistoryTransac);
         lnloHomeAccManagement = view.findViewById(R.id.lnloHomeAccManagement);
 
@@ -58,17 +66,29 @@ public class HomeCustomerFragment extends Fragment {
         lnloCardTranfer = view.findViewById(R.id.lnloCardTranfer);
         lnloCardBillPayment = view.findViewById(R.id.lnloCardBillPayment);
 
+        // set account default
+        txtHomeUsername.setText(SessionManager.getAccountDefault().getAccountName());
+        txtHomeAccNumber.setText(SessionManager.getAccountDefault().getAccountNumber());
+        txtHomeBalance.setText(String.valueOf(SessionManager.getAccountDefault().getBalance()
+                + " " + SessionManager.getAccountDefault().getCurrency()));
 
+
+
+        // onclick toolbar
         imbtHomeNotify.setOnClickListener(v -> featureCardOnClick(new NotiFragment(), getString(R.string.thong_bao)));
         imbtLogout.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             startActivity(intent);
         });
 
+        // onclick account card
+
+
         // on click listener for features card
-        lnloCardFindBranch.setOnClickListener(v -> featureCardOnClick(new MapBranchFragment(), getString(R.string.tim_kiem_chi_nhanh)));
         lnloHomeAccManagement.setOnClickListener(v -> featureCardOnClick(new AccountListFragment(), getString(R.string.danh_sach_tai_khoan)));
         lnloHomeHistoryTransac.setOnClickListener(v -> featureCardOnClick(new TransactionHistoryFragment(), getString(R.string.tai_khoan_hien_tai)));
+
+        lnloCardFindBranch.setOnClickListener(v -> featureCardOnClick(new MapBranchFragment(), getString(R.string.tim_kiem_chi_nhanh)));
         lnloCardDepositPhone.setOnClickListener(v -> featureCardOnClick(new MobileTopupTransferFragment(), getString(R.string.nap_tien_dien_thoai)));
         lnloCardTranfer.setOnClickListener(v-> featureCardOnClick(new BankTransferFragment(), getString(R.string.chuyen_tien)));
         lnloCardBillPayment.setOnClickListener(v-> featureCardOnClick(new BillsPaymentFragment(), getString(R.string.thanh_toan_hoa_don)));

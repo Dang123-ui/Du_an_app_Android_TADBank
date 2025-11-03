@@ -41,7 +41,7 @@ public class DateTimeUtil {
         return eventVietnam.format(formatter);
     }
 
-    public static Date localDateTimeToDateUTC(LocalDateTime localDateTime){
+    public static Date localDateTimeToDateUTC(LocalDateTime localDateTime) {
         Instant instantUTC = localDateTime.atZone(LOCAL_ZONE_ID).toInstant();
 
         // Chuyển đổi Instant sang java.util.Date
@@ -50,7 +50,7 @@ public class DateTimeUtil {
         return dateToStore;
     }
 
-    public static LocalDateTime dateUTCToLocalDate(Date dateUTC){
+    public static LocalDateTime dateUTCToLocalDate(Date dateUTC) {
         // 1. Chuyển đổi java.util.Date sang Instant (mốc thời gian tuyệt đối)
         Instant instantUTC = dateUTC.toInstant();
 
@@ -63,7 +63,7 @@ public class DateTimeUtil {
         return localDateTime;
     }
 
-    public static String localDateTimeToStr(Date dateUTC){
+    public static String localDateTimeToStr(Date dateUTC) {
         LocalDateTime localDateTime = dateUTCToLocalDate(dateUTC);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm", new Locale("vi", "VN"));

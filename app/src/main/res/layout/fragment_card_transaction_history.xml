@@ -27,12 +27,12 @@
             android:paddingEnd="15dp">
 
             <TextView
-                android:id="@+id/txtTxnAccName"
+                android:id="@+id/txtTxnHistoryAccName"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="TRAN MINH THUYEN"
                 android:textColor="@color/white"
-                android:textSize="25sp" />
+                android:textSize="24sp" />
 
             <View
                 android:layout_height="0dp"
@@ -40,6 +40,7 @@
                 android:layout_width="0dp" />
 
             <ImageButton
+                android:id="@+id/imbtOpenAccDetail"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
 
@@ -60,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:text="@string/tai_khoan_nguon"
                 android:textColor="@color/white"
-                android:textSize="25sp" />
+                android:textSize="16sp" />
 
             <View
                 android:layout_height="0dp"
@@ -68,12 +69,12 @@
                 android:layout_width="0dp" />
 
             <TextView
-                android:id="@+id/txtTxnAccNumber"
+                android:id="@+id/txtTxnHistoryAccNumber"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="T123567"
                 android:textColor="@color/white"
-                android:textSize="25sp" />
+                android:textSize="24sp" />
 
         </LinearLayout>
 
@@ -88,7 +89,7 @@
                 android:layout_width="wrap_content"
                 android:text="@string/so_du_de_chuyen_khoan"
                 android:textColor="@color/white"
-                android:textSize="25sp" />
+                android:textSize="16sp" />
 
             <View
                 android:layout_height="0dp"
@@ -96,12 +97,12 @@
                 android:layout_width="0dp" />
 
             <TextView
-                android:id="@+id/txtTxnAccBalance"
+                android:id="@+id/txtTxnHistoryBalance"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="10,000,000 VNĐ"
                 android:textColor="@color/white"
-                android:textSize="25sp" />
+                android:textSize="24sp" />
 
         </LinearLayout>
     </LinearLayout>

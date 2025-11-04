@@ -1,6 +1,7 @@
 package com.example.tad_bank_t1.ui.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.activity.OnBackPressedCallback;
@@ -10,17 +11,27 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.fake_data.CurrentUser;
+import com.example.tad_bank_t1.data.model.Account;
+import com.example.tad_bank_t1.data.model.User;
 import com.example.tad_bank_t1.ui.fragment.BankTransferFragment;
 import com.example.tad_bank_t1.ui.fragment.HomeCustomerFragment;
 import com.example.tad_bank_t1.ui.fragment.SettingFragment;
+import com.example.tad_bank_t1.ui.viewmodel.SessionViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private BottomNavigationView bottomNav;
+    private LottieAnimationView loadingAnim;
+    private SessionViewModel sessionViewModel;
+    public static final String  USER_ID = "u000001";
 
 
     @Override
@@ -29,9 +40,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
         toolbar = findViewById(R.id.toolbar);
         bottomNav = findViewById(R.id.bottom_nav);
+        loadingAnim = findViewById(R.id.lottie_loading_waiting_redirect);
+
         setSupportActionBar(toolbar);
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -54,12 +66,22 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        // test USER ACC
-        CurrentUser.getCurrentUserAndAccounts();
-
         // Hiển thị Home mặc định
         replaceFragment(new HomeCustomerFragment(), false);
         updateUIForFragment(new HomeCustomerFragment());
+
+        // load user account bang session viewmodel
+        sessionViewModel = new ViewModelProvider(this).get(SessionViewModel.class);
+        sessionViewModel.observeUserAndAccountsRealtime(USER_ID);
+//        sessionViewModel.isLoading.observe(this, isLoading -> {
+//            if (isLoading) {
+//                showLoading(true);
+//            } else {
+//                showLoading(false);
+//            }
+//        });
+
+
         checkCurrentFragment();
 
 
@@ -150,6 +172,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // ✅ Hàm show/hide loading
+    private void showLoading(boolean show) {
+        if (show) {
+            loadingAnim.setVisibility(View.VISIBLE);
+            toolbar.setVisibility(View.GONE);
+            bottomNav.setVisibility(View.GONE);
+        } else {
+            loadingAnim.setVisibility(View.GONE);
+            toolbar.setVisibility(View.GONE);
+            bottomNav.setVisibility(View.VISIBLE);
+        }
+    }
 
     public void checkCurrentFragment() {
         // ID của container mà bạn dùng để host các Fragment (ví dụ: R.id.fragment_container)
@@ -167,14 +201,14 @@ public class MainActivity extends AppCompatActivity {
 
                 return insets;
             });
-        } else{
+        } else {
             // Trong Activity/Fragment, sau khi View được tạo
             ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.appbar), (v, insets) -> {
                 // Lấy chiều cao của thanh trạng thái
                 Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
 
                 // Áp dụng padding: Padding cũ + Chiều cao thanh trạng thái + Thêm khoảng cách 10dp
-                v.setPadding(v.getPaddingLeft(), (int)(systemBars.top * 0.75), v.getPaddingRight(), v.getPaddingBottom());
+                v.setPadding(v.getPaddingLeft(), (int) (systemBars.top * 0.75), v.getPaddingRight(), v.getPaddingBottom());
 
                 return insets;
             });

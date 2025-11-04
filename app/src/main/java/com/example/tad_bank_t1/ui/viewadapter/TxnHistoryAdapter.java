@@ -3,6 +3,7 @@ package com.example.tad_bank_t1.ui.viewadapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,15 +20,26 @@ import java.util.List;
 
 public class TxnHistoryAdapter extends RecyclerView.Adapter<TxnHistoryAdapter.ViewHolder> {
     private List<Transaction> data;
+    private OnItemClickListener listener;
 
+    public interface OnItemClickListener{
+        void onItemClick(Transaction txn);
+    }
+    public TxnHistoryAdapter(){
+    }
     public TxnHistoryAdapter(List<Transaction> data) {
         this.data = data;
     }
+
+
     public void setData(List<Transaction> data) {
         this.data = data;
         notifyDataSetChanged();
     }
 
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
+    }
 
     @NonNull
     @Override
@@ -43,6 +55,10 @@ public class TxnHistoryAdapter extends RecyclerView.Adapter<TxnHistoryAdapter.Vi
         Transaction txn = data.get(pos);
         holder.bind(txn);
 
+        holder.imbtOpenTxnDetail.setOnClickListener(v -> {
+            listener.onItemClick(txn);
+        });
+
     }
 
     @Override
@@ -52,6 +68,7 @@ public class TxnHistoryAdapter extends RecyclerView.Adapter<TxnHistoryAdapter.Vi
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         private TextView txtTxnHistoryDate, txtTxnHistoryContent, txtTxnHistoryAmount;
+        private ImageButton imbtOpenTxnDetail;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -59,10 +76,11 @@ public class TxnHistoryAdapter extends RecyclerView.Adapter<TxnHistoryAdapter.Vi
             txtTxnHistoryAmount = itemView.findViewById(R.id.txtTxnHistoryAmount);
             txtTxnHistoryContent = itemView.findViewById(R.id.txtTxnHistoryContent);
             txtTxnHistoryDate = itemView.findViewById(R.id.txtTxnHistoryDate);
+            imbtOpenTxnDetail = itemView.findViewById(R.id.imbtOpenTxnDetail);
         }
 
         public void bind(Transaction txn){
-            String dateTimeLocal = DateTimeUtil.localDateTimeToStr(txn.createAt);
+            String dateTimeLocal = DateTimeUtil.localDateTimeToStr(txn.getCreatedAt());
             txtTxnHistoryDate.setText(dateTimeLocal);
             txtTxnHistoryContent.setText(txn.getDescription() + " | " +
                         txn.getCounterpartyAccount() + " | " +

@@ -7,34 +7,35 @@ import com.example.tad_bank_t1.data.model.enums.TxnType;
 import java.util.Date;
 
 public class Transaction {
-    public Long       transactionId;      // PK
-    public Long       accountId;          // FK -> Accounts.accountId
-    public TxnType type;
-    public TnxStatus status;
-    public TxnChannel channel;
-    public Double     amount;
-    public String     currency;           // default VND
-    public String     description;
-        // giữ chính tả "chanel" theo sơ đồ
-    public Date createAt;
+    private String transactionId;      // PK
+    private String accountId;          // FK -> Accounts.accountId
+    private TxnType type;
+    private TnxStatus status;
+    private TxnChannel channel;
+    private Double amount;
+    private String currency;           // default VND
+    private String description;
+    // giữ chính tả "chanel" theo sơ đồ
+    private Date createdAt;
+    private String parentId;               // refund
+    private String counterpartyAccount;
+    private String counterpartyName;
+    private String counterpartyBankCode;
+    private String branchId;               // nếu rút tại CN/ATM
+    private Double feeAmount;
+    private String billId;                 // link Bill
+    private String paymentId;              // link Payment
+    private String scheduleId;             // link MortgagePaymentSchedule
+    private boolean otpRequired;
+    private Date otpVerifiedAt;
 
-    public Long   parentId;               // refund
-    public String counterpartyAccount;
-    public String counterpartyName;
-    public String counterpartyBankCode;
-    public Long   branchId;               // nếu rút tại CN/ATM
-    public Double feeAmount;
+    public Transaction() {
+    }
 
-    public Long   billId;                 // link Bill
-    public Long   paymentId;              // link Payment
-    public Long   scheduleId;             // link MortgagePaymentSchedule
-
-    public boolean otpRequired;
-    public Date    otpVerifiedAt;
-
-    public Transaction() {}
-
-    public Transaction(Long transactionId, Long accountId, TxnType type, TnxStatus status, TxnChannel channel, Double amount, String description, Date createAt, String counterpartyAccount, String counterpartyName, String counterpartyBankCode, Double feeAmount) {
+    public Transaction(String transactionId, String accountId, TxnType type, TnxStatus status,
+                       TxnChannel channel, Double amount, String description, Date createAt,
+                       String counterpartyAccount, String counterpartyName,
+                       String counterpartyBankCode, Double feeAmount) {
         this.transactionId = transactionId;
         this.accountId = accountId;
         this.type = type;
@@ -42,14 +43,19 @@ public class Transaction {
         this.channel = channel;
         this.amount = amount;
         this.description = description;
-        this.createAt = createAt;
+        this.createdAt = createAt;
         this.counterpartyAccount = counterpartyAccount;
         this.counterpartyName = counterpartyName;
         this.counterpartyBankCode = counterpartyBankCode;
         this.feeAmount = feeAmount;
     }
 
-    public Transaction(Long transactionId, Long accountId, TxnType type, TnxStatus status, TxnChannel channel, Double amount, String currency, String description, Date createAt, Long parentId, String counterpartyAccount, String counterpartyName, String counterpartyBankCode, Long branchId, Double feeAmount, Long billId, Long paymentId, Long scheduleId, boolean otpRequired, Date otpVerifiedAt) {
+    public Transaction(String transactionId, String accountId, TxnType type,
+                       TnxStatus status, TxnChannel channel, Double amount,
+                       String currency, String description, Date createAt,
+                       String parentId, String counterpartyAccount, String counterpartyName,
+                       String counterpartyBankCode, String branchId, Double feeAmount,
+                       String billId, String paymentId, String scheduleId, boolean otpRequired, Date otpVerifiedAt) {
         this.transactionId = transactionId;
         this.accountId = accountId;
         this.type = type;
@@ -58,7 +64,7 @@ public class Transaction {
         this.amount = amount;
         this.currency = currency;
         this.description = description;
-        this.createAt = createAt;
+        this.createdAt = createAt;
         this.parentId = parentId;
         this.counterpartyAccount = counterpartyAccount;
         this.counterpartyName = counterpartyName;
@@ -72,21 +78,19 @@ public class Transaction {
         this.otpVerifiedAt = otpVerifiedAt;
     }
 
-
-
-    public Long getTransactionId() {
+    public String getTransactionId() {
         return transactionId;
     }
 
-    public void setTransactionId(Long transactionId) {
+    public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
     }
 
-    public Long getAccountId() {
+    public String getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(Long accountId) {
+    public void setAccountId(String accountId) {
         this.accountId = accountId;
     }
 
@@ -138,19 +142,19 @@ public class Transaction {
         this.description = description;
     }
 
-    public Date getCreateAt() {
-        return createAt;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Long getParentId() {
+    public String getParentId() {
         return parentId;
     }
 
-    public void setParentId(Long parentId) {
+    public void setParentId(String parentId) {
         this.parentId = parentId;
     }
 
@@ -178,11 +182,11 @@ public class Transaction {
         this.counterpartyBankCode = counterpartyBankCode;
     }
 
-    public Long getBranchId() {
+    public String getBranchId() {
         return branchId;
     }
 
-    public void setBranchId(Long branchId) {
+    public void setBranchId(String branchId) {
         this.branchId = branchId;
     }
 
@@ -194,27 +198,27 @@ public class Transaction {
         this.feeAmount = feeAmount;
     }
 
-    public Long getBillId() {
+    public String getBillId() {
         return billId;
     }
 
-    public void setBillId(Long billId) {
+    public void setBillId(String billId) {
         this.billId = billId;
     }
 
-    public Long getPaymentId() {
+    public String getPaymentId() {
         return paymentId;
     }
 
-    public void setPaymentId(Long paymentId) {
+    public void setPaymentId(String paymentId) {
         this.paymentId = paymentId;
     }
 
-    public Long getScheduleId() {
+    public String getScheduleId() {
         return scheduleId;
     }
 
-    public void setScheduleId(Long scheduleId) {
+    public void setScheduleId(String scheduleId) {
         this.scheduleId = scheduleId;
     }
 

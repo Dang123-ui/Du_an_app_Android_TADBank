@@ -3,6 +3,7 @@ package com.example.tad_bank_t1.ui.fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,7 +16,10 @@ import android.view.ViewGroup;
 import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.fake_data.NotiFakeData;
 import com.example.tad_bank_t1.data.model.Notification;
+import com.example.tad_bank_t1.data.model.Transaction;
+import com.example.tad_bank_t1.data.model.enums.NotificationType;
 import com.example.tad_bank_t1.ui.viewadapter.NotiAdapter;
+import com.example.tad_bank_t1.ui.viewmodel.NotificationViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
@@ -25,6 +29,7 @@ public class NotiItemFragment extends Fragment {
     private RecyclerView rvNotiItem;
     private NotiAdapter notiAdapter;
     private TextInputEditText edtNotiItem;
+    private NotificationViewModel notificationViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,14 +47,30 @@ public class NotiItemFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_noti_item, container, false);
 
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         rvNotiItem = view.findViewById(R.id.rvNotiItem);
         edtNotiItem = view.findViewById(R.id.edtSearchNotiSystem);
 
 
-        // adapter
-        rvNotiItem.setLayoutManager(new LinearLayoutManager(getContext()));
-        notiAdapter = new NotiAdapter(NotiFakeData.getNotiData());
-        rvNotiItem.setAdapter(notiAdapter);
+
+        notificationViewModel = new ViewModelProvider(requireActivity()).get(NotificationViewModel.class);
+        notificationViewModel.startListeningSystem("u000001");
+        notificationViewModel.systemNotifications.observe(getViewLifecycleOwner(), notifications -> {
+            if (notifications != null) {
+                // adapter
+                notiAdapter = new NotiAdapter();
+                rvNotiItem.setAdapter(notiAdapter);
+                rvNotiItem.setLayoutManager(new LinearLayoutManager(getContext()));
+                notiAdapter.setNotiData(notifications);
+            }
+        });
+        notificationViewModel.markAllRead(NotificationType.SYSTEM);
 
         // search
         edtNotiItem.addTextChangedListener(new TextWatcher() {
@@ -72,6 +93,5 @@ public class NotiItemFragment extends Fragment {
         });
 
 
-        return view;
     }
 }

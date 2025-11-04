@@ -3,14 +3,16 @@ package com.example.tad_bank_t1.data.model;
 public class Bank {
     private String bankId;
     private String bankName;
+    private String bankCode;
     private String bankLongName;
     private String bankImageUrl;
 
 
-    public Bank(String bankImageUrl, String bankName, String bankId, String bankLongName) {
+    public Bank(String bankId, String bankImageUrl, String bankName, String bankCode, String bankLongName) {
+        this.bankId = bankId;
         this.bankImageUrl = bankImageUrl;
         this.bankName = bankName;
-        this.bankId = bankId;
+        this.bankCode = bankCode;
         this.bankLongName = bankLongName;
     }
 
@@ -22,12 +24,20 @@ public class Bank {
         this.bankId = bankId;
     }
 
-    public String getBankImageUrl() {
-        return bankImageUrl;
+    public String getBankName() {
+        return bankName;
     }
 
-    public void setBankImageUrl(String bankImageUrl) {
-        this.bankImageUrl = bankImageUrl;
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getBankCode() {
+        return bankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
     }
 
     public String getBankLongName() {
@@ -38,11 +48,11 @@ public class Bank {
         this.bankLongName = bankLongName;
     }
 
-    public String getBankName() {
-        return bankName;
+    public String getBankImageUrl() {
+        return bankImageUrl;
     }
 
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
+    public void setBankImageUrl(String bankImageUrl) {
+        this.bankImageUrl = bankImageUrl;
     }
 }

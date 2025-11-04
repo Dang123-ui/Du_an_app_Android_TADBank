@@ -17,12 +17,12 @@ public class Account {
     private Double balance;       // decimal(10,3)
     private AccountStatus status;       // OPEN | FROZEN | CLOSE
     private Date createdAt;
-    private Date updateAt;
+    private Date updatedAt;
 
     public Account() {
     }
 
-    public Account(String accountId, String userId, String branchId, AccountType type, String accountName, String accountNumber, boolean isDefault, String currency, Double balance, AccountStatus status, Date createdAt, Date updateAt) {
+    public Account(String accountId, String userId, String branchId, AccountType type, String accountName, String accountNumber, boolean isDefault, String currency, Double balance, AccountStatus status, Date createdAt, Date updatedAt) {
         this.accountId = accountId;
         this.userId = userId;
         this.branchId = branchId;
@@ -34,7 +34,7 @@ public class Account {
         this.balance = balance;
         this.status = status;
         this.createdAt = createdAt;
-        this.updateAt = updateAt;
+        this.updatedAt = updatedAt;
     }
 
     public String getAccountId() {
@@ -85,11 +85,11 @@ public class Account {
         this.accountNumber = accountNumber;
     }
 
-    public boolean isDefault() {
+    public boolean getIsDefault() {
         return isDefault;
     }
 
-    public void setDefault(boolean aDefault) {
+    public void setIsDefault(boolean aDefault) {
         isDefault = aDefault;
     }
 
@@ -125,11 +125,11 @@ public class Account {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdateAt() {
-        return updateAt;
+    public Date getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
+    public void setUpdatedAt(Date updateAt) {
+        this.updatedAt = updateAt;
     }
 }

@@ -15,6 +15,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [mapsApiKey: MAPS_API_KEY]
     }
     signingConfigs {
         create("release") {
@@ -62,6 +63,9 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore") 
     implementation("com.google.firebase:firebase-storage")
+
+    // skimmer sketon loader
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
 
     // circle image view
     implementation("de.hdodenhof:circleimageview:3.1.0") 

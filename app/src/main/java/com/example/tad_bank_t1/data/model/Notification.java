@@ -1,25 +1,34 @@
 package com.example.tad_bank_t1.data.model;
 
+import com.example.tad_bank_t1.data.model.enums.NotificationType;
+
 import java.util.Date;
 
 public class Notification {
-    public String notificationId; // doc id hoặc PK
-    public String userId;         // FK -> Users.userId
-    public String title;          // tiêu đề
-    public String message;        // nội dung
-    public String type;           // SYSTEM, TRANSACTION, PROMOTION...
-    public boolean read;          // đã đọc hay chưa
-    public Date createdAt;        // thời gian tạo
+    private String notificationId;      // ID (PK)
+    private String userId;              // FK -> Users.userId
+    private String accountId;           // optional: nếu thông báo liên quan account cụ thể
+    private String title;               // tiêu đề ngắn
+    private String message;             // nội dung chi tiết
+    private NotificationType type;      // SYSTEM, TRANSACTION, PROMOTION, WARNING, etc.
+    private boolean read;               // đã đọc chưa
+    private Date createdAt;             // thời gian tạo
+    private String relatedId;           // ID liên quan (transactionId / loanId / billId / etc.)
+    private String deepLink;            // optional: link mở ra màn hình chi tiết trong app
 
-    public Notification() {} // cần constructor rỗng cho Firestore
+    public Notification (){}
 
-    public Notification(String userId, String title, String message, String type, Date createdAt) {
+    public Notification(String notificationId, String userId, String accountId, String title, String message, NotificationType type, boolean read, Date createdAt, String relatedId, String deepLink) {
+        this.notificationId = notificationId;
         this.userId = userId;
+        this.accountId = accountId;
         this.title = title;
         this.message = message;
         this.type = type;
-        this.read = false;
+        this.read = read;
         this.createdAt = createdAt;
+        this.relatedId = relatedId;
+        this.deepLink = deepLink;
     }
 
     public String getNotificationId() {
@@ -38,6 +47,14 @@ public class Notification {
         this.userId = userId;
     }
 
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -54,11 +71,11 @@ public class Notification {
         this.message = message;
     }
 
-    public String getType() {
+    public NotificationType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(NotificationType type) {
         this.type = type;
     }
 
@@ -76,5 +93,21 @@ public class Notification {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getRelatedId() {
+        return relatedId;
+    }
+
+    public void setRelatedId(String relatedId) {
+        this.relatedId = relatedId;
+    }
+
+    public String getDeepLink() {
+        return deepLink;
+    }
+
+    public void setDeepLink(String deepLink) {
+        this.deepLink = deepLink;
     }
 }

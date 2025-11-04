@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">TAD_Bank_T1</string>
     <string name="title_activity_dash_board">Trang chủ</string>
 
     <string name="action_settings">Settings</string>
@@ -60,7 +59,6 @@
     <string name="danh_sach_tai_khoan">Danh sách tài khoản</string>
     <string name="tai_khoan_hien_tai">Tài khoản hiện tại</string>
     <string name="thong_bao">Thông báo</string>
-    <string name="gg_map_api_key">AIzaSyD7I9HRj8fBn6cc5Iw6GxfeZWpewHEleV4</string>
     <string name="tim_kiem_chi_nhanh">Tìm chi nhánh</string>
     <string name="title">Từ nơi đây ánh sáng sẽ chiếu rọi đến mọi nơi trong vũ trụ</string>
     <string name="login">Đăng nhập</string>
@@ -86,4 +84,10 @@
     <string name="info_sign_up_err_email_empty">Email không được để trống.</string>
     <string name="info_sign_up_err_invalid_email">Email không hợp lệ. Email phải có dạng: example@gmail.com.</string>
     <string name="info_sign_up_loading">Đang tải...</string>
+    <string name="chi_tiet_gd">Chi tiết giao dịch</string>
+    <string name="ten_tai_khoan">Tên tài khoản</string>
+    <string name="lai_suat">Lãi suất</string>
+    <string name="ngay_mo_tai_khoan">Ngày mở tài khoản</string>
+    <string name="ngay_gd_gan_nhat">Ngày giao dịch gần nhất</string>
+    <string name="chi_tiet_tai_khoan">Chi tiết tài khoản</string>
 </resources>

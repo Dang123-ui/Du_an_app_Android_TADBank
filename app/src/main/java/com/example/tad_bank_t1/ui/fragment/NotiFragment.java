@@ -11,13 +11,13 @@ import android.view.ViewGroup;
 
 import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.ui.viewadapter.VPNotiAdapter;
+import com.example.tad_bank_t1.ui.viewmodel.NotificationViewModel;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 
 public class NotiFragment extends Fragment {
-
-
+    private NotificationViewModel notificationViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

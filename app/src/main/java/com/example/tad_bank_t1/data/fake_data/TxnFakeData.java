@@ -16,10 +16,10 @@ public class TxnFakeData {
     // public Transaction(Long transactionId, Long accountId, TxnType type, TnxStatus status, TxnChannel channel, Double amount, String description, Date createAt, String counterpartyAccount, String counterpartyName, String counterpartyBankCode, Double feeAmount) {
 
     private  static List<Transaction> dataTxns = List.of(
-            new Transaction(1L, 1L, TxnType.TRANSFER_INTERNAL, TnxStatus.COMPLETED, TxnChannel.ONLINE, 1000000.0, "Chuyen den thuyen", DateTimeUtil.localDateTimeToDateUTC(LocalDateTime.of(2023, 10, 10, 10, 10)), "TK123", "TRAN MINH THUAN", "TADBANK", 0.0),
-            new Transaction(2L, 1L, TxnType.TRANSFER_INTERNAL, TnxStatus.COMPLETED, TxnChannel.ONLINE, 1000000.0, "Chuyen den thuyen", DateTimeUtil.localDateTimeToDateUTC(LocalDateTime.of(2023, 10, 10, 10, 10)), "TK123", "TRAN MINH THUAN", "TADBANK", 0.0),
-            new Transaction(3L, 1L, TxnType.RECEIVE_TRANSFER, TnxStatus.COMPLETED, TxnChannel.ONLINE, 100000.0, "Chuyen den thuyen", DateTimeUtil.localDateTimeToDateUTC(LocalDateTime.of(2023, 10, 10, 10, 10)), "TK123", "TRAN MINH THUAN", "TADBANK", 0.0),
-            new Transaction(4L, 1L, TxnType.RECEIVE_TRANSFER, TnxStatus.COMPLETED, TxnChannel.ONLINE, 500000.0, "Chuyen den thuyen", DateTimeUtil.localDateTimeToDateUTC(LocalDateTime.of(2023, 10, 10, 10, 10)), "TK123", "TRAN MINH THUAN", "TADBANK", 0.0)
+            new Transaction("1L", "1L", TxnType.TRANSFER_INTERNAL, TnxStatus.COMPLETED, TxnChannel.ONLINE, 1000000.0, "Chuyen den thuyen", DateTimeUtil.localDateTimeToDateUTC(LocalDateTime.of(2023, 10, 10, 10, 10)), "TK123", "TRAN MINH THUAN", "TADBANK", 0.0),
+            new Transaction("2L", "1L", TxnType.TRANSFER_INTERNAL, TnxStatus.COMPLETED, TxnChannel.ONLINE, 1000000.0, "Chuyen den thuyen", DateTimeUtil.localDateTimeToDateUTC(LocalDateTime.of(2023, 10, 10, 10, 10)), "TK123", "TRAN MINH THUAN", "TADBANK", 0.0),
+            new Transaction("3L", "1L", TxnType.TRANSFER_RECEIVE, TnxStatus.COMPLETED, TxnChannel.ONLINE, 100000.0, "Chuyen den thuyen", DateTimeUtil.localDateTimeToDateUTC(LocalDateTime.of(2023, 10, 10, 10, 10)), "TK123", "TRAN MINH THUAN", "TADBANK", 0.0),
+            new Transaction("4L", "1L", TxnType.TRANSFER_RECEIVE, TnxStatus.COMPLETED, TxnChannel.ONLINE, 500000.0, "Chuyen den thuyen", DateTimeUtil.localDateTimeToDateUTC(LocalDateTime.of(2023, 10, 10, 10, 10)), "TK123", "TRAN MINH THUAN", "TADBANK", 0.0)
     );
 
     public static List<Transaction> getDataTxns(){

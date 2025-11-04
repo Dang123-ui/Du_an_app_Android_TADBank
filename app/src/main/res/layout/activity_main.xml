@@ -36,6 +36,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:clipToPadding="false"
         android:paddingBottom="0dp" />
+
     <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
@@ -53,12 +54,12 @@
     <!-- Loading animation -->
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottie_loading_waiting_redirect"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_gravity="center"
         android:visibility="gone"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/redirect_loading" />
+        app:lottie_rawRes="@raw/waiting_loading" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">TAD_Bank_T1</string>
     <string name="title">From this place, light shall radiate to every corner of the cosmos</string>
     <string name="login">Login</string>
     <string name="new_customer">I\'m a new customer</string>
@@ -25,4 +24,10 @@
     <string name="info_sign_up_err_email_empty">Email can\'t be empty.</string>
     <string name="info_sign_up_err_invalid_email">Invalid email format. Should be like: example@gmail.com.</string>
     <string name="info_sign_up_loading">Loading...</string>
+    <string name="chi_tiet_gd">Transaction Detail</string>
+    <string name="ten_tai_khoan">Account name</string>
+    <string name="lai_suat">Interest rate</string>
+    <string name="ngay_mo_tai_khoan">Account opening date</string>
+    <string name="ngay_gd_gan_nhat">Date of last transaction</string>
+    <string name="chi_tiet_tai_khoan">Account detail</string>
 </resources>

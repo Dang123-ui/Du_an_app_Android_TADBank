@@ -1,10 +1,8 @@
 package com.example.tad_bank_t1.data.repository.ekyc;
-
-import com.example.tad_bank_t1.data.adapterPattern.core.FirestoreClientProvider;
 import com.example.tad_bank_t1.data.adapterPattern.ekyc.EkycAdapter;
 import com.example.tad_bank_t1.data.model.Ekyc;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.FirebaseFirestore;
+
 public class FirebaseEkycRepository implements EkycRepository{
     private final EkycAdapter adapter = new EkycAdapter();
     @Override
@@ -26,4 +24,5 @@ public class FirebaseEkycRepository implements EkycRepository{
     public Task<Ekyc> getById(String id) {
         return adapter.get(id, Ekyc.class);
     }
+
 }

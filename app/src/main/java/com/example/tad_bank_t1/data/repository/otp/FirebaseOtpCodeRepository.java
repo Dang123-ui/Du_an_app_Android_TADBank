@@ -11,14 +11,16 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-
+import java.security.SecureRandom;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class FirebaseOtpCodeRepository implements OtpCodeRepository {
 
     private final OtpCodeAdapter adapter = new OtpCodeAdapter();
-
+    private static final long DEFAULT_TTL_MILLIS = 5 * 60 * 1000;
+    private static final SecureRandom RNG = new SecureRandom();
     @Override
     public Task<String> create(OtpCode otp) {
         DocumentReference ref = adapter.col().document();
@@ -83,5 +85,26 @@ public class FirebaseOtpCodeRepository implements OtpCodeRepository {
     @Override
     public Task<OtpCode> getById(String otpId) {
         return adapter.get(otpId, OtpCode.class);
+    }
+    public Task<String> sendEmailOtp(String userId, String purpose, String email) {
+        return sendEmailOtp(userId, email, purpose, DEFAULT_TTL_MILLIS);
+    }
+    public Task<String> sendEmailOtp(String userId, String email, String purpose, long ttlMillis) {
+        String code = random6();
+        long now = System.currentTimeMillis();
+        Date createdAt = new Date(now);
+        Date expiresAt = new Date(now + Math.max(10_000L, ttlMillis));
+        OtpCode otp = new OtpCode();
+        otp.setUserId(userId);
+        otp.setPurpose(purpose);
+        otp.setCode(code);
+        otp.setCreatedAt(createdAt);
+        otp.setExpiresAt(expiresAt);
+        otp.setUsedAt(null);
+        return create(otp);
+    }
+    private static String random6(){
+        int n = RNG.nextInt(1_000_000);
+        return String.format("%06d", n);
     }
 }

@@ -8,6 +8,17 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loading"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="210dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/btnChoseNumberCardToFinally"
+        app:layout_constraintTop_toTopOf="@+id/btnChoseNumberCardToFinally"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/loading" />
 
     <Button
         android:id="@+id/btnChoseNumberCardToFinally"
@@ -19,10 +30,12 @@
         android:enabled="true"
         android:text="Tiếp tục"
         app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView22" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView22"
+        app:layout_constraintVertical_bias="0.015" />
 
     <TextView
         android:id="@+id/textView10"
@@ -89,29 +102,36 @@
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilNumberAccount"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="264dp"
         android:layout_height="65dp"
         android:layout_marginTop="108dp"
+        android:textColorHint="@null"
         app:boxBackgroundMode="outline"
         app:boxCornerRadiusBottomEnd="24dp"
         app:boxCornerRadiusBottomStart="24dp"
         app:boxCornerRadiusTopEnd="24dp"
         app:boxCornerRadiusTopStart="24dp"
         app:boxStrokeColor="@color/white"
+        app:hintTextColor="@null"
         app:layout_constraintEnd_toEndOf="@+id/imageView22"
         app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="@+id/imageView22"
-        app:layout_constraintTop_toBottomOf="@+id/textView10">
+        app:layout_constraintTop_toBottomOf="@+id/textView10"
+        app:placeholderTextColor="@null">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etUsername"
+            android:id="@+id/etNumberAccount"
             android:layout_width="259dp"
             android:layout_height="56dp"
+            android:hint="Nhập từ 12 - 14 số"
             android:inputType="number"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:text="Nhập từ 12 - 14 số"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textColorHighlight="@null"
+            android:textColorHint="#FFFEFE"
+            android:textColorLink="@null" />
     </com.google.android.material.textfield.TextInputLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,12 +22,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frameLayout3" />
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loading2"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_XacThuc"
+        app:layout_constraintEnd_toEndOf="@+id/btn_XacThuc"
+        app:layout_constraintHorizontal_bias="0.708"
+        app:layout_constraintStart_toStartOf="@+id/btn_XacThuc"
+        app:layout_constraintTop_toTopOf="@+id/btn_XacThuc"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/loading" />
+
     <ImageView
         android:id="@+id/imageView11"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginStart="128dp"
+        android:layout_marginTop="24dp"
         android:transitionName="app_logo"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
@@ -69,6 +84,16 @@
             android:layout_margin="8dp"
             android:background="@drawable/cam_btn_bg"
             android:src="@android:drawable/ic_menu_camera" />
+
+        <ImageButton
+            android:id="@+id/btnFrontGallery"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="bottom"
+            android:layout_margin="8dp"
+            android:background="@null"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_image_file" />
     </FrameLayout>
 
     <TextView
@@ -99,6 +124,16 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/app_name"
             android:scaleType="centerCrop" />
+
+        <ImageButton
+            android:id="@+id/btnBackGrallery"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="bottom"
+            android:layout_margin="8dp"
+            android:background="@null"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_image_file" />
 
         <ImageButton
             android:id="@+id/btnBackCamera"

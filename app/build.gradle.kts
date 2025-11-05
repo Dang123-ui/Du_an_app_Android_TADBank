@@ -13,15 +13,28 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+    packaging {
+        resources {
+            excludes += "META-INF/NOTICE.md"
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/LICENSE-notice.md"
+            excludes += "META-INF/DEPENDENCIES"
+            excludes += "META-INF/NOTICE"
+            excludes += "META-INF/NOTICE.txt"
+            excludes += "META-INF/LICENSE.txt"
+            excludes += "META-INF/ASL2.0"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     signingConfigs {
         create("release") {
-            // đường dẫn keystore bạn đã tạo ở B2
             storeFile = file("D:/keys/tadbank-release.jks")
-
-            // KHÔNG hardcode mật khẩu: đọc từ gradle.properties hoặc ENV
             storePassword =
                 (project.findProperty("TADBANK_STORE_PWD") as String?)
                     ?: System.getenv("TADBANK_STORE_PWD")
@@ -50,27 +63,38 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    buildFeatures {
+        mlModelBinding = true
+    }
 }
 
 dependencies {
-    implementation(platform("com.google.firebase:firebase-bom:34.3.0"))
+    implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-storage")
-    implementation ("com.google.android.material:material:1.13.0")
-    implementation ("androidx.media3:media3-exoplayer:1.8.0")
-    implementation ("androidx.media3:media3-ui:1.8.0")
-    implementation ("com.airbnb.android:lottie:6.0.0")
-    implementation("com.google.mlkit:text-recognition:16.0.0")
-    implementation("com.google.mlkit:face-detection:16.1.6")
+    implementation("com.google.mlkit:text-recognition:16.0.1")
+    implementation("com.google.mlkit:face-detection:16.1.7")
+    implementation("com.google.mlkit:barcode-scanning:17.3.0")
+    implementation("org.tensorflow:tensorflow-lite:2.17.0")
+    implementation("org.tensorflow:tensorflow-lite-support:0.5.0")
+    implementation("org.tensorflow:tensorflow-lite-gpu:2.17.0")
+    implementation ("com.airbnb.android:lottie:6.6.10")
+    implementation("com.sun.mail:android-mail:1.6.8")
+    implementation("com.sun.mail:android-activation:1.6.8")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
+    implementation(libs.fragment)
     implementation(libs.constraintlayout)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+    implementation (libs.media3.exoplayer)
+    implementation (libs.media3.ui)
     implementation(libs.firebase.database)
+    implementation(libs.tensorflow.lite.metadata)
+    implementation(libs.cardview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

@@ -9,7 +9,8 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,26 +33,23 @@ import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.model.Ekyc;
 import com.example.tad_bank_t1.data.repository.ekyc.FirebaseEkycRepository;
 import com.example.tad_bank_t1.ui.activity.SignUpActivity;
+import com.google.mlkit.vision.barcode.BarcodeScanner;
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
+import com.google.mlkit.vision.barcode.BarcodeScanning;
+import com.google.mlkit.vision.barcode.common.Barcode;
 import com.google.mlkit.vision.common.InputImage;
-import com.google.mlkit.vision.face.Face;
+
 import com.google.mlkit.vision.face.FaceDetection;
 import com.google.mlkit.vision.face.FaceDetector;
 import com.google.mlkit.vision.face.FaceDetectorOptions;
-import com.google.mlkit.vision.text.TextRecognition;
-import com.google.mlkit.vision.text.TextRecognizer;
-import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
+import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Fragment chụp ảnh CCCD (mặt trước / mặt sau) + OCR + Detect Face.
- * - Hỗ trợ emulator chụp ảnh "thật" qua webcam (AVD Camera = Webcam0).
- * - Nút Xác thực chỉ bật khi đã chụp đủ 2 mặt, OCR xong, và đã cắt/lưu khuôn mặt.
- */
 public class TakePhotoFragment extends Fragment {
 
     // ----------- Args -----------
@@ -59,6 +57,7 @@ public class TakePhotoFragment extends Fragment {
     private static final String ARG_PHONE = "phone";
     private static final String ARG_USERNAME = "username";
     private static final String ARG_EMAIL = "email";
+    private static final String INTERNAL_SUBDIR = "ekyc";
 
     private String uid;
     private String phone;
@@ -70,24 +69,27 @@ public class TakePhotoFragment extends Fragment {
     private ImageView imgBack;
     private ImageButton btnFrontCamera;
     private ImageButton btnBackCamera;
+    private ImageButton btnFrontGallery;
+    private ImageButton btnBackGallery;
+    private ImageView imgLoading;
     private Button btnXacThuc;
 
     // ----------- Launchers -----------
     private ActivityResultLauncher<Uri> takePictureLauncher;
     private ActivityResultLauncher<String> requestPermissionLauncher;
+    private ActivityResultLauncher<String> pickImageLauncher;
 
     // ----------- State -----------
-    private boolean capturingFront = true;   // TRUE = mặt trước, FALSE = mặt sau
+    private boolean capturingFront = true;
+    private boolean pickingFront = true;
     private Uri currentPhotoUri;
-
     private Bitmap frontBitmap;
     private Bitmap backBitmap;
     private Ekyc ekyc;
     private FirebaseEkycRepository ekycRepository;
-
     // Cờ hoàn tất async
-    private volatile boolean ocrFrontDone = false;
-    private volatile boolean ocrBackDone  = false;
+    private volatile boolean qrFrontDone = false;
+    private volatile boolean backDone    = false;
     private volatile boolean faceSaved    = false;
 
     public TakePhotoFragment() { }
@@ -102,24 +104,18 @@ public class TakePhotoFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
-    // ---------------- Lifecycle ----------------
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (getArguments() != null) {
             uid = getArguments().getString(ARG_UID);
             phone = getArguments().getString(ARG_PHONE);
             username = getArguments().getString(ARG_USERNAME);
             email = getArguments().getString(ARG_EMAIL);
         }
-
         if (getActivity() instanceof SignUpActivity) {
             ((SignUpActivity) requireActivity()).setHeaderBackEnabled(true);
         }
-
         // Register launchers sớm để tránh null do lifecycle
         takePictureLauncher = registerForActivityResult(
                 new ActivityResultContracts.TakePicture(),
@@ -142,6 +138,15 @@ public class TakePhotoFragment extends Fragment {
                     }
                 }
         );
+        pickImageLauncher = registerForActivityResult(
+                new ActivityResultContracts.GetContent(),
+                uri -> {
+                    if (uri != null) {
+                        // Forward to common processing logic. Determine front/back based on pickingFront flag.
+                        processCapturedImage(uri, pickingFront);
+                    }
+                }
+        );
     }
 
     @Override
@@ -155,54 +160,69 @@ public class TakePhotoFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         ekyc = new Ekyc();
-        // Gợi ý: bạn có thể set sẵn các thông tin từ args nếu cần
-        // ekyc.setUserId(uid);
-        // ...
-
         ekycRepository = new FirebaseEkycRepository();
-
         imgFront = view.findViewById(R.id.imgFront);
         imgBack = view.findViewById(R.id.imgBack);
         btnFrontCamera = view.findViewById(R.id.btnFrontCamera);
         btnBackCamera = view.findViewById(R.id.btnBackCamera);
+        btnFrontGallery = view.findViewById(R.id.btnFrontGallery);
+        btnBackGallery = view.findViewById(R.id.btnBackGrallery);
         btnXacThuc = view.findViewById(R.id.btn_XacThuc);
-
-        btnXacThuc.setEnabled(false); // ban đầu tắt
-
+        btnXacThuc.setEnabled(false);
         btnFrontCamera.setOnClickListener(v -> {
             capturingFront = true;
             startCaptureFlow();
         });
-
         btnBackCamera.setOnClickListener(v -> {
             capturingFront = false;
             startCaptureFlow();
         });
-
+        btnFrontGallery.setOnClickListener(v -> {
+            pickingFront = true;
+            pickImageLauncher.launch("image/*");
+        });
+        btnBackGallery.setOnClickListener(v -> {
+            pickingFront = false;
+            pickImageLauncher.launch("image/*");
+        });
+        imgLoading = view.findViewById(R.id.loading2);
         btnXacThuc.setOnClickListener(v -> {
-            String missing = validateEkyc(ekyc, ocrFrontDone, ocrBackDone, faceSaved);
+            btnXacThuc.setEnabled(false);
+            imgLoading.setVisibility(View.VISIBLE);
+            btnBackCamera.setEnabled(false);
+            btnBackGallery.setEnabled(false);
+            btnFrontCamera.setEnabled(false);
+            btnFrontGallery.setEnabled(false);
+            String missing = validateEkyc(ekyc, qrFrontDone, backDone, faceSaved);
             if (missing != null) {
-                Toast.makeText(getContext(), "Thiếu/Chưa xong: " + missing, Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Không trích xuất được thông tin của: " + missing, Toast.LENGTH_LONG).show();
                 return;
             }
             ekyc.setUserId(uid);
-            ekycRepository.createWithUploads(ekyc)
+            ekyc.setVerifiedAt(new Date());
+            ekycRepository.create(ekyc)
                     .addOnSuccessListener(id -> {
                         // Sau khi tạo thành công trên server và nhận lại ID, gán nó vào object
                         ekyc.setId(id);
-                        Toast.makeText(getContext(), "Đã lưu eKYC (id: " + id + ")", Toast.LENGTH_LONG).show();
                         btnXacThuc.setEnabled(true);
-                        // Ở đây bạn có thể điều hướng người dùng sang màn hình khác
+                        CCCDInfoVerifyFragment verifyFragment = CCCDInfoVerifyFragment.newInstance(
+                                ekyc, uid, phone, username, email
+                        );
+                        if(getActivity() instanceof SignUpActivity) {
+                            ((SignUpActivity) getActivity()).navigateTo(verifyFragment, true);
+                        }
                     })
                     .addOnFailureListener(e -> {
-                        Toast.makeText(getContext(), "Lưu eKYC thất bại: ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Qúa trình xác thực có lỗi: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         btnXacThuc.setEnabled(true);
+                        imgLoading.setVisibility(View.GONE);
+                        btnBackCamera.setEnabled(true);
+                        btnBackGallery.setEnabled(true);
+                        btnFrontCamera.setEnabled(true);
+                        btnFrontGallery.setEnabled(true);
                     });
         });
     }
-
-    // ---------------- Capture helpers ----------------
-
     private void startCaptureFlow() {
         if (!hasAnyCamera()) {
             Toast.makeText(getContext(), "Thiết bị không có camera khả dụng", Toast.LENGTH_SHORT).show();
@@ -215,7 +235,6 @@ public class TakePhotoFragment extends Fragment {
             requestPermissionLauncher.launch(Manifest.permission.CAMERA);
         }
     }
-
     private void openCamera() {
         try {
             currentPhotoUri = createImageUri();
@@ -234,9 +253,11 @@ public class TakePhotoFragment extends Fragment {
         try {
             Context context = requireContext();
             String fileName = "ekyc_capture_" + System.currentTimeMillis() + ".jpg";
-            File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-            if (storageDir == null) storageDir = context.getFilesDir();
-            if (!storageDir.exists()) storageDir.mkdirs();
+            File storageDir = new File(context.getFilesDir(), INTERNAL_SUBDIR);
+            if (!storageDir.exists()) {
+                boolean ok = storageDir.mkdirs();
+                if (!ok) Log.w("TakePhotoFragment", "Không tạo được thư mục internal ekyc");
+            }
             File imageFile = new File(storageDir, fileName);
             if (!imageFile.exists()) imageFile.createNewFile();
             String authority = context.getPackageName() + ".fileprovider";
@@ -258,21 +279,18 @@ public class TakePhotoFragment extends Fragment {
             return bmp;
         }
     }
-
     private void processCapturedImage(Uri uri, boolean frontSide) {
         try {
             Bitmap bitmap = loadBitmapFromUri(uri);
             if (frontSide) {
                 frontBitmap = bitmap;
                 imgFront.setImageBitmap(bitmap);
-                ekyc.setIdFrontPath(uri.toString());
                 runFaceDetection(bitmap);
-                runTextRecognition(bitmap, true);
+                runQrScanFront(bitmap);
             } else {
                 backBitmap = bitmap;
                 imgBack.setImageBitmap(bitmap);
-                ekyc.setIdBackPath(uri.toString());
-                runTextRecognition(bitmap, false);
+                backDone = true;
             }
             updateConfirmButtonState();
         } catch (IOException e) {
@@ -280,132 +298,178 @@ public class TakePhotoFragment extends Fragment {
         }
 
     }
+    private void runQrScanFront(Bitmap bitmap) {
+        qrFrontDone = false;
+        int w = bitmap.getWidth(), h = bitmap.getHeight();
+        int left = (int)(w * 0.60f), top = (int)(h * 0.05f);
+        int roiW = (int)(w * 0.35f), roiH = (int)(h * 0.35f);
+        roiW = Math.min(roiW, w - left);
+        roiH = Math.min(roiH, h - top);
+        Bitmap roi = Bitmap.createBitmap(bitmap, left, top, roiW, roiH);
+        BarcodeScannerOptions options =
+                new BarcodeScannerOptions.Builder()
+                        .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
+                        .build();
+        BarcodeScanner scanner = BarcodeScanning.getClient(options);
+        InputImage imgRoi = InputImage.fromBitmap(roi, 0);
+        InputImage imgFull = InputImage.fromBitmap(bitmap, 0);
 
-    // ---------------- OCR ----------------
-
-    private void runTextRecognition(Bitmap bitmap, boolean front) {
-        TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
-        InputImage image = InputImage.fromBitmap(bitmap, 0);
-        recognizer.process(image)
-                .addOnSuccessListener(result -> {
-                    parseRecognizedText(result, front);
-                    if (front) ocrFrontDone = true; else ocrBackDone = true;
-                    updateConfirmButtonState();
+        scanner.process(imgRoi)
+                .addOnSuccessListener(bcs -> {
+                    if (bcs != null && !bcs.isEmpty() && bcs.get(0).getRawValue() != null) {
+                        parseQrCodeData(bcs.get(0).getRawValue());
+                        qrFrontDone = true;
+                        updateConfirmButtonState();
+                    } else {
+                        // fallback
+                        scanner.process(imgFull).addOnSuccessListener(bcs2 -> {
+                            if (bcs2 != null && !bcs2.isEmpty() && bcs2.get(0).getRawValue() != null) {
+                                parseQrCodeData(bcs2.get(0).getRawValue());
+                            }
+                            qrFrontDone = true;
+                            updateConfirmButtonState();
+                        }).addOnFailureListener(e -> {
+                            qrFrontDone = true;
+                            updateConfirmButtonState();
+                        });
+                    }
                 })
                 .addOnFailureListener(e -> {
-                    // đánh dấu done để không kẹt UI; nhưng confirm sẽ vẫn fail do thiếu field
-                    if (front) ocrFrontDone = true; else ocrBackDone = true;
+                    qrFrontDone = true;
                     updateConfirmButtonState();
-                    Toast.makeText(getContext(), "Nhận diện chữ thất bại", Toast.LENGTH_SHORT).show();
-                    Log.e("TakePhotoFragment", "Text recognition failed", e);
                 });
+
+        // Timeout mềm 10s để cập nhật UI nếu MLKit treo (hiếm)
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            if (!qrFrontDone) {
+                qrFrontDone = true;
+                updateConfirmButtonState();
+                Toast.makeText(this.getContext(), "Hết thời gian quét vui lòng thử lại", Toast.LENGTH_SHORT).show();
+            }
+        }, 10_000);
     }
+    private boolean parseQrCodeData(String raw) {
+        if(raw == null || raw.trim().isEmpty()) return false;
+        raw = raw.trim();
+        try {
+            JSONObject obj = new JSONObject(raw);
+            if (obj.length() > 0) {
+                if (obj.has("id"))
+                    ekyc.setNationalIdNumber(obj.optString("id", ekyc.getNationalIdNumber()));
+                if (obj.has("cccd"))
+                    ekyc.setNationalIdNumber(obj.optString("cccd", ekyc.getNationalIdNumber()));
+                if (obj.has("cmnd"))
+                    ekyc.setNationalIdNumber(obj.optString("cmnd", ekyc.getNationalIdNumber()));
 
-    private void parseRecognizedText(com.google.mlkit.vision.text.Text result, boolean front) {
-        String fullText = result.getText();
-        if (fullText == null || fullText.isEmpty()) return;
+                if (obj.has("fullName"))
+                    ekyc.setFullName(obj.optString("fullName", ekyc.getFullName()));
+                if (obj.has("name")) ekyc.setFullName(obj.optString("name", ekyc.getFullName()));
+                if (obj.has("dob"))
+                    ekyc.setDateOfBirth(normalizeDate(obj.optString("dob", ekyc.getDateOfBirth())));
+                if (obj.has("birthDate"))
+                    ekyc.setDateOfBirth(normalizeDate(obj.optString("birthDate", ekyc.getDateOfBirth())));
 
-        String[] lines = fullText.split("\n");
-        Pattern idPattern = Pattern.compile("\\b\\d{9,13}\\b");
-        Pattern datePattern = Pattern.compile("(\\d{2}[-/]\\d{2}[-/]\\d{4})");
+                if (obj.has("gender")) ekyc.setGender(obj.optString("gender", ekyc.getGender()));
+                if (obj.has("address"))
+                    ekyc.setAddress(obj.optString("address", ekyc.getAddress()));
+                if (obj.has("dateOfIssue"))
+                    ekyc.setDateOfIssue(normalizeDate(obj.optString("dateOfIssue", ekyc.getDateOfIssue())));
+                ekyc.setPlaceOfIssue("Cục cảnh sát");
+                return hasRequiredFrontFields();
+            }
+        }catch (Exception ignore){}
 
-        for (int i = 0; i < lines.length; i++) {
-            String line = lines[i].trim();
-            if (line.isEmpty()) continue;
-            String lower = line.toLowerCase();
-
-            if (front) {
-                // Số CCCD/CMND
-                Matcher idMatcher = idPattern.matcher(line.replaceAll("\\s", ""));
-                if (ekyc.getNationalIdNumber() == null && idMatcher.find()) {
-                    ekyc.setNationalIdNumber(idMatcher.group());
-                    continue;
+        if (raw.contains("|")) {
+            String[] parts = raw.split("\\|", -1);
+            if (parts.length == 7) {
+                String cccd = parts[0].trim();
+                String cmndOld = parts[1].trim();
+                String fullName = parts[2].trim();
+                String dobRaw = parts[3].trim();
+                String genderRaw = parts[4].trim();
+                String address = parts[5].trim();
+                String dateOfIssueRaw = parts[6].trim();
+                if (!cccd.isEmpty()) ekyc.setNationalIdNumber(cccd);
+                if (!fullName.isEmpty()) {
+                    ekyc.setFullName(fullName);
                 }
-                // Họ và tên
-                if ((lower.contains("họ") || lower.contains("ho")) && (lower.contains("tên") || lower.contains("ten"))) {
-                    int colon = line.indexOf(":");
-                    String name = null;
-                    if (colon != -1) {
-                        name = line.substring(colon + 1).trim();
-                        if (i + 1 < lines.length && !lines[i + 1].contains(":")) {
-                            name = (name + " " + lines[i + 1].trim()).trim();
-                        }
-                    } else {
-                        int j = i + 1;
-                        while (j < lines.length && lines[j].trim().isEmpty()) j++;
-                        if (j < lines.length) name = lines[j].trim();
-                    }
-                    if (name != null && !name.isEmpty()) {
-                        ekyc.setFullName(name);
-                    }
-                    continue;
+                if (!dobRaw.isEmpty()) {
+                    String parsedDob = parseDateFromCompact(dobRaw);
+                    ekyc.setDateOfBirth(parsedDob != null ? parsedDob : normalizeDate(dobRaw));
                 }
-                // Ngày sinh
-                if (lower.contains("ngày sinh") || lower.contains("ngay sinh")) {
-                    Matcher dateMatcher = datePattern.matcher(line);
-                    if (dateMatcher.find()) {
-                        ekyc.setDateOfBirth(normalizeDate(dateMatcher.group(1)));
-                    }
-                    continue;
+                if (!genderRaw.isEmpty()) {
+                    String g = genderRaw.trim().toLowerCase();
+                    if (g.equals("nam") || g.equals("n") || g.equals("male")) ekyc.setGender("Nam");
+                    else if (g.equals("nu") || g.equals("nữ") || g.equals("female")) ekyc.setGender("Nữ");
+                    else ekyc.setGender(capitalizeFirst(genderRaw));
                 }
-                // Giới tính
-                if (lower.contains("giới tính") || lower.contains("gioi tinh")) {
-                    int colon = line.indexOf(":");
-                    if (colon != -1) {
-                        String[] tokens = line.substring(colon + 1).trim().split("\\s+");
-                        if (tokens.length > 0) ekyc.setGender(tokens[0]);
-                    } else {
-                        if (lower.contains("nam")) ekyc.setGender("Nam");
-                        else if (lower.contains("nữ") || lower.contains("nu")) ekyc.setGender("Nữ");
-                    }
-                    continue;
+                if (!address.isEmpty()) ekyc.setAddress(address);
+                if (!dateOfIssueRaw.isEmpty()) {
+                    String parsedDoI = parseDateFromCompact(dateOfIssueRaw);
+                    ekyc.setDateOfIssue(parsedDoI != null ? parsedDoI : normalizeDate(dateOfIssueRaw));
                 }
-                // Nơi thường trú
-                if (lower.contains("nơi thường trú") || lower.contains("noi thuong tru")) {
-                    int colon = line.indexOf(":");
-                    StringBuilder addr = new StringBuilder();
-                    if (colon != -1) {
-                        addr.append(line.substring(colon + 1).trim());
-                    } else {
-                        String cleaned = line.replaceAll("(?i)nơi thường trú|noi thuong tru|place of residence", "").trim();
-                        addr.append(cleaned);
+                ekyc.setPlaceOfIssue("Cục cảnh sát");
+                return hasRequiredFrontFields();
+            }else {
+                String[] parts2 = raw.split("\\|");
+                if (parts2.length >= 3) {
+                    if (!parts2[0].trim().isEmpty()) ekyc.setNationalIdNumber(parts2[0].trim());
+                    if (!parts2[2].trim().isEmpty()) ekyc.setFullName(parts2[2].trim());
+                    // cố gắng lấy DOB từ vị trí 3 nếu tồn tại
+                    if (parts2.length > 3 && !parts2[3].trim().isEmpty()) {
+                        String pd = parseDateFromCompact(parts2[3].trim());
+                        ekyc.setDateOfBirth(pd != null ? pd : normalizeDate(parts2[3].trim()));
                     }
-                    int j = i + 1;
-                    while (j < lines.length) {
-                        String next = lines[j].trim();
-                        if (next.contains(":")) break;
-                        addr.append(" ").append(next);
-                        j++;
-                    }
-                    ekyc.setAddress(addr.toString().trim());
-                    continue;
-                }
-            } else {
-                // Ngày cấp
-                if (lower.contains("ngày, tháng, năm") || lower.contains("ngay, thang, nam") || lower.contains("ngày cấp") || lower.contains("ngay cap")) {
-                    Matcher dateMatcher = datePattern.matcher(line);
-                    if (dateMatcher.find()) {
-                        ekyc.setDateOfIssue(normalizeDate(dateMatcher.group(1)));
-                    }
-                    continue;
-                }
-                // Nơi cấp (heuristic đơn giản)
-                if (lower.contains("cục") || lower.contains("cong an") || lower.contains("công an")) {
-                    int colon = line.indexOf(":");
-                    String place;
-                    if (colon != -1) {
-                        place = line.substring(colon + 1).trim();
-                    } else {
-                        place = line.replaceAll("(?i)cục trưởng|cuc truong", "").trim();
-                    }
-                    if (!place.isEmpty()) {
-                        ekyc.setPlaceOfIssue(place);
-                    }
-                    continue;
+                    return hasRequiredFrontFields();
                 }
             }
         }
+        Pattern idPattern   = Pattern.compile("\\b\\d{9,13}\\b");
+        Pattern datePattern = Pattern.compile("(\\d{1,2}[-/]\\d{1,2}[-/]\\d{4})");
+
+        Matcher idm = idPattern.matcher(raw.replaceAll("\\s",""));
+        if (idm.find()) {
+            ekyc.setNationalIdNumber(idm.group());
+        }
+        Matcher dm = datePattern.matcher(raw);
+        if (dm.find()) {
+            String d = dm.group(1).replaceAll("[-/]", "");
+            String parsed = parseDateFromCompact(d);
+            if (parsed != null && isBlank(ekyc.getDateOfBirth())) {
+                ekyc.setDateOfBirth(parsed);
+            } else if (parsed != null && isBlank(ekyc.getDateOfIssue())) {
+                ekyc.setDateOfIssue(parsed);
+            }
+        }
+        return hasRequiredFrontFields();
     }
+    private String capitalizeFirst(String s) {
+        if (s == null || s.isEmpty()) return s;
+        s = s.trim();
+        return s.substring(0,1).toUpperCase() + s.substring(1).toLowerCase();
+    }
+
+    private String parseDateFromCompact(String s) {
+        if (s == null) return null;
+        String onlyDigits = s.replaceAll("\\D", "");
+        if (onlyDigits.length() == 8) {
+            String dd = onlyDigits.substring(0,2);
+            String mm = onlyDigits.substring(2,4);
+            String yyyy = onlyDigits.substring(4,8);
+            // kiểm tra valid basic (1..31 , 1..12)
+            try {
+                int di = Integer.parseInt(dd);
+                int mi = Integer.parseInt(mm);
+                if (mi >=1 && mi <= 12 && di >=1 && di <=31) {
+                    if (dd.length() == 1) dd = "0" + dd;
+                    if (mm.length() == 1) mm = "0" + mm;
+                    return yyyy + "-" + String.format("%02d", Integer.parseInt(mm)) + "-" + String.format("%02d", Integer.parseInt(dd));
+                }
+            } catch (Exception ignored) { }
+        }
+        return null;
+    }
+
 
     private String normalizeDate(String input) {
         try {
@@ -447,7 +511,7 @@ public class TakePhotoFragment extends Fragment {
                     updateConfirmButtonState();
                 });
     }
-    private void saveFaceBitmap(Bitmap src, Rect box){
+    private void saveFaceBitmap(Bitmap src, Rect box) {
         int left   = Math.max(0, box.left);
         int top    = Math.max(0, box.top);
         int right  = Math.min(src.getWidth(), box.right);
@@ -456,25 +520,29 @@ public class TakePhotoFragment extends Fragment {
         int h = Math.max(1, bottom - top);
 
         try {
+            // 1) Cắt khuôn mặt
             Bitmap faceBmp = Bitmap.createBitmap(src, left, top, w, h);
 
-            Context context = requireContext();
-            String fileName = "face_" + (uid != null ? uid : "anon") + "_" + System.currentTimeMillis() + ".jpg";
-            File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-            if (storageDir == null) storageDir = context.getFilesDir();
-            if (!storageDir.exists()) storageDir.mkdirs();
+            // 2) Thu nhỏ để an toàn dung lượng (giữ doc Firestore < 1MB)
+            //    224–256 là ổn; ở đây dùng 256x256.
+            Bitmap faceResized = Bitmap.createScaledBitmap(faceBmp, 256, 256, true);
 
-            File imageFile = new File(storageDir, fileName);
-            try (FileOutputStream out = new FileOutputStream(imageFile)) {
-                faceBmp.compress(Bitmap.CompressFormat.JPEG, 90, out);
-            }
+            // 3) Nén JPEG mức ~75–80 để cân bằng chất lượng/kích thước
+            java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+            faceResized.compress(Bitmap.CompressFormat.JPEG, 78, baos);
+            byte[] bytes = baos.toByteArray();
 
-            // Để repo có thể upload dễ hơn, dùng absolute path (file:// không cần),
-            // repo sẽ tự chuyển sang Uri.fromFile(...)
-            ekyc.setFaceImagePath(imageFile.getAbsolutePath());
+            // 4) Mã hóa Base64 thành Data URL
+            String b64 = android.util.Base64.encodeToString(bytes, android.util.Base64.NO_WRAP);
+            String dataUrl = "data:image/jpeg;base64," + b64;
+
+            // 5) Lưu **chuỗi** vào model (Firestore chỉ lưu string này)
+            ekyc.setFaceImagePath(dataUrl);
             faceSaved = true;
+
+            // (không còn ghi file nội bộ / không cần Uri)
         } catch (Exception e) {
-            Log.e("TakePhotoFragment", "Lưu file khuôn mặt thất bại", e);
+            Log.e("TakePhotoFragment", "Tạo data URL khuôn mặt thất bại", e);
             faceSaved = false;
         } finally {
             updateConfirmButtonState();
@@ -487,38 +555,48 @@ public class TakePhotoFragment extends Fragment {
         PackageManager pm = requireContext().getPackageManager();
         return pm.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
     }
+    private boolean hasRequiredFrontFields() {
+        return isNotBlank(ekyc.getNationalIdNumber()) && isNotBlank(ekyc.getFullName());
+    }
 
     private void updateConfirmButtonState() {
-        boolean hasFront = frontBitmap != null && ekyc.getIdFrontPath() != null;
-        boolean hasBack  = backBitmap  != null && ekyc.getIdBackPath()  != null;
-        boolean basicOcr = (ekyc.getNationalIdNumber() != null && ekyc.getFullName() != null);
-        boolean ready = hasFront && hasBack && basicOcr && ocrFrontDone && ocrBackDone && faceSaved;
+        boolean hasFront = frontBitmap != null;
+        boolean hasBack  = backBitmap  != null;
+        boolean basicOk = hasRequiredFrontFields();
+        boolean ready = hasFront && hasBack && basicOk && qrFrontDone && backDone && faceSaved;
         if (btnXacThuc != null) btnXacThuc.setEnabled(ready);
     }
 
     @Nullable
-    private String validateEkyc(Ekyc e, boolean frontDone, boolean backDone, boolean faceOk) {
+    private String validateEkyc(Ekyc e, boolean frontDone, boolean backReady, boolean faceOk) {
         StringBuilder sb = new StringBuilder();
-        if (frontBitmap == null || e.getIdFrontPath() == null) sb.append("Ảnh mặt trước, ");
-        if (backBitmap  == null || e.getIdBackPath()  == null) sb.append("Ảnh mặt sau, ");
-        if (!frontDone) sb.append("OCR mặt trước chưa xong, ");
-        if (!backDone)  sb.append("OCR mặt sau chưa xong, ");
+        if (frontBitmap == null) sb.append("Ảnh mặt trước, ");
+        if (backBitmap  == null) sb.append("Ảnh mặt sau, ");
+        if (!frontDone) sb.append("Quét QR mặt trước chưa xong, ");
+        if (!backReady) sb.append("Mặt sau chưa có ảnh, ");
         if (!faceOk || e.getFaceImagePath() == null) sb.append("Khuôn mặt chưa trích xuất, ");
 
-        // Tối thiểu yêu cầu để lưu
-        if (e.getNationalIdNumber() == null) sb.append("Số CCCD, ");
-        if (e.getFullName() == null)         sb.append("Họ tên, ");
+        // Tối thiểu: số CCCD + họ tên
+        if (isBlank(e.getNationalIdNumber())) sb.append("Số CCCD, ");
+        if (isBlank(e.getFullName()))         sb.append("Họ tên, ");
 
-//         Nếu muốn khắt khe hơn thì bật thêm các check bên dưới:
-         if (e.getDateOfBirth() == null)      sb.append("Ngày sinh, ");
-         if (e.getGender() == null)           sb.append("Giới tính, ");
-         if (e.getAddress() == null)          sb.append("Địa chỉ, ");
-         if (e.getDateOfIssue() == null)      sb.append("Ngày cấp, ");
-         if (e.getPlaceOfIssue() == null)     sb.append("Nơi cấp, ");
-
+        // Nếu cần khắt khe hơn, bật thêm:
+        if (isBlank(e.getDateOfBirth()))      sb.append("Ngày sinh, ");
+        if (isBlank(e.getGender()))           sb.append("Giới tính, ");
+        if (isBlank(e.getAddress()))          sb.append("Địa chỉ, ");
+        if (isBlank(e.getDateOfIssue()))      sb.append("Ngày cấp, ");
         if (sb.length() == 0) return null;
         String s = sb.toString().trim();
         if (s.endsWith(",")) s = s.substring(0, s.length() - 1);
         return s;
+    }
+    private String v(String s) {
+        return (s == null || s.trim().isEmpty()) ? "—" : s.trim();
+    }
+    private boolean isBlank(String s) {
+        return s == null || s.trim().isEmpty();
+    }
+    private boolean isNotBlank(String s) {
+        return !isBlank(s);
     }
 }

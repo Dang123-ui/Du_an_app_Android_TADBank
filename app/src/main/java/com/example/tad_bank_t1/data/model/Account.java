@@ -210,4 +210,5 @@ public class Account implements Serializable {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
+
 }

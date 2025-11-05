@@ -62,11 +62,9 @@ public class LoginNowFragment extends Fragment {
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_login_now, container, false);
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         tilPhone = view.findViewById(R.id.tilPhone);
         tilPassword = view.findViewById(R.id.tilPassword);
         etPhone = view.findViewById(R.id.edtPhone);
@@ -81,7 +79,6 @@ public class LoginNowFragment extends Fragment {
         etPhone.addTextChangedListener(watcher);
         etPassword.addTextChangedListener(watcher);
         checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> updateButtonState());
-
         // Báo lỗi ngay từ đầu
         validateAndShowErrors();
         updateButtonState();
@@ -92,7 +89,6 @@ public class LoginNowFragment extends Fragment {
     private void onClickNext() {
         boolean validNow = validateAndShowErrors();
         if (!validNow || !checkBox.isChecked()) return;
-
         final String phoneInput = safeText(etPhone);
         final String password = safeText(etPassword);
 
@@ -111,25 +107,15 @@ public class LoginNowFragment extends Fragment {
                         setLoading(false);
                         return;
                     }
-
-                    accountRepository.getByUserId(uid)
-                            .addOnSuccessListener(account -> {
-                                if (account == null) {
-                                    tilPassword.setError(getString(R.string.info_sign_up_err_general));
-                                    setLoading(false);
-                                    return;
-                                }
-                                if (!passwordMatches(account, password)) {
-                                    tilPassword.setError("Mật khẩu không chính xác");
-                                    setLoading(false);
-                                    return;
-                                }
-                                PhoneVerifyFragment1 phoneVerifyFragment1 = PhoneVerifyFragment1.newInstance(uid);
-                                if (getActivity() instanceof SignUpActivity) {
-                                    ((SignUpActivity) getActivity()).navigateTo(phoneVerifyFragment1, true);
-                                }
-                            })
-                            .addOnFailureListener(e -> showGeneralError());
+                    if (!passwordMatches(user, password)) {
+                        tilPassword.setError("Mật khẩu không chính xác");
+                        setLoading(false);
+                        return;
+                    }
+                    PhoneVerifyFragment1 phoneVerifyFragment1 = PhoneVerifyFragment1.newInstance(uid);
+                    if (getActivity() instanceof SignUpActivity) {
+                        ((SignUpActivity) getActivity()).navigateTo(phoneVerifyFragment1, true);
+                    }
                 })
                 .addOnFailureListener(e -> showGeneralError());
     }
@@ -188,8 +174,8 @@ public class LoginNowFragment extends Fragment {
         return et.getText() == null ? "" : et.getText().toString().trim();
     }
 
-    private boolean passwordMatches(Account acc, String input) {
-        String saved = acc.getPassword();
+    private boolean passwordMatches(User user, String input) {
+        String saved = user.getPassword();
         return saved != null && saved.equals(input);
     }
 

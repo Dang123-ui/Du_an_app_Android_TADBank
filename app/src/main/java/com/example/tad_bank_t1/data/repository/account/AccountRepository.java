@@ -15,7 +15,7 @@ public interface AccountRepository {
 
     Task<Void> delete(String id);
 
-    Task<Account> getById(String id);
+    // Task<Account> getById(String id);
 
     Task<Account> getByUserId(String userId);
 

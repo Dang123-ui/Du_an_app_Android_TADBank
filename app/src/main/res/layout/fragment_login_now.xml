@@ -8,21 +8,20 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-
     <Button
-        android:id="@+id/btnBatDauChup2"
+        android:id="@+id/btnNext"
         android:layout_width="330dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="116dp"
-        android:backgroundTint="#C32349"
-        android:text="Tiếp tục"
-        app:cornerRadius="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="64dp"
+        android:background="@drawable/btn_selector"
+        android:backgroundTint="@null"
+        android:enabled="false"
+        android:text="@string/continue_"
+        app:backgroundTint="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView19"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
     <TextView
         android:id="@+id/textView19"
@@ -32,7 +31,7 @@
         android:layout_marginTop="44dp"
         android:text="của chúng tôi"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/tilPassword" />
 
     <TextView
         android:id="@+id/tvPolicy2"
@@ -45,7 +44,7 @@
         android:textColorLink="#C32349"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/cbArgreeWithPolicy2"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/tilPassword" />
 
     <CheckBox
         android:id="@+id/cbArgreeWithPolicy2"
@@ -55,10 +54,10 @@
         android:layout_marginTop="12dp"
         android:text="Bạn đông ý với"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/tilPassword" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout2"
+        android:id="@+id/tilPhone"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="330dp"
         android:layout_height="wrap_content"
@@ -75,9 +74,9 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView26">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etUsername"
+            android:id="@+id/edtPhone"
             android:layout_width="330dp"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
             android:drawableEnd="@drawable/ic_phone_cus"
             android:hint="Số điện thoại đã đăng ký"
             android:inputType="phone"
@@ -86,10 +85,10 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
+        android:id="@+id/tilPassword"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="327dp"
-        android:layout_height="54dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         app:boxBackgroundMode="outline"
         app:boxCornerRadiusBottomEnd="24dp"
@@ -102,12 +101,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.535"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
+        app:layout_constraintTop_toBottomOf="@+id/tilPhone">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etPassword"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
             android:hint="@string/password"
             android:inputType="textPassword"
             android:paddingStart="16dp"
@@ -131,14 +130,28 @@
         android:id="@+id/tvName2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:gravity="center"
-        android:text="Vui lòng nhập số điện thoại và mật khẩu được cung cấp"
+        android:text="Vui lòng đăng nhập ngay,"
         android:textColor="#C32349"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.179"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loading"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnNext"
+        app:layout_constraintEnd_toEndOf="@+id/btnNext"
+        app:layout_constraintHorizontal_bias="0.712"
+        app:layout_constraintStart_toStartOf="@+id/btnNext"
+        app:layout_constraintTop_toTopOf="@+id/btnNext"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/loading"
+        android:visibility="invisible"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

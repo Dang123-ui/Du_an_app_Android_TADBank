@@ -7,11 +7,14 @@
     tools:context=".ui.fragment.CreatePinCodeFragment">
 
     <Button
-        android:id="@+id/btn_Next_to_SDT2"
+        android:id="@+id/btn_Next"
         android:layout_width="330dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="#C32349"
-        android:text="Tiếp tục"
+        android:background="@drawable/btn_selector"
+        android:backgroundTint="@null"
+        android:enabled="true"
+        android:text="Hoàn thành"
+        app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,27 +33,37 @@
 
         <EditText
             android:id="@+id/et1"
-            style="@style/OtpEditTextStyle" />
+            style="@style/OtpEditTextStyle"
+            android:inputType="number"
+            />
 
         <EditText
             android:id="@+id/et2"
-            style="@style/OtpEditTextStyle" />
+            style="@style/OtpEditTextStyle"
+            android:inputType="number"/>
 
         <EditText
             android:id="@+id/et3"
-            style="@style/OtpEditTextStyle" />
+            style="@style/OtpEditTextStyle"
+            android:inputType="number"
+            />
 
         <EditText
             android:id="@+id/et4"
-            style="@style/OtpEditTextStyle" />
+            style="@style/OtpEditTextStyle"
+            android:inputType="number"
+            />
 
         <EditText
             android:id="@+id/et5"
-            style="@style/OtpEditTextStyle" />
+            style="@style/OtpEditTextStyle"
+            android:inputType="number"
+            />
 
         <EditText
             android:id="@+id/et6"
-            style="@style/OtpEditTextStyle" />
+            style="@style/OtpEditTextStyle"
+            android:inputType="number"/>
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
@@ -148,5 +161,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView20"
         app:srcCompat="@drawable/logo" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loading"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_Next"
+        app:layout_constraintEnd_toEndOf="@+id/btn_Next"
+        app:layout_constraintHorizontal_bias="0.726"
+        app:layout_constraintStart_toStartOf="@+id/btn_Next"
+        app:layout_constraintTop_toTopOf="@+id/btn_Next"
+        app:layout_constraintVertical_bias="0.0"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/loading" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

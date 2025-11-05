@@ -13,22 +13,24 @@
         android:id="@+id/btnLoginNow"
         android:layout_width="330dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/btn_selector"
         android:backgroundTint="@null"
         android:enabled="true"
         android:text="Đăng nhập ngay"
         app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/imageView25"
         android:layout_width="308dp"
         android:layout_height="186dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:scaleType="centerInside"
         android:src="@drawable/bg_main_card"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,13 +54,16 @@
         app:layout_constraintStart_toStartOf="@+id/imageView25">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etUsername"
+            android:id="@+id/edtNumberAccount"
             android:layout_width="259dp"
             android:layout_height="56dp"
             android:inputType="number"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:text="1041163405"
+            android:focusable="false"
+            android:clickable="false"
+            android:cursorVisible="false"
             android:textColor="@color/white" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -66,16 +71,16 @@
         android:id="@+id/textView17"
         android:layout_width="330dp"
         android:layout_height="57dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:gravity="center"
-        android:text="Chúc mừng bạn! Hãy sử dụng mật khẩu chúng tôi cung cấp qua SDT để Đăng nhập ngay vào tài khoản."
+        android:text="Chúc mừng bạn! Đăng nhập ngay vào tài khoản ngay nhé."
         android:textColor="#C32349"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView24" />
+        app:layout_constraintTop_toBottomOf="@+id/congratulate" />
 
     <ImageView
         android:id="@+id/imageView23"
@@ -88,16 +93,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
 
-    <ImageView
-        android:id="@+id/imageView24"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="36dp"
-        android:src="@drawable/ic_signup_accept"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/congratulate"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView23" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView23"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/successanimation" />
 
     <TableLayout
         android:id="@+id/tableLayout"
@@ -122,6 +128,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tvUserName"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@drawable/table_background_right"
@@ -159,6 +166,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tvNgayKichHoat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/table_background_right"

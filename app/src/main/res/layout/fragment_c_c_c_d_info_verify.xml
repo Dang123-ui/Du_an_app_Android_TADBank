@@ -10,13 +10,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <ImageView
             android:id="@+id/imageView12"
             android:layout_width="86dp"
             android:layout_height="86dp"
-            android:layout_marginStart="160dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginBottom="44dp"
             android:transitionName="app_logo"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/logo" />
@@ -27,17 +30,20 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
             android:layout_marginTop="44dp"
+            android:layout_marginEnd="41dp"
             android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView12">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Họ và tên"
-                android:textSize="16sp"
-                android:textStyle="bold"
                 android:textColor="#C32349"
-                />
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="330dp"
@@ -52,26 +58,26 @@
                 tools:layout_editor_absoluteY="300dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etUsername"
+                    android:id="@+id/edtNumberAccount"
                     android:layout_width="330dp"
                     android:layout_height="60dp"
-                    android:drawableEnd="@drawable/ic_user_cus"
-                    android:text="NGUYỄN HẢI ĐĂNG"
-                    android:inputType="none"
-                    android:focusable="false"
                     android:cursorVisible="false"
+                    android:drawableEnd="@drawable/ic_user_cus"
+                    android:focusable="false"
+                    android:inputType="none"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
-                    />
+                    android:text="NGUYỄN HẢI ĐĂNG" />
             </com.google.android.material.textfield.TextInputLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Giới tính"
-                android:textSize="16sp"
-                android:textStyle="bold"
                 android:textColor="#C32349"
-                />
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="330dp"
@@ -89,22 +95,23 @@
                     android:id="@+id/etSex"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:drawableEnd="@drawable/ic_sexual_cus"
-                    android:text="NAM"
-                    android:inputType="none"
-                    android:focusable="false"
                     android:cursorVisible="false"
+                    android:drawableEnd="@drawable/ic_sexual_cus"
+                    android:focusable="false"
+                    android:inputType="none"
                     android:paddingStart="16dp"
-                    android:paddingEnd="16dp" />
+                    android:paddingEnd="16dp"
+                    android:text="NAM" />
             </com.google.android.material.textfield.TextInputLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Số CCCD"
-                android:textSize="16sp"
-                android:textStyle="bold"
                 android:textColor="#C32349"
-                />
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
@@ -122,23 +129,23 @@
                     android:id="@+id/etSoCCCD"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:drawableEnd="@drawable/ic_idard_cus"
-                    android:text="079205040407"
-                    android:inputType="none"
-                    android:focusable="false"
                     android:cursorVisible="false"
+                    android:drawableEnd="@drawable/ic_idard_cus"
+                    android:focusable="false"
+                    android:inputType="none"
                     android:paddingStart="16dp"
-                    android:paddingEnd="16dp" />
+                    android:paddingEnd="16dp"
+                    android:text="079205040407" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ngày sinh"
-                android:textSize="16sp"
-                android:textStyle="bold"
                 android:textColor="#C32349"
-                />
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
@@ -156,23 +163,23 @@
                     android:id="@+id/etBirthday"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:drawableEnd="@drawable/ic_calendar_cus"
-                    android:text="08/09/2005"
-                    android:inputType="none"
-                    android:focusable="false"
                     android:cursorVisible="false"
+                    android:drawableEnd="@drawable/ic_calendar_cus"
+                    android:focusable="false"
+                    android:inputType="none"
                     android:paddingStart="16dp"
-                    android:paddingEnd="16dp" />
+                    android:paddingEnd="16dp"
+                    android:text="08/09/2005" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ngày cấp"
-                android:textSize="16sp"
-                android:textStyle="bold"
                 android:textColor="#C32349"
-                />
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
@@ -190,22 +197,23 @@
                     android:id="@+id/etNgayCap"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:drawableEnd="@drawable/ic_calendar_cus"
-                    android:text="02/05/2025"
-                    android:inputType="none"
-                    android:focusable="false"
                     android:cursorVisible="false"
+                    android:drawableEnd="@drawable/ic_calendar_cus"
+                    android:focusable="false"
+                    android:inputType="none"
                     android:paddingStart="16dp"
-                    android:paddingEnd="16dp" />
+                    android:paddingEnd="16dp"
+                    android:text="02/05/2025" />
             </com.google.android.material.textfield.TextInputLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nơi cấp"
-                android:textSize="16sp"
-                android:textStyle="bold"
                 android:textColor="#C32349"
-                />
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
@@ -223,25 +231,26 @@
                     android:id="@+id/etNoiCap"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:drawableEnd="@drawable/ic_map_cus"
-                    android:singleLine="true"
-                    android:ellipsize="end"
-                    android:scrollHorizontally="true"
-                    android:text="QUẢN LÝ HÀNH CHÍNH VỀ TRẬT TỰ XÃ HỘI"
-                    android:inputType="none"
-                    android:focusable="false"
                     android:cursorVisible="false"
+                    android:drawableEnd="@drawable/ic_map_cus"
+                    android:ellipsize="end"
+                    android:focusable="false"
+                    android:inputType="none"
                     android:paddingStart="16dp"
-                    android:paddingEnd="16dp" />
+                    android:paddingEnd="16dp"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:text="QUẢN LÝ HÀNH CHÍNH VỀ TRẬT TỰ XÃ HỘI" />
             </com.google.android.material.textfield.TextInputLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Địa chỉ thường trú"
-                android:textSize="16sp"
-                android:textStyle="bold"
                 android:textColor="#C32349"
-                />
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
@@ -259,16 +268,16 @@
                     android:id="@+id/etAddress"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:drawableEnd="@drawable/ic_map_cus"
-                    android:singleLine="true"
-                    android:ellipsize="end"
-                    android:scrollHorizontally="true"
-                    android:text="AN THỊ, XÃ MỸ TỊNH AN, CHỢ GẠO, TIỀN GIANG"
-                    android:inputType="none"
-                    android:focusable="false"
                     android:cursorVisible="false"
+                    android:drawableEnd="@drawable/ic_map_cus"
+                    android:ellipsize="end"
+                    android:focusable="false"
+                    android:inputType="none"
                     android:paddingStart="16dp"
-                    android:paddingEnd="16dp" />
+                    android:paddingEnd="16dp"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:text="AN THỊ, XÃ MỸ TỊNH AN, CHỢ GẠO, TIỀN GIANG" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
@@ -285,21 +294,27 @@
             app:cornerRadius="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/btn_ChupLai"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintVertical_bias="1.0" />
 
         <Button
             android:id="@+id/btn_ChupLai"
             android:layout_width="133dp"
             android:layout_height="44dp"
-            android:layout_marginStart="60dp"
+            android:layout_marginStart="68dp"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="2dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/btn_stransparent_ripple_black"
             android:text="Chụp lại"
             android:textColor="#050505"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnXacNhanCCCD"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintVertical_bias="0.8"
             app:strokeColor="#050505" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -51,6 +51,10 @@ public abstract class AbstractFirestoreAdapter<T> implements FirestoreAdapter<T>
         });
     }
 
+    public Task<Void> addWithId(String id, T entity) {
+        return col().document(id).set(entity);
+    }
+
     @Override
     public Task<Void> delete(String id) {
         return doc(id).delete();
@@ -65,4 +69,5 @@ public abstract class AbstractFirestoreAdapter<T> implements FirestoreAdapter<T>
     public Query query() {
         return col();
     }
+
 }

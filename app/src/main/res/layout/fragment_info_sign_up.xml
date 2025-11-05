@@ -15,7 +15,11 @@
         android:layout_height="150dp"
         android:layout_marginStart="120dp"
         android:layout_marginTop="100dp"
+        android:layout_marginEnd="141dp"
+        android:layout_marginBottom="36dp"
         android:transitionName="app_logo"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
@@ -26,10 +30,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="81dp"
         android:text="@string/sinfo_sign_up_title"
         android:textColor="#C32349"
         android:textSize="24sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,7 +66,7 @@
             tools:layout_editor_absoluteY="300dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etUsername"
+                android:id="@+id/edtNumberAccount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_user_cus"
@@ -156,10 +162,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="3dp"
         android:layout_marginTop="24dp"
+        android:layout_marginBottom="6dp"
         android:text="Đăng nhập"
         android:textColor="#C32349"
         android:textColorLink="#C32349"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textView8"
@@ -184,7 +192,7 @@
         app:layout_constraintTop_toBottomOf="@id/cbArgreeWithPolicy">
 
         <Button
-            android:id="@+id/btnNextToPhoneVerify"
+            android:id="@+id/btnNext"
             android:layout_width="330dp"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_selector"
@@ -201,11 +209,11 @@
             android:id="@+id/loading"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            app:layout_constraintBottom_toBottomOf="@+id/btnNextToPhoneVerify"
-            app:layout_constraintEnd_toEndOf="@+id/btnNextToPhoneVerify"
+            app:layout_constraintBottom_toBottomOf="@+id/btnNext"
+            app:layout_constraintEnd_toEndOf="@+id/btnNext"
             app:layout_constraintHorizontal_bias="0.712"
-            app:layout_constraintStart_toStartOf="@+id/btnNextToPhoneVerify"
-            app:layout_constraintTop_toTopOf="@+id/btnNextToPhoneVerify"
+            app:layout_constraintStart_toStartOf="@+id/btnNext"
+            app:layout_constraintTop_toTopOf="@+id/btnNext"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/loading"
@@ -219,7 +227,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="120dp"
         android:layout_marginTop="24dp"
+        android:layout_marginBottom="6dp"
         android:text="Bạn đã có tài khoản"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frameLayout2" />
 

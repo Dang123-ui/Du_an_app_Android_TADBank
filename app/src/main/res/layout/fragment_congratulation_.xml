@@ -8,17 +8,15 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-
     <Button
         android:id="@+id/btnBatDauChup3"
         android:layout_width="330dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="168dp"
         android:backgroundTint="#C32349"
         android:text="Trang chủ"
         app:cornerRadius="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView24" />
 
@@ -26,46 +24,39 @@
         android:id="@+id/textView24"
         android:layout_width="261dp"
         android:layout_height="65dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="40dp"
         android:gravity="center"
         android:text="Chúc mừng bạn đã đăng ký sử dụng ứng dụng của TADBank trên ứng dụng này thành công."
         android:textColor="#C32349"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/playerView" />
+        app:layout_constraintTop_toBottomOf="@+id/loading" />
+
 
     <ImageView
         android:id="@+id/imageView28"
-        android:layout_width="86dp"
-        android:layout_height="86dp"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="4dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="44dp"
         android:transitionName="app_logo"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
 
-    <androidx.media3.ui.PlayerView
-        android:id="@+id/playerView"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        app:use_controller="false"
-        android:visibility="invisible"
-        android:layout_marginTop="40dp"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loading"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="32dp"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView28">
-    </androidx.media3.ui.PlayerView>
-    <ImageView
-        android:id="@+id/imageView31"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/ic_signup_accept"
-        app:layout_constraintBottom_toBottomOf="@+id/playerView"
-        app:layout_constraintEnd_toEndOf="@+id/playerView"
-        app:layout_constraintStart_toStartOf="@+id/playerView" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView28"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/mobileappshowcase" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,29 +2,44 @@ package com.example.tad_bank_t1.data.model;
 
 import com.example.tad_bank_t1.data.model.enums.AccountStatus;
 import com.example.tad_bank_t1.data.model.enums.AccountType;
+import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.Exclude;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-public class Account {
-    private String accountId;     // PK
-    private String userId;        // FK -> Users.userId
-    private String branchId;      // FK -> Branches.brandId
-    private AccountType type;          // CHECKING | SAVING | MORTGAGE
+public class Account implements Serializable {
+    @DocumentId
+    private String accountId; // PK
+    private String userId; // FK -> Users.userId
+
+    // public String password;
+    public String pinCode;
+
+    private String branchId; // FK -> Branches.brandId
+    private AccountType type; // CHECKING | SAVING | MORTGAGE
     private String accountName;
     private String accountNumber; // unique
     private boolean isDefault;
-    private String currency;      // default VND
-    private Double balance;       // decimal(10,3)
-    private AccountStatus status;       // OPEN | FROZEN | CLOSE
+    private String currency; // default VND
+    private Long balance; // decimal(10,3)
+    private AccountStatus status; // OPEN | FROZEN | CLOSE
     private Date createdAt;
+    private Date closedAt;
     private Date updatedAt;
 
     public Account() {
     }
 
-    public Account(String accountId, String userId, String branchId, AccountType type, String accountName, String accountNumber, boolean isDefault, String currency, Double balance, AccountStatus status, Date createdAt, Date updatedAt) {
+    public Account(String accountId, String userId, String pinCode, String branchId, AccountType type,
+            String accountName, String accountNumber, boolean isDefault, String currency, Long balance,
+            AccountStatus status, Date createdAt, Date closedAt, Date updatedAt) {
         this.accountId = accountId;
         this.userId = userId;
+        this.pinCode = pinCode;
         this.branchId = branchId;
         this.type = type;
         this.accountName = accountName;
@@ -34,9 +49,56 @@ public class Account {
         this.balance = balance;
         this.status = status;
         this.createdAt = createdAt;
+        this.closedAt = closedAt;
         this.updatedAt = updatedAt;
     }
 
+    public Account(String id,
+            String userId,
+            String pinCode,
+            String accountName,
+            String accountNumber,
+            String branchId,
+            AccountType type,
+            String currency,
+            Long balance,
+            AccountStatus status,
+            Date createdAt,
+            Date closedAt,
+            Date updatedAt) {
+        this.accountId = id;
+        this.userId = userId;
+        this.pinCode = pinCode;
+        this.accountName = accountName;
+        this.accountNumber = accountNumber;
+        this.branchId = branchId;
+        this.type = type;
+        this.currency = currency;
+        this.balance = balance;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.closedAt = closedAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("pinCode", pinCode);
+        map.put("accountName", accountName);
+        map.put("accountNumber", accountNumber);
+        map.put("branchId", branchId);
+        map.put("type", type);
+        map.put("currency", currency);
+        map.put("balance", balance);
+        map.put("status", status);
+        map.put("createdAt", createdAt);
+        map.put("closedAt", closedAt);
+        map.put("updatedAt", updatedAt);
+        return map;
+    }
+
+    @Exclude
     public String getAccountId() {
         return accountId;
     }
@@ -51,6 +113,14 @@ public class Account {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getPinCode() {
+        return pinCode;
+    }
+
+    public void setPinCode(String pinCode) {
+        this.pinCode = pinCode;
     }
 
     public String getBranchId() {
@@ -101,11 +171,11 @@ public class Account {
         this.currency = currency;
     }
 
-    public Double getBalance() {
+    public Long getBalance() {
         return balance;
     }
 
-    public void setBalance(Double balance) {
+    public void setBalance(Long balance) {
         this.balance = balance;
     }
 
@@ -125,11 +195,19 @@ public class Account {
         this.createdAt = createdAt;
     }
 
+    public Date getClosedAt() {
+        return closedAt;
+    }
+
+    public void setClosedAt(Date closedAt) {
+        this.closedAt = closedAt;
+    }
+
     public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updateAt) {
-        this.updatedAt = updateAt;
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

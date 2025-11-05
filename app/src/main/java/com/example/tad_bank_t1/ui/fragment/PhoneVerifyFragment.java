@@ -126,7 +126,6 @@ public class PhoneVerifyFragment extends Fragment {
 
         tvSDTVerify.setText(maskPhone(phone));
         setupOtpInputs();
-
         // UI init
         disableInputs(true);
         btnNextToCCCDVerify.setEnabled(false);

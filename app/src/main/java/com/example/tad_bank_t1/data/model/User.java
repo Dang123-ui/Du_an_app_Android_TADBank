@@ -2,25 +2,27 @@ package com.example.tad_bank_t1.data.model;
 
 import com.example.tad_bank_t1.data.model.enums.Role;
 import com.example.tad_bank_t1.data.model.enums.UserStatus;
-
-import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.Exclude;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class User {
+    @DocumentId
     public String userId;
     public String username;
     public String email;
     public String phone;
+    public String password;
     public Role role;
     public UserStatus status;
-    public Timestamp createdAt;
+    public Date createdAt;
     private String idNumber;
     private String fullName;
     private String address;
-    private Timestamp dateOfBirth;
+    private Date dateOfBirth;
     private String avatar;
 
     public User() {
@@ -30,16 +32,17 @@ public class User {
         this.userId = uid;
         this.status = UserStatus.ACTIVE;
         this.role = Role.CUSTOMER;
-        this.createdAt = Timestamp.now();
+        this.createdAt = new Date();
     }
 
-    public User(String id, String username, String email, String phone, Role role, UserStatus status,
-                Timestamp createdAt, String idNumber, String fullName, String address,
-                Timestamp dateOfBirth, String avatar) {
+    public User(String id, String username, String email, String phone, String password, Role role, UserStatus status,
+            Date createdAt, String idNumber, String fullName, String address,
+            Date dateOfBirth, String avatar) {
         this.userId = id;
         this.username = username;
         this.email = email;
         this.phone = phone;
+        this.password = password;
         this.role = role;
         this.status = status;
         this.createdAt = createdAt;
@@ -50,6 +53,24 @@ public class User {
         this.avatar = avatar;
     }
 
+    public Map<String, Object> toMap() {
+        Map<String, Object> m = new HashMap<>();
+        m.put("username", username);
+        m.put("email", email);
+        m.put("phone", phone);
+        m.put("password", password);
+        m.put("role", role);
+        m.put("status", status);
+        m.put("createdAt", createdAt);
+        m.put("idNumber", idNumber);
+        m.put("fullName", fullName);
+        m.put("address", address);
+        m.put("dateOfBirth", dateOfBirth);
+        m.put("avatar", avatar);
+        return m;
+    }
+
+    @Exclude
     public String getUserId() {
         return userId;
     }
@@ -82,6 +103,14 @@ public class User {
         this.phone = phone;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public Role getRole() {
         return role;
     }
@@ -98,11 +127,11 @@ public class User {
         this.status = status;
     }
 
-    public Timestamp getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -130,11 +159,11 @@ public class User {
         this.address = address;
     }
 
-    public Timestamp getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Timestamp dateOfBirth) {
+    public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -146,19 +175,4 @@ public class User {
         this.avatar = avatar;
     }
 
-    public Map<String, Object> toMap() {
-        Map<String, Object> m = new HashMap<>();
-        m.put("username", username);
-        m.put("email", email);
-        m.put("phone", phone);
-        m.put("role", role);
-        m.put("status", status);
-        m.put("createdAt", createdAt);
-        m.put("idNumber", idNumber);
-        m.put("fullName", fullName);
-        m.put("address", address);
-        m.put("dateOfBirth", dateOfBirth);
-        m.put("avatar", avatar);
-        return m;
-    }
 }

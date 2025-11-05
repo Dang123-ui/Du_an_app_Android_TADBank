@@ -13,16 +13,31 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [mapsApiKey: MAPS_API_KEY]
     }
+    
+    packaging {
+        resources {
+            excludes += "META-INF/NOTICE.md"
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/LICENSE-notice.md"
+            excludes += "META-INF/DEPENDENCIES"
+            excludes += "META-INF/NOTICE"
+            excludes += "META-INF/NOTICE.txt"
+            excludes += "META-INF/LICENSE.txt"
+            excludes += "META-INF/ASL2.0"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
     signingConfigs {
         create("release") {
-            // đường dẫn keystore bạn đã tạo ở B2
             storeFile = file("D:/keys/tadbank-release.jks")
-
-            // KHÔNG hardcode mật khẩu: đọc từ gradle.properties hoặc ENV
             storePassword =
                 (project.findProperty("TADBANK_STORE_PWD") as String?)
                     ?: System.getenv("TADBANK_STORE_PWD")
@@ -47,24 +62,22 @@ android {
             signingConfig = signingConfigs.getByName("release")
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
+    
     buildFeatures {
         viewBinding = true
+        mlModelBinding = true
     }
 }
 
 dependencies {
-    //  Firebase SDKs
-    implementation(platform("com.google.firebase:firebase-bom:34.3.0"))
+    //  Firebase SDKs 
+    implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore") 
     implementation("com.google.firebase:firebase-storage")
 
-    // skimmer sketon loader
+    // skimmer skeleton loader
     implementation("com.facebook.shimmer:shimmer:0.5.0")
 
     // circle image view
@@ -83,22 +96,38 @@ dependencies {
     implementation ("androidx.media3:media3-ui:1.8.0")
 
     // Lottie for animations
-    implementation ("com.airbnb.android:lottie:6.0.0")
+    // implementation ("com.airbnb.android:lottie:6.0.0")
+    implementation ("com.airbnb.android:lottie:6.6.10")
 
     // ML Kit for text recognition and face detection
-    implementation("com.google.mlkit:text-recognition:16.0.0")
-    implementation("com.google.mlkit:face-detection:16.1.6")
+    implementation("com.google.mlkit:text-recognition:16.0.1")
+    implementation("com.google.mlkit:face-detection:16.1.7")
+    implementation("com.google.mlkit:barcode-scanning:17.3.0") 
 
     // Common dependencies
+    // TensorFlow Lite for on-device machine learning
+    implementation("org.tensorflow:tensorflow-lite:2.17.0")
+    implementation("org.tensorflow:tensorflow-lite-support:0.5.0")
+    implementation("org.tensorflow:tensorflow-lite-gpu:2.17.0")
+
+    // JavaMail API for email functionality
+    implementation("com.sun.mail:android-mail:1.6.8")
+    implementation("com.sun.mail:android-activation:1.6.8")
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
+    implementation(libs.fragment)
     implementation(libs.constraintlayout)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation(libs.androidx.navigation.fragment)
     implementation(libs.androidx.navigation.ui)
+    implementation (libs.media3.exoplayer)
+    implementation (libs.media3.ui)
     implementation(libs.firebase.database)
+    implementation(libs.tensorflow.lite.metadata)
+    implementation(libs.cardview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

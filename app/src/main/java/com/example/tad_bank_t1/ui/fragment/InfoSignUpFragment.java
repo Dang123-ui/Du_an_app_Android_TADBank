@@ -1,18 +1,14 @@
 package com.example.tad_bank_t1.ui.fragment;
 
 import android.annotation.SuppressLint;
-import android.media.browse.MediaBrowser;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.media3.common.MediaItem;
-import androidx.media3.common.Player;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.ui.PlayerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,23 +18,13 @@ import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.tad_bank_t1.R;
-import com.example.tad_bank_t1.data.model.User;
-import com.example.tad_bank_t1.data.model.enums.Role;
-import com.example.tad_bank_t1.data.model.enums.UserStatus;
 import com.example.tad_bank_t1.data.repository.users.FirebaseUserRepository;
 import com.example.tad_bank_t1.data.repository.users.UserRepository;
 import com.example.tad_bank_t1.ui.activity.SignUpActivity;
-import com.google.android.material.internal.TextWatcherAdapter;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class InfoSignUpFragment extends Fragment {
     private TextInputLayout tlUsername, tlEmail, tlPhone;
@@ -62,14 +48,14 @@ public class InfoSignUpFragment extends Fragment {
         tlEmail = view.findViewById(R.id.tlEmail);
         animationView = view.findViewById(R.id.loading);
         tlPhone = view.findViewById(R.id.tlPhone);
-        etUsername = view.findViewById(R.id.etUsername);
+        etUsername = view.findViewById(R.id.edtNumberAccount);
         etEmail = view.findViewById(R.id.etEmail);
         etPhone = view.findViewById(R.id.etPhone);
         cbAgreeWithPolicy = view.findViewById(R.id.cbArgreeWithPolicy);
         tvPolicy = view.findViewById(R.id.tvPolicy);
         auth = FirebaseAuth.getInstance();
         database = FirebaseFirestore.getInstance();
-        btnNextToPhoneVerify = view.findViewById(R.id.btnNextToPhoneVerify);
+        btnNextToPhoneVerify = view.findViewById(R.id.btnNext);
         TextWatcher watcher = new SimpleWatcher(this::updateButtonState);
         etUsername.addTextChangedListener(watcher);
         etEmail.addTextChangedListener(watcher);

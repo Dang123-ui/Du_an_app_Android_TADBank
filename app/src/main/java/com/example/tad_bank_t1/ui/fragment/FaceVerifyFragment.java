@@ -1,49 +1,42 @@
 package com.example.tad_bank_t1.ui.fragment;
 
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.tad_bank_t1.R;
+import com.example.tad_bank_t1.data.model.Ekyc;
+import com.example.tad_bank_t1.ui.activity.SignUpActivity;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FaceVerifyFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class FaceVerifyFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private static final String ARG_EKYC = "key_ekyc";
+    private static final String ARG_UID = "key_uid";
+    private static final String ARG_PHONE = "key_phone";
+    private static final String ARG_USERNAME = "key_username";
+    private static final String ARG_EMAIL = "key_email";
+    private Ekyc ekyc;
+    private String uid, phone, username, email;
+    private Button btnBatDauChup;
     public FaceVerifyFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FaceVerifyFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FaceVerifyFragment newInstance(String param1, String param2) {
+    public static FaceVerifyFragment newInstance(Ekyc ekyc, String uid, String phone, String username, String email) {
         FaceVerifyFragment fragment = new FaceVerifyFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable(ARG_EKYC, ekyc);
+        args.putString(ARG_UID, uid);
+        args.putString(ARG_PHONE, phone);
+        args.putString(ARG_USERNAME, username);
+        args.putString(ARG_EMAIL, email);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,8 +45,19 @@ public class FaceVerifyFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                // Cách mới an toàn cho Android 13+
+                ekyc = getArguments().getSerializable(ARG_EKYC, Ekyc.class);
+            } else {
+                // Cách cũ
+                ekyc = (Ekyc) getArguments().getSerializable(ARG_EKYC);
+            }
+
+            // Lấy các chuỗi
+            uid = getArguments().getString(ARG_UID);
+            phone = getArguments().getString(ARG_PHONE);
+            username = getArguments().getString(ARG_USERNAME);
+            email = getArguments().getString(ARG_EMAIL);
         }
     }
 
@@ -62,5 +66,17 @@ public class FaceVerifyFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_face_verify, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        btnBatDauChup = view.findViewById(R.id.btnBatDauChup);
+        btnBatDauChup.setOnClickListener(v -> {
+            FaceVerify1Fragment faceVerify1Fragment = FaceVerify1Fragment.newInstance(ekyc, uid, phone, username, email);
+            if(getActivity() instanceof SignUpActivity) {
+                ((SignUpActivity) getActivity()).navigateTo(faceVerify1Fragment, true);
+            }
+        });
     }
 }

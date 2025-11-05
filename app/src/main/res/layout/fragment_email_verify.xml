@@ -19,11 +19,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnNextToPhoneVerify"
+        app:layout_constraintTop_toBottomOf="@+id/btnNext"
         app:strokeColor="#050505" />
 
     <Button
-        android:id="@+id/btnNextToPhoneVerify"
+        android:id="@+id/btnNext"
         android:layout_width="330dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -61,27 +61,39 @@
 
         <EditText
             android:id="@+id/et1"
-            style="@style/OtpEditTextStyle" />
+            style="@style/OtpEditTextStyle"
+            android:inputType="number"
+            />
 
         <EditText
             android:id="@+id/et2"
-            style="@style/OtpEditTextStyle" />
+            style="@style/OtpEditTextStyle"
+            android:inputType="number"
+            />
 
         <EditText
             android:id="@+id/et3"
-            style="@style/OtpEditTextStyle" />
+            style="@style/OtpEditTextStyle"
+            android:inputType="number"
+            />
 
         <EditText
             android:id="@+id/et4"
-            style="@style/OtpEditTextStyle" />
+            style="@style/OtpEditTextStyle"
+            android:inputType="number"
+            />
 
         <EditText
             android:id="@+id/et5"
-            style="@style/OtpEditTextStyle" />
+            style="@style/OtpEditTextStyle"
+            android:inputType="number"
+            />
 
         <EditText
             android:id="@+id/et6"
-            style="@style/OtpEditTextStyle" />
+            style="@style/OtpEditTextStyle"
+            android:inputType="number"
+            />
     </LinearLayout>
 
     <androidx.cardview.widget.CardView

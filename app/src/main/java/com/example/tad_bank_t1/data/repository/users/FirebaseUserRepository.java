@@ -1,6 +1,7 @@
 package com.example.tad_bank_t1.data.repository.users;
 
 import com.example.tad_bank_t1.data.adapterPattern.users.UserAdapter;
+import com.example.tad_bank_t1.data.model.Ekyc;
 import com.example.tad_bank_t1.data.model.User;
 import com.example.tad_bank_t1.data.model.enums.UserStatus;
 import com.google.android.gms.tasks.Task;
@@ -13,8 +14,17 @@ public class FirebaseUserRepository implements UserRepository {
     private final UserAdapter adapter = new UserAdapter();
 
     @Override
-    public Task<Void> upsert(User u) {
-        return adapter.merge(u.getUserId(), u);
+    public Task<String> create(User user) {
+        if (user.getUserId() != null) {
+            return adapter.addWithId(user).continueWith(task -> user.getUserId());
+        } else {
+            return adapter.addAutoId(user);
+        }
+    }
+
+    @Override
+    public Task<Void> update(String id, User user) {
+        return adapter.set(id, user);
     }
 
     @Override
@@ -58,8 +68,7 @@ public class FirebaseUserRepository implements UserRepository {
     public Task<QuerySnapshot> searchByKeyword(String keyword, int limit) {
         return adapter.where(
                 adapter.query().orderBy("fullName")
-                        .startAt(keyword).endAt(keyword + "\uf8ff").limit(limit)
-        );
+                        .startAt(keyword).endAt(keyword + "\uf8ff").limit(limit));
     }
 
 }

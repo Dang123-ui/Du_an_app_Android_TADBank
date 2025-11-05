@@ -13,24 +13,24 @@
         android:id="@+id/imageView3"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginStart="128dp"
         android:layout_marginTop="116dp"
+        android:transitionName="app_logo"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_backgroud"
-        android:transitionName="app_logo"/>
+        app:srcCompat="@drawable/ic_backgroud" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="300dp"
         android:layout_height="43dp"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="56dp"
         android:text="@string/title"
         android:textAlignment="center"
         android:textColor="#F6F5F5"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
     <androidx.appcompat.widget.AppCompatButton

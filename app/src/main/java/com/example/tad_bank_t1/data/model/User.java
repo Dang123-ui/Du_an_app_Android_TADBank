@@ -15,6 +15,7 @@ public class User {
     public String username;
     public String email;
     public String phone;
+    public String password;
     public Role role;
     public UserStatus status;
     public Date createdAt;
@@ -128,18 +129,30 @@ public class User {
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
-    public User(String id, String username, String email, String phone, Role role, UserStatus status,
+    public User(String id, String username, String email, String phone,String password,
+                Role role, UserStatus status,
                 Date createdAt, String idNumber, String fullName, String address,
                 Date dateOfBirth, String avatar) {
         this.userId = id; this.username = username; this.email = email; this.phone = phone;
+        this.password = password;
         this.role = role; this.status = status; this.createdAt = createdAt; this.idNumber = idNumber;
         this.fullName = fullName; this.address = address; this.dateOfBirth = dateOfBirth; this.avatar = avatar;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public Map<String,Object> toMap() {
         Map<String,Object> m = new HashMap<>();
         m.put("username", username);
         m.put("email", email);
         m.put("phone", phone);
+        m.put("password", password);
         m.put("role", role);
         m.put("status", status);
         m.put("createdAt", createdAt);

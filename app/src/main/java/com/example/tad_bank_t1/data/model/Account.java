@@ -15,7 +15,6 @@ public class Account implements Serializable {
     @DocumentId
     public String accountId;
     public String userId;
-    public String password;
     public String pinCode;
     public String accountName;
     public String accountNumber;
@@ -32,7 +31,6 @@ public class Account implements Serializable {
     public Account() {}
     public Account(String id,
                    String userId,
-                   String password,
                    String pinCode,
                    String accountName,
                    String accountNumber,
@@ -46,7 +44,6 @@ public class Account implements Serializable {
                    Date updatedAt) {
         this.accountId = id;
         this.userId = userId;
-        this.password = password;
         this.pinCode = pinCode;
         this.accountName = accountName;
         this.accountNumber = accountNumber;
@@ -65,13 +62,6 @@ public class Account implements Serializable {
     }
     public void setAccountId(String accountId) {
         this.accountId = accountId;
-    }
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getUserId() {
@@ -173,7 +163,6 @@ public class Account implements Serializable {
     public Map<String, Object> toMap(){
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
-        map.put("password", password);
         map.put("pinCode", pinCode);
         map.put("accountName", accountName);
         map.put("accountNumber", accountNumber);

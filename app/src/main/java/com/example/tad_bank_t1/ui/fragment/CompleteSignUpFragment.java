@@ -117,7 +117,6 @@ public class CompleteSignUpFragment extends Fragment {
         // Construct an Account object
         Account account = new Account();
         account.setUserId(uid);
-        account.setPassword(password);
         account.setAccountName(username);
         account.setAccountNumber(numberAccount);
         account.setCreatedAt(new Date());
@@ -156,6 +155,7 @@ public class CompleteSignUpFragment extends Fragment {
                 .addOnSuccessListener(requireActivity(), user -> {
                     if (user != null) {
                         user.setStatus(UserStatus.ACTIVE);
+                        user.setPassword(password);
                         userRepo.update(uid, user)
                                 .addOnSuccessListener(requireActivity(), aVoid -> {
                                     Toast.makeText(requireContext(),

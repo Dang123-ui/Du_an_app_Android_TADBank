@@ -88,6 +88,7 @@ public class FirebaseAccountRepository implements AccountRepository {
                 adapter.query().orderBy("fullName")
                         .startAt(keyword).endAt(keyword + "\uf8ff").limit(limit)
         );
+    }
 
     public Task<String> create(Account account) {
         return adapter.addAutoId(account);

@@ -1,7 +1,20 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
 }
+// Đọc file local.properties
+val localProps = Properties()
+val localPropsFile = rootProject.file("local.properties")
+if (localPropsFile.exists()) {
+    localProps.load(FileInputStream(localPropsFile))
+}
+
+// Lấy giá trị biến
+val MAPS_API_KEY = localProps.getProperty("MAPS_API_KEY") ?: System.getenv("MAPS_API_KEY")
+
 
 android {
     namespace = "com.example.tad_bank_t1"
@@ -14,7 +27,7 @@ android {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        manifestPlaceholders = [mapsApiKey: MAPS_API_KEY]
+        manifestPlaceholders["mapsApiKey"] = MAPS_API_KEY
     }
     
     packaging {

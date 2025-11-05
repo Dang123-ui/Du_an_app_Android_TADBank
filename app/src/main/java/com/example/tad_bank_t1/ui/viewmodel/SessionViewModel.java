@@ -1,5 +1,7 @@
 package com.example.tad_bank_t1.ui.viewmodel;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -41,6 +43,7 @@ public class SessionViewModel extends ViewModel {
         userRepo.getById(userId)
                 .addOnSuccessListener(user -> {
                     _user.setValue(user);
+                    Log.d("SessionViewModel", "User loaded:" + user.getFullName());
                     accountRepo.getAccountsByUserId(user.getUserId())
                             .addOnSuccessListener(list -> {
                                 _accounts.setValue(list);
@@ -62,6 +65,7 @@ public class SessionViewModel extends ViewModel {
                 })
                 .addOnFailureListener(e -> {
                     _error.setValue(e.getMessage());
+                    Log.d("SessionViewModel", "Error loading user:" + e.getMessage());
                     _isLoading.setValue(false);
                 });
     }
@@ -73,6 +77,8 @@ public class SessionViewModel extends ViewModel {
         userRepo.getById(userId)
                 .addOnSuccessListener(user -> {
                     _user.setValue(user);
+                    Log.d("SessionViewModel", "User loaded:" + user.getFullName());
+
 
                     // Bắt đầu lắng nghe realtime account
                     accountListener = accountRepo.listenAccountsByUserId(userId, new FirebaseAccountRepository.OnAccountsChanged() {
@@ -81,18 +87,22 @@ public class SessionViewModel extends ViewModel {
                             _accounts.setValue(accounts);
                             for (Account a : accounts) {
                                 if (a.getIsDefault()) _defaultAccount.setValue(a);
+                                Log.d("SessionViewModel", "Account loaded:" + a.getAccountName());
                             }
                             _isLoading.setValue(false);
                         }
 
                         @Override
                         public void onError(Exception e) {
+                            Log.d("SessionViewModel", "Error account:" + e.getMessage());
+
                             _error.setValue(e.getMessage());
                             _isLoading.setValue(false);
                         }
                     });
                 })
                 .addOnFailureListener(e -> {
+                    Log.d("SessionViewModel", "Error loading user:" + e.getMessage());
                     _error.setValue(e.getMessage());
                     _isLoading.setValue(false);
                 });

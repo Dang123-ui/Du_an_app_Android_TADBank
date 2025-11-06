@@ -13,62 +13,41 @@ import java.util.Map;
 
 public class Account implements Serializable {
     @DocumentId
-    private String accountId; // PK
-    private String userId; // FK -> Users.userId
-
-    // public String password;
+    public String accountId;
+    public String userId;
     public String pinCode;
+    boolean isDefault;
+    public String accountName;
+    public String accountNumber;
 
-    private String branchId; // FK -> Branches.brandId
-    private AccountType type; // CHECKING | SAVING | MORTGAGE
-    private String accountName;
-    private String accountNumber; // unique
-    private boolean isDefault;
-    private String currency; // default VND
-    private Long balance; // decimal(10,3)
-    private AccountStatus status; // OPEN | FROZEN | CLOSE
-    private Date createdAt;
+    public String branchId;
+    public AccountType type;
+    public String currency;
+    public  long balance;
+    public AccountStatus status;
+    public Date createdAt;
     private Date closedAt;
     private Date updatedAt;
 
-    public Account() {
-    }
-
-    public Account(String accountId, String userId, String pinCode, String branchId, AccountType type,
-            String accountName, String accountNumber, boolean isDefault, String currency, Long balance,
-            AccountStatus status, Date createdAt, Date closedAt, Date updatedAt) {
-        this.accountId = accountId;
-        this.userId = userId;
-        this.pinCode = pinCode;
-        this.branchId = branchId;
-        this.type = type;
-        this.accountName = accountName;
-        this.accountNumber = accountNumber;
-        this.isDefault = isDefault;
-        this.currency = currency;
-        this.balance = balance;
-        this.status = status;
-        this.createdAt = createdAt;
-        this.closedAt = closedAt;
-        this.updatedAt = updatedAt;
-    }
-
+    public Account() {}
     public Account(String id,
-            String userId,
-            String pinCode,
-            String accountName,
-            String accountNumber,
-            String branchId,
-            AccountType type,
-            String currency,
-            Long balance,
-            AccountStatus status,
-            Date createdAt,
-            Date closedAt,
-            Date updatedAt) {
+                   String userId,
+                   String pinCode,
+                   boolean isDefault,
+                   String accountName,
+                   String accountNumber,
+                   String branchId,
+                   AccountType type,
+                   String currency,
+                   Long balance,
+                   AccountStatus status,
+                   Date createdAt,
+                   Date closedAt,
+                   Date updatedAt) {
         this.accountId = id;
         this.userId = userId;
         this.pinCode = pinCode;
+        this.isDefault = isDefault;
         this.accountName = accountName;
         this.accountNumber = accountNumber;
         this.branchId = branchId;
@@ -80,29 +59,10 @@ public class Account implements Serializable {
         this.closedAt = closedAt;
         this.updatedAt = updatedAt;
     }
-
-    public Map<String, Object> toMap() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("userId", userId);
-        map.put("pinCode", pinCode);
-        map.put("accountName", accountName);
-        map.put("accountNumber", accountNumber);
-        map.put("branchId", branchId);
-        map.put("type", type);
-        map.put("currency", currency);
-        map.put("balance", balance);
-        map.put("status", status);
-        map.put("createdAt", createdAt);
-        map.put("closedAt", closedAt);
-        map.put("updatedAt", updatedAt);
-        return map;
-    }
-
     @Exclude
     public String getAccountId() {
         return accountId;
     }
-
     public void setAccountId(String accountId) {
         this.accountId = accountId;
     }
@@ -113,30 +73,6 @@ public class Account implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getPinCode() {
-        return pinCode;
-    }
-
-    public void setPinCode(String pinCode) {
-        this.pinCode = pinCode;
-    }
-
-    public String getBranchId() {
-        return branchId;
-    }
-
-    public void setBranchId(String branchId) {
-        this.branchId = branchId;
-    }
-
-    public AccountType getType() {
-        return type;
-    }
-
-    public void setType(AccountType type) {
-        this.type = type;
     }
 
     public String getAccountName() {
@@ -155,12 +91,20 @@ public class Account implements Serializable {
         this.accountNumber = accountNumber;
     }
 
-    public boolean getIsDefault() {
-        return isDefault;
+    public String getBranchId() {
+        return branchId;
     }
 
-    public void setIsDefault(boolean aDefault) {
-        isDefault = aDefault;
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public AccountType getType() {
+        return type;
+    }
+
+    public void setType(AccountType type) {
+        this.type = type;
     }
 
     public String getCurrency() {
@@ -211,4 +155,37 @@ public class Account implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+    public String getPinCode() {
+        return pinCode;
+    }
+
+    public void setPinCode(String pinCode) {
+        this.pinCode = pinCode;
+    }
+
+    public boolean isDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(boolean aDefault) {
+        isDefault = aDefault;
+    }
+
+    public Map<String, Object> toMap(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("pinCode", pinCode);
+        map.put("isDefault", isDefault);
+        map.put("accountName", accountName);
+        map.put("accountNumber", accountNumber);
+        map.put("branchId", branchId);
+        map.put("type", type);
+        map.put("currency", currency);
+        map.put("balance", balance);
+        map.put("status", status);
+        map.put("createdAt", createdAt);
+        map.put("closedAt", closedAt);
+        map.put("updatedAt", updatedAt);
+        return map;
+    }
 }

@@ -119,7 +119,7 @@ public class CreatePinCodeFragment extends Fragment {
                 setLoading(false);
                 toast("Tạo mã pin thành công.");
                 btnNext.setEnabled(false);
-                Congratulation_Fragment congratulationFragment = Congratulation_Fragment.newInstance(account);
+                Congratulation_Fragment congratulationFragment = Congratulation_Fragment.newInstance(uid);
                 if (getActivity() instanceof SignUpActivity) {
                     ((SignUpActivity) getActivity()).navigateTo(congratulationFragment, false);
                 }

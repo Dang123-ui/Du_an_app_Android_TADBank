@@ -16,6 +16,8 @@ firebaseDatabase = "22.0.1"
 media3 = "1.8.0"
 tensorflowLiteMetadata = "0.2.0"
 cardview = "1.0.0"
+leanback = "1.0.0"
+glide = "4.11.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -35,6 +37,8 @@ media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", versi
 media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media3" }
 tensorflow-lite-metadata = { group = "org.tensorflow", name = "tensorflow-lite-metadata", version.ref = "tensorflowLiteMetadata" }
 cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
+androidx-leanback = { group = "androidx.leanback", name = "leanback", version.ref = "leanback" }
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 

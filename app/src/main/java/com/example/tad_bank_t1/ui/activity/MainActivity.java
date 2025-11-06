@@ -1,5 +1,6 @@
 package com.example.tad_bank_t1.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,7 +16,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.tad_bank_t1.R;
-import com.example.tad_bank_t1.data.fake_data.CurrentUser;
 import com.example.tad_bank_t1.data.model.Account;
 import com.example.tad_bank_t1.data.model.User;
 import com.example.tad_bank_t1.ui.fragment.BankTransferFragment;
@@ -31,28 +31,35 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNav;
     private LottieAnimationView loadingAnim;
     private SessionViewModel sessionViewModel;
-    public static final String  USER_ID = "u000001";
 
+    public static final String EXTRA_USERID = "extra_userid";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            android.transition.TransitionSet shared = new android.transition.TransitionSet()
+                    .addTransition(new android.transition.ChangeBounds())
+                    .addTransition(new android.transition.ChangeTransform())
+                    .addTransition(new android.transition.ChangeImageTransform());
+            shared.setDuration(1000); // tăng nhẹ so với 1200 nếu còn nhanh, 1000–1400 là “ngon”
+            shared.setInterpolator(new android.view.animation.AccelerateDecelerateInterpolator());
+            shared.setPathMotion(new android.transition.ArcMotion());
+            getWindow().setSharedElementEnterTransition(shared);
+            getWindow().setSharedElementReturnTransition(shared);
+            supportPostponeEnterTransition();
+        }
         setContentView(R.layout.activity_main);
-
-
         toolbar = findViewById(R.id.toolbar);
         bottomNav = findViewById(R.id.bottom_nav);
         loadingAnim = findViewById(R.id.lottie_loading_waiting_redirect);
-
         setSupportActionBar(toolbar);
-
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                     getSupportFragmentManager().popBackStack();
                     getSupportFragmentManager().executePendingTransactions();
-
                     Fragment current = getSupportFragmentManager()
                             .findFragmentById(R.id.frame_main_container);
                     updateUIForFragment(current);
@@ -64,27 +71,28 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-        // Hiển thị Home mặc định
         replaceFragment(new HomeCustomerFragment(), false);
         updateUIForFragment(new HomeCustomerFragment());
 
         // load user account bang session viewmodel
         sessionViewModel = new ViewModelProvider(this).get(SessionViewModel.class);
-        sessionViewModel.observeUserAndAccountsRealtime(USER_ID);
-//        sessionViewModel.isLoading.observe(this, isLoading -> {
-//            if (isLoading) {
-//                showLoading(true);
-//            } else {
-//                showLoading(false);
-//            }
-//        });
-
-
+        Intent intent = getIntent();
+        String userId = null;
+        if (intent != null) {
+            userId = intent.getStringExtra(EXTRA_USERID);
+        }
+        if (userId != null) {
+            sessionViewModel.loadCurrentUserAndAccounts(userId);
+            sessionViewModel.observeUserAndAccountsRealtime(userId);
+            sessionViewModel.isLoading.observe(this, isLoading -> {
+                if (isLoading) {
+                    showLoading(true);
+                } else {
+                    showLoading(false);
+                }
+            });
+        }
         checkCurrentFragment();
-
-
         // Sự kiện chọn bottom navigation
         bottomNav.setOnItemSelectedListener(item -> {
             Fragment fragment;
@@ -155,8 +163,6 @@ public class MainActivity extends AppCompatActivity {
         ft.replace(R.id.frame_main_container, fragment);
         if (addToBackStack) ft.addToBackStack(null);
         ft.commit();
-
-
         getSupportFragmentManager().executePendingTransactions();
         updateUIForFragment(fragment);
         checkCurrentFragment();
@@ -171,7 +177,6 @@ public class MainActivity extends AppCompatActivity {
             bottomNav.setVisibility(View.GONE);
         }
     }
-
     // ✅ Hàm show/hide loading
     private void showLoading(boolean show) {
         if (show) {
@@ -184,7 +189,6 @@ public class MainActivity extends AppCompatActivity {
             bottomNav.setVisibility(View.VISIBLE);
         }
     }
-
     public void checkCurrentFragment() {
         // ID của container mà bạn dùng để host các Fragment (ví dụ: R.id.fragment_container)
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_main_container);

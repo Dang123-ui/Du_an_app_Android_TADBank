@@ -3,6 +3,7 @@ package com.example.tad_bank_t1.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -10,21 +11,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.airbnb.lottie.LottieAnimationView;
 import com.example.tad_bank_t1.R;
-import com.example.tad_bank_t1.data.session.SessionManager;
 import com.example.tad_bank_t1.ui.activity.LoginActivity;
 import com.example.tad_bank_t1.ui.activity.MainActivity;
 import com.example.tad_bank_t1.ui.viewmodel.NotificationViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.SessionViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.TransactionViewModel;
-import com.example.tad_bank_t1.util.FragmentUtil;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
 public class HomeCustomerFragment extends Fragment {
@@ -42,8 +40,6 @@ public class HomeCustomerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -51,14 +47,22 @@ public class HomeCustomerFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate layout cho fragment
         View view = inflater.inflate(R.layout.fragment_home_customer, container, false);
-
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        ImageView homeLogo = view.findViewById(R.id.homeLogo);
+        ViewCompat.setTransitionName(homeLogo, "app_logo");
+        homeLogo.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                homeLogo.getViewTreeObserver().removeOnPreDrawListener(this);
+                requireActivity().supportStartPostponedEnterTransition();
+                return true;
+            }
+        });
         // toolbar
         imbtHomeNotify = view.findViewById(R.id.imbtHomeNotify);
         imbtLogout = view.findViewById(R.id.imbtLogout);
@@ -82,10 +86,8 @@ public class HomeCustomerFragment extends Fragment {
         // session viewmodel
         sessionViewModel = new ViewModelProvider(requireActivity()).get(SessionViewModel.class);
         notificationViewModel = new ViewModelProvider(requireActivity()).get(NotificationViewModel.class);
-
         TextView txtBadgeNotify = view.findViewById(R.id.txtBadgeNotify);
-
-        notificationViewModel.startListeningUnreadCount(((MainActivity)requireActivity()).USER_ID);
+        notificationViewModel.startListeningUnreadCount(((MainActivity)requireActivity()).EXTRA_USERID);
         notificationViewModel.unreadCount.observe(getViewLifecycleOwner(), count -> {
             if (count != null && count > 0) {
                 txtBadgeNotify.setVisibility(View.VISIBLE);

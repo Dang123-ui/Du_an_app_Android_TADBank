@@ -15,4 +15,6 @@ public interface UserRepository {
     Task<Void> lock(String userId);
     Task<Void> activate(String userId);
     Task<QuerySnapshot> searchByKeyword(String keyword, int limit);
+    Task<User> findByEmail(String email);
+    Task<User> findByPhone(String phone);
 }

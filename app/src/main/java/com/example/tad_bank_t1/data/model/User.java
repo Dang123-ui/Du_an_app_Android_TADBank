@@ -5,11 +5,12 @@ import com.example.tad_bank_t1.data.model.enums.UserStatus;
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class User {
+public class User implements Serializable {
     @DocumentId
     public String userId;
     public String username;

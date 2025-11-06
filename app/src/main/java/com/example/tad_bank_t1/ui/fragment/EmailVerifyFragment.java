@@ -37,6 +37,9 @@ import java.util.Locale;
 import java.util.Random;
 
 public class EmailVerifyFragment extends Fragment {
+    private static final String ARG_FLOW = "key_flow";
+    private static final int FLOW_SIGN_UP = 0;
+    private static final int FLOW_FORGOT = 1;
     private static final String ARG_EKYC = "key_ekyc";
     private static final String ARG_UID = "key_uid";
     private static final String ARG_PHONE = "key_phone";
@@ -45,6 +48,7 @@ public class EmailVerifyFragment extends Fragment {
 
     private Ekyc ekyc;
     private String uid, phone, username, email;
+    private int flow = FLOW_SIGN_UP;
     private TextView tvEmail, tvOTPAgain;
     private EditText et1, et2, et3, et4, et5, et6;
     private Button btnNext, btnChupLai;
@@ -72,22 +76,38 @@ public class EmailVerifyFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
+    public static EmailVerifyFragment newforForgot(String uid) {
+        EmailVerifyFragment fragment = new EmailVerifyFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_FLOW, FLOW_FORGOT);
+        args.putString(ARG_UID, uid);
+        fragment.setArguments(args);
+        return fragment;
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                ekyc = getArguments().getSerializable(ARG_EKYC, Ekyc.class);
-            } else {
-                ekyc = (Ekyc) getArguments().getSerializable(ARG_EKYC);
-            }
-            uid = getArguments().getString(ARG_UID);
-            phone = getArguments().getString(ARG_PHONE);
-            username = getArguments().getString(ARG_USERNAME);
-            email = getArguments().getString(ARG_EMAIL);
-        }
         otpRepo = new FirebaseOtpCodeRepository();
+        Bundle args = getArguments();
+        if (args != null) {
+            flow = args.getInt(ARG_FLOW, FLOW_SIGN_UP);
+            uid  = args.getString(ARG_UID);
+
+            if (flow == FLOW_SIGN_UP) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    ekyc = args.getSerializable(ARG_EKYC, Ekyc.class);
+                } else {
+                    Object obj = args.getSerializable(ARG_EKYC);
+                    if (obj instanceof Ekyc) ekyc = (Ekyc) obj;
+                }
+                phone    = args.getString(ARG_PHONE);
+                username = args.getString(ARG_USERNAME);
+                email    = args.getString(ARG_EMAIL);
+            } else {
+                // FORGOT: không cần các field dưới, sẽ tự load email theo uid
+                ekyc = null; phone = null; username = null; email = null;
+            }
+        }
     }
 
     @Override
@@ -111,7 +131,33 @@ public class EmailVerifyFragment extends Fragment {
         tvEmail.setText(email != null ? email : "");
 
         setupOtpInputs();
-        sendOtp();
+        if (flow == FLOW_FORGOT) {
+            // Load email theo uid rồi mới gửi OTP
+            if (uid == null || uid.trim().isEmpty()) {
+                toast("Thiếu uid cho luồng quên mật khẩu");
+                return;
+            }
+            setLoading(true);
+            new FirebaseUserRepository().getById(uid)
+                    .addOnSuccessListener(u -> {
+                        setLoading(false);
+                        if (u == null || u.getEmail() == null || u.getEmail().trim().isEmpty()) {
+                            toast("Không tìm thấy email để xác thực. Vui lòng cập nhật email trước.");
+                            return;
+                        }
+                        email = u.getEmail();
+                        tvEmail.setText(email);
+                        sendOtp();
+                    })
+                    .addOnFailureListener(e -> {
+                        setLoading(false);
+                        toast("Lỗi tải thông tin người dùng: " + e.getMessage());
+                    });
+        } else {
+            // SIGN_UP: dùng email đã truyền
+            tvEmail.setText(email != null ? email : "");
+            sendOtp();
+        }
 
         btnNext.setOnClickListener(v -> {
             String code = collectCode();
@@ -196,7 +242,9 @@ public class EmailVerifyFragment extends Fragment {
     private String s(EditText et) {
         return et.getText() == null ? "" : et.getText().toString().trim();
     }
-
+    private String getOtpPurpose() {
+        return (flow == FLOW_FORGOT) ? "forgot_password" : "verify_email";
+    }
     private void sendOtp() {
         if (email == null || email.trim().isEmpty()) {
             toast("Email không hợp lệ.");
@@ -212,7 +260,7 @@ public class EmailVerifyFragment extends Fragment {
 
         OtpCode otp = new OtpCode();
         otp.setUserId(uid);
-        otp.setPurpose(OTP_PURPOSE);
+        otp.setPurpose(getOtpPurpose());
         otp.setCode(code);
         otp.setCreatedAt(createdAt);
         otp.setExpiresAt(expiresAt);
@@ -298,56 +346,67 @@ public class EmailVerifyFragment extends Fragment {
             return;
         }
         setLoading(true);
-        otpRepo.verifyAndConsume(uid, OTP_PURPOSE, code)
-                .addOnSuccessListener(new OnSuccessListener<Boolean>() {
-                    @Override public void onSuccess(Boolean verified) {
-                        setLoading(false);
-                        if (verified != null && verified) {
-                            toast("Xác thực OTP thành công");
-                            User user = new User();
-                            user.setUserId(uid);
-                            user.setEmail(email);
-                            user.setPhone(phone);
-                            user.setUsername(username);
-                            user.setRole(Role.CUSTOMER);
-                            user.setStatus(UserStatus.LOCKED);
-                            user.setCreatedAt(new Date());
-                            user.setIdNumber(ekyc.getNationalIdNumber());
-                            user.setFullName(ekyc.getFullName());
-                            user.setAddress(ekyc.getAddress());
-                            String dobString = ekyc.getDateOfBirth();
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                            Date dob = null;
+        otpRepo.verifyAndConsume(uid, getOtpPurpose(), code)
+                .addOnSuccessListener(verified -> {
+                    setLoading(false);
 
-                            try {
-                                dob = sdf.parse(dobString);
-                            } catch (ParseException e) {
-                                e.printStackTrace();
+                    if (Boolean.TRUE.equals(verified)) {
+                        // ĐÃ XÁC THỰC OTP THÀNH CÔNG
+                        if (flow == FLOW_FORGOT) {
+                            Fragment next = CreatePasswordFragment.newForForgot(uid);
+                            if (getActivity() instanceof SignUpActivity) {
+                                ((SignUpActivity) getActivity()).navigateTo(next, true);
                             }
-
-                            if (dob != null) {
-                                user.setDateOfBirth(dob);
-                            }
-                            FirebaseUserRepository userRepo = new FirebaseUserRepository();
-                            userRepo.create(user).addOnSuccessListener(avoid -> {
-                                toast("Tạo user thành công");
-                                ChoseNumberCardFragment choseNumberCardFragment = ChoseNumberCardFragment.newInstance(uid, username);
-                                if (getActivity() instanceof SignUpActivity) {
-                                    ((SignUpActivity) getActivity()).navigateTo(choseNumberCardFragment, true);
-                                }
-                            }).addOnFailureListener(e -> {
-                                toast("Thêm user thất bại: "+e.getMessage());
-                            });
-                        } else {
-                            toast("OTP không chính xác hoặc đã hết hạn");
+                            return; // dừng, KHÔNG chạy code đăng ký bên dưới
                         }
+
+                        // === Nhánh ĐĂNG KÝ: tạo user từ dữ liệu đã có (ekyc, email, ...) ===
+                        User user = new User();
+                        user.setUserId(uid);
+                        user.setEmail(email);
+                        user.setPhone(phone);
+                        user.setUsername(username);
+                        user.setRole(Role.CUSTOMER);
+                        user.setStatus(UserStatus.LOCKED);
+                        user.setCreatedAt(new Date());
+                        user.setAvatar(ekyc.getFaceImagePath());
+                        // CHỈ dùng ekyc ở flow đăng ký (ekyc != null)
+                        user.setIdNumber(ekyc.getNationalIdNumber());
+                        user.setFullName(ekyc.getFullName());
+                        user.setAddress(ekyc.getAddress());
+
+                        String dobString = ekyc.getDateOfBirth();
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                        Date dob = null;
+                        try {
+                            dob = sdf.parse(dobString);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        if (dob != null) {
+                            user.setDateOfBirth(dob);
+                        }
+
+                        FirebaseUserRepository userRepo = new FirebaseUserRepository();
+                        userRepo.create(user).addOnSuccessListener(avoid -> {
+                            toast("Tạo user thành công");
+                            ChoseNumberCardFragment choseNumberCardFragment =
+                                    ChoseNumberCardFragment.newInstance(uid, username);
+                            if (getActivity() instanceof SignUpActivity) {
+                                ((SignUpActivity) getActivity()).navigateTo(choseNumberCardFragment, true);
+                            }
+                        }).addOnFailureListener(e -> {
+                            toast("Thêm user thất bại: " + e.getMessage());
+                        });
+
+                    } else {
+                        // OTP sai hoặc hết hạn
+                        toast("OTP không chính xác hoặc đã hết hạn");
                     }
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override public void onFailure(@NonNull Exception e) {
-                        setLoading(false);
-                        toast("Lỗi xác thực OTP: " + e.getMessage());
-                    }
+                .addOnFailureListener(e -> {
+                    setLoading(false);
+                    toast("Lỗi xác thực OTP: " + e.getMessage());
                 });
     }
 

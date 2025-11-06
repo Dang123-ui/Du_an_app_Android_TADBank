@@ -125,6 +125,7 @@ public class CompleteSignUpFragment extends Fragment {
         account.setBalance(0L);
         account.setStatus(AccountStatus.OPEN);
         account.setBranchId("br001");
+        account.setDefault(true);
         FirebaseAccountRepository accountRepo = new FirebaseAccountRepository();
         accountRepo.create(account)
                 .addOnSuccessListener(avoid -> {

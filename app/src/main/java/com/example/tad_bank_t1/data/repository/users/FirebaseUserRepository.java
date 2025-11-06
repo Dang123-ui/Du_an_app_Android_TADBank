@@ -70,5 +70,52 @@ public class FirebaseUserRepository implements UserRepository {
                 adapter.query().orderBy("fullName")
                         .startAt(keyword).endAt(keyword + "\uf8ff").limit(limit));
     }
+    @Override
+    public Task<User> findByEmail(String email) {
+        Query q = adapter.query()
+            .whereEqualTo("email", email)
+            .limit(1);
 
+        return adapter.where(q).continueWith(task -> {
+            if (!task.isSuccessful() || task.getResult() == null) return null;
+            QuerySnapshot snap = task.getResult();
+            if (snap.isEmpty()) return null;
+            DocumentSnapshot doc = snap.getDocuments().get(0);
+            return doc.toObject(User.class);
+        });
+    }
+    private static String normalizePhoneForFirebase(String input) {
+        if (input == null) return null;
+        String s = input.replaceAll("[^0-9+]", "");
+        if (s.startsWith("+84")) {
+            String rest = s.substring(3).replaceFirst("^0+", "");
+            return "+84" + rest;
+        }
+        if (s.startsWith("+")) {
+            return s;
+        }
+        if (s.startsWith("0")) {
+            return "+84" + s.substring(1);
+        }
+        if (s.startsWith("84")) {
+            return "+" + s;
+        }
+        return "+84" + s;
+    }
+
+
+    @Override
+    public Task<User> findByPhone(String phone) {
+        String e164 = normalizePhoneForFirebase(phone);
+        Query q = adapter.query()
+                .whereEqualTo("phone", e164)
+                .limit(1);
+        return adapter.where(q).continueWith(task -> {
+            if (!task.isSuccessful() || task.getResult() == null) return null;
+            QuerySnapshot snap = task.getResult();
+            if (snap.isEmpty()) return null;
+            DocumentSnapshot doc = snap.getDocuments().get(0);
+            return doc.toObject(User.class);
+        });
+    }
 }

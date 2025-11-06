@@ -141,6 +141,8 @@ dependencies {
     implementation(libs.firebase.database)
     implementation(libs.tensorflow.lite.metadata)
     implementation(libs.cardview)
+    implementation(libs.androidx.leanback)
+    implementation(libs.glide)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

@@ -1,5 +1,6 @@
 package com.example.tad_bank_t1.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,8 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.tad_bank_t1.R;
+import com.example.tad_bank_t1.data.repository.users.FirebaseUserRepository;
+import com.example.tad_bank_t1.data.repository.users.UserRepository;
+import com.example.tad_bank_t1.ui.activity.LoginActivity2;
 import com.example.tad_bank_t1.ui.activity.SignUpActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -31,7 +36,11 @@ public class CreatePasswordFragment extends Fragment {
     private static final String ARG_UID = "key_uid";
     private static final String ARG_USERNAME = "key_username";
     private static final String ARG_ACCOUNTNUMBER = "key_accountnumber";
+    private static final String ARG_FLOW           = "key_flow";
+    private static final int    FLOW_SIGN_UP       = 0;
+    private static final int    FLOW_FORGOT        = 1;
     private String uid, username, numberAccount;
+    private int flow = FLOW_SIGN_UP;
     TextInputLayout tilPassword, tilConfirmPassword;
     TextInputEditText etPassword, etConfirmPassword;
     Button btnCreatePW;
@@ -48,6 +57,15 @@ public class CreatePasswordFragment extends Fragment {
         args.putString(ARG_UID, uid);
         args.putString(ARG_USERNAME, username);
         args.putString(ARG_ACCOUNTNUMBER, numberAccount);
+        args.putInt(ARG_FLOW, FLOW_SIGN_UP);
+        fragment.setArguments(args);
+        return fragment;
+    }
+    public static CreatePasswordFragment newForForgot(String uid) {
+        CreatePasswordFragment fragment = new CreatePasswordFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_UID, uid);
+        args.putInt(ARG_FLOW, FLOW_FORGOT);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,10 +73,17 @@ public class CreatePasswordFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            uid = getArguments().getString(ARG_UID);
-            username = getArguments().getString(ARG_USERNAME);
-            numberAccount = getArguments().getString(ARG_ACCOUNTNUMBER);
+        Bundle b = getArguments();
+        if (b != null) {
+            uid = b.getString(ARG_UID);
+            flow = b.getInt(ARG_FLOW, FLOW_SIGN_UP);
+            if (flow == FLOW_SIGN_UP) {
+                username      = b.getString(ARG_USERNAME);
+                numberAccount = b.getString(ARG_ACCOUNTNUMBER);
+            } else {
+                username = null;
+                numberAccount = null;
+            }
         }
     }
 
@@ -77,6 +102,12 @@ public class CreatePasswordFragment extends Fragment {
         etPassword = view.findViewById(R.id.etPassword);
         etConfirmPassword = view.findViewById(R.id.etConfirmPassword);
         btnCreatePW = view.findViewById(R.id.btnCreatePW);
+        btnCreatePW.setEnabled(false);
+        if (flow == FLOW_FORGOT) {
+            btnCreatePW.setText("Cập nhật mật khẩu");
+        } else {
+            btnCreatePW.setText("Tiếp tục");
+        }
         btnCreatePW.setEnabled(false);
         TextWatcher watcher = new TextWatcher() {
             @Override
@@ -98,11 +129,58 @@ public class CreatePasswordFragment extends Fragment {
         validateAndUpdateUI();
         btnCreatePW.setOnClickListener(v -> {
             String password = etPassword.getText().toString().trim();
+            if (flow == FLOW_FORGOT) {
+                if (TextUtils.isEmpty(uid)) {
+                    toast("Thiếu UID. Không thể cập nhật mật khẩu.");
+                    return;
+                }
+                setLoading(true);
+                UserRepository userRepo = new FirebaseUserRepository();
+                userRepo.getById(uid).addOnSuccessListener(user -> {
+                    if (user == null) {
+                        setLoading(false);
+                        tilPassword.setError("Không tìm thấy tài khoản");
+                        return;
+                    }
+                    user.setPassword(password);
+                    userRepo.update(uid, user)
+                            .addOnSuccessListener(avoid -> {
+                                setLoading(false);
+                                toast("Cập nhật mật khẩu thành công");
+                                // Điều hướng về LoginActivity2 (có thể đổi sang màn khác tuỳ bạn)
+                                if (getActivity() != null) {
+                                    Intent i = new Intent(getContext(), LoginActivity2.class);
+                                    i.putExtra(LoginActivity2.EXTRA_UID, uid);
+                                    startActivity(i);
+                                    getActivity().finish();
+                                }
+                            })
+                            .addOnFailureListener(e -> {
+                                setLoading(false);
+                                tilPassword.setError("Lưu mật khẩu thất bại: " + e.getMessage());
+                            });
+                }).addOnFailureListener(e -> {
+                    setLoading(false);
+                    tilPassword.setError("Lỗi tải tài khoản: " + e.getMessage());
+                });
+
+                return;
+            }
             CompleteSignUpFragment completeSignUpFragment = CompleteSignUpFragment.newInstance(uid, username, numberAccount, password);
             if (getActivity() instanceof SignUpActivity) {
                 ((SignUpActivity) getActivity()).navigateTo(completeSignUpFragment, true);
             }
         });
+    }
+    private void setLoading(boolean saving) {
+        btnCreatePW.setEnabled(!saving);
+        etPassword.setEnabled(!saving);
+        etConfirmPassword.setEnabled(!saving);
+        tilPassword.setEnabled(!saving);
+        tilConfirmPassword.setEnabled(!saving);
+    }
+    private void toast(String s) {
+        Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
     }
     private void validateAndUpdateUI() {
         String pw = textOf(etPassword);

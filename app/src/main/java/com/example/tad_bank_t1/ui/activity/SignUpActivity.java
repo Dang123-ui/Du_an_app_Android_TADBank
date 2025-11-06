@@ -31,6 +31,8 @@ import com.example.tad_bank_t1.ui.fragment.CCCDInfoVerifyFragment;
 import com.example.tad_bank_t1.ui.fragment.CCCDVerifyFragment;
 import com.example.tad_bank_t1.ui.fragment.Congratulation_Fragment;
 import com.example.tad_bank_t1.ui.fragment.CreatePinCodeFragment;
+import com.example.tad_bank_t1.ui.fragment.EmailVerifyFragment;
+import com.example.tad_bank_t1.ui.fragment.FaceVerify1Fragment;
 import com.example.tad_bank_t1.ui.fragment.InfoSignUpFragment;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -48,6 +50,26 @@ public class SignUpActivity extends AppCompatActivity {
     }
     private ImageView btnImageView;
     private TextView tvTextView;
+    public static final String EXTRA_FLOW = "extra_flow";
+    public static final String EXTRA_UID  = "extra_uid";
+    public static final int FLOW_SIGN_UP = 0;
+    public static final int FLOW_FORGOT_PASSWORD = 1;
+    public static final int FLOW_FACE_LOGIN = 2;
+    public static Intent intentForSignUp(Context ctx) {
+        return new Intent(ctx, SignUpActivity.class)
+                .putExtra(EXTRA_FLOW, FLOW_SIGN_UP);
+    }
+
+    public static Intent intentForForgotPassword(Context ctx, String uid) {
+        return new Intent(ctx, SignUpActivity.class)
+                .putExtra(EXTRA_FLOW, FLOW_FORGOT_PASSWORD)
+                .putExtra(EXTRA_UID, uid);
+    }
+    public static Intent intentForFaceLogin(Context ctx, String uid) {
+        return new Intent(ctx, SignUpActivity.class)
+                .putExtra(EXTRA_FLOW, FLOW_FACE_LOGIN)
+                .putExtra(EXTRA_UID, uid);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -68,11 +90,30 @@ public class SignUpActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        if (savedInstanceState == null) {
-            navigateTo(new InfoSignUpFragment(), false);
-        }
         btnImageView = findViewById(R.id.btn_SignUp_to_Sigin);
-        tvTextView = findViewById(R.id.tvSignupToSignUp);
+        tvTextView   = findViewById(R.id.tvSignupToSignUp);
+
+        // ĐỌC flow từ Intent
+        int flow = getIntent().getIntExtra(EXTRA_FLOW, FLOW_SIGN_UP);
+        String uid = getIntent().getStringExtra(EXTRA_UID);
+        applyFlowUi(flow);
+        if (savedInstanceState == null) {
+            if (flow == FLOW_FORGOT_PASSWORD) {
+                navigateTo(EmailVerifyFragment.newforForgot(uid), false);
+            } else if (flow == FLOW_FACE_LOGIN){
+                navigateTo(FaceVerify1Fragment.newForFaceLogin(uid), false);
+            } else {
+                navigateTo(new InfoSignUpFragment(), false);
+            }
+        }
+    }
+    private void applyFlowUi(int flow) {
+        // Đổi header/title tuỳ theo flow
+        if (tvTextView != null) {
+            tvTextView.setText(flow == FLOW_FORGOT_PASSWORD
+                    ? "Forgot password": flow == FLOW_FACE_LOGIN ? "Face ID" :
+                    getString(R.string.signup));
+        }
     }
     public void setHeaderBackEnabled(boolean enabled) {
         if(btnImageView != null) btnImageView.setEnabled(enabled);

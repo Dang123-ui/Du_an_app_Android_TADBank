@@ -29,7 +29,6 @@ import com.example.tad_bank_t1.R;
 public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private AppCompatButton btnSignUp;
-
     private ImageView logoSplash;
     @SuppressLint("MissingInflatedId")
     @Override
@@ -42,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
                     .addTransition(new ChangeBounds())
                     .addTransition(new ChangeTransform())
                     .addTransition(new ChangeImageTransform());
-            shared.setDuration(1500);
+            shared.setDuration(1100);
             getWindow().setSharedElementEnterTransition(shared);
             getWindow().setSharedElementReturnTransition(shared);
         }

@@ -8,15 +8,17 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.tad_bank_t1.data.model.Account;
 import com.example.tad_bank_t1.data.model.User;
+import com.example.tad_bank_t1.data.repository.account.AccountRepository;
 import com.example.tad_bank_t1.data.repository.account.FirebaseAccountRepository;
 import com.example.tad_bank_t1.data.repository.users.FirebaseUserRepository;
+import com.example.tad_bank_t1.data.repository.users.UserRepository;
 import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.List;
 
 public class SessionViewModel extends ViewModel {
-    private final FirebaseUserRepository userRepo = new FirebaseUserRepository();
-    private final FirebaseAccountRepository accountRepo = new FirebaseAccountRepository();
+    private final UserRepository userRepo = new FirebaseUserRepository();
+    private final AccountRepository accountRepo = new FirebaseAccountRepository();
 
     private final MutableLiveData<User> _user = new MutableLiveData<>();
     public LiveData<User> user = _user;
@@ -47,10 +49,9 @@ public class SessionViewModel extends ViewModel {
                     accountRepo.getAccountsByUserId(user.getUserId())
                             .addOnSuccessListener(list -> {
                                 _accounts.setValue(list);
-                                // tìm tài khoản mặc định
                                 if (list != null) {
                                     for (Account acc : list) {
-                                        if (acc.getIsDefault()) {
+                                        if (acc.isDefault()) {
                                             _defaultAccount.setValue(acc);
                                             break;
                                         }
@@ -73,7 +74,6 @@ public class SessionViewModel extends ViewModel {
 
     public void observeUserAndAccountsRealtime(String userId) {
         _isLoading.setValue(true);
-
         userRepo.getById(userId)
                 .addOnSuccessListener(user -> {
                     _user.setValue(user);
@@ -81,12 +81,12 @@ public class SessionViewModel extends ViewModel {
 
 
                     // Bắt đầu lắng nghe realtime account
-                    accountListener = accountRepo.listenAccountsByUserId(userId, new FirebaseAccountRepository.OnAccountsChanged() {
+                    accountListener = accountRepo.listenAccountsByUserId(userId, new AccountRepository.OnAccountsChanged() {
                         @Override
                         public void onChanged(List<Account> accounts) {
                             _accounts.setValue(accounts);
                             for (Account a : accounts) {
-                                if (a.getIsDefault()) _defaultAccount.setValue(a);
+                                if (a.isDefault()) _defaultAccount.setValue(a);
                                 Log.d("SessionViewModel", "Account loaded:" + a.getAccountName());
                             }
                             _isLoading.setValue(false);
@@ -95,7 +95,6 @@ public class SessionViewModel extends ViewModel {
                         @Override
                         public void onError(Exception e) {
                             Log.d("SessionViewModel", "Error account:" + e.getMessage());
-
                             _error.setValue(e.getMessage());
                             _isLoading.setValue(false);
                         }
@@ -106,6 +105,15 @@ public class SessionViewModel extends ViewModel {
                     _error.setValue(e.getMessage());
                     _isLoading.setValue(false);
                 });
+    }
+
+    @Override
+    protected void onCleared() {
+        if (accountListener != null) {
+            accountListener.remove();
+            accountListener = null;
+        }
+        super.onCleared();
     }
 
     public void setSelectedAccount(Account account) {

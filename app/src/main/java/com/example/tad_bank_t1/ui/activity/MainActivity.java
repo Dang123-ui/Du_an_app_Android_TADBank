@@ -18,6 +18,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.model.Account;
 import com.example.tad_bank_t1.data.model.User;
+import com.example.tad_bank_t1.saving.SavingsOverviewActivity;
 import com.example.tad_bank_t1.ui.fragment.BankTransferFragment;
 import com.example.tad_bank_t1.ui.fragment.HomeCustomerFragment;
 import com.example.tad_bank_t1.ui.fragment.SettingFragment;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNav = findViewById(R.id.bottom_nav);
         loadingAnim = findViewById(R.id.lottie_loading_waiting_redirect);
         setSupportActionBar(toolbar);
+
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -147,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
         bottomNav.setVisibility(View.GONE);
     }
 
-
     public void setupToolbar(String title, boolean showBackButton) {
         toolbar.setVisibility(View.VISIBLE);
         toolbar.setTitle(title);
@@ -161,7 +162,8 @@ public class MainActivity extends AppCompatActivity {
     private void replaceFragment(Fragment fragment, boolean addToBackStack) {
         var ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.frame_main_container, fragment);
-        if (addToBackStack) ft.addToBackStack(null);
+        if (addToBackStack)
+            ft.addToBackStack(null);
         ft.commit();
         getSupportFragmentManager().executePendingTransactions();
         updateUIForFragment(fragment);
@@ -177,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
             bottomNav.setVisibility(View.GONE);
         }
     }
+
     // ✅ Hàm show/hide loading
     private void showLoading(boolean show) {
         if (show) {
@@ -189,8 +192,10 @@ public class MainActivity extends AppCompatActivity {
             bottomNav.setVisibility(View.VISIBLE);
         }
     }
+
     public void checkCurrentFragment() {
-        // ID của container mà bạn dùng để host các Fragment (ví dụ: R.id.fragment_container)
+        // ID của container mà bạn dùng để host các Fragment (ví dụ:
+        // R.id.fragment_container)
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_main_container);
 
         if (currentFragment instanceof HomeCustomerFragment) {
@@ -200,7 +205,8 @@ public class MainActivity extends AppCompatActivity {
                 // Lấy chiều cao của thanh trạng thái
                 Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
 
-                // Áp dụng padding: Padding cũ + Chiều cao thanh trạng thái + Thêm khoảng cách 10dp
+                // Áp dụng padding: Padding cũ + Chiều cao thanh trạng thái + Thêm khoảng cách
+                // 10dp
                 v.setPadding(v.getPaddingLeft(), 0, v.getPaddingRight(), v.getPaddingBottom());
 
                 return insets;
@@ -211,8 +217,10 @@ public class MainActivity extends AppCompatActivity {
                 // Lấy chiều cao của thanh trạng thái
                 Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
 
-                // Áp dụng padding: Padding cũ + Chiều cao thanh trạng thái + Thêm khoảng cách 10dp
-                v.setPadding(v.getPaddingLeft(), (int) (systemBars.top * 0.75), v.getPaddingRight(), v.getPaddingBottom());
+                // Áp dụng padding: Padding cũ + Chiều cao thanh trạng thái + Thêm khoảng cách
+                // 10dp
+                v.setPadding(v.getPaddingLeft(), (int) (systemBars.top * 0.75), v.getPaddingRight(),
+                        v.getPaddingBottom());
 
                 return insets;
             });

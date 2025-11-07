@@ -20,4 +20,35 @@
     <color name="search_opaque">#ffaa3f</color>
     <color name="selected_background">#ffaa3f</color>
     <color name="default_background">#3d3d3d</color>
+
+    <!-- Savings Feature Colors - Red-Orange Theme -->
+    <!-- Backgrounds -->
+    <color name="background_secondary">#FFF7ED</color>
+
+    <!-- Text -->
+    <color name="text_primary">#1F1F1F</color>
+    <color name="text_secondary">#78716C</color>
+
+    <!-- Red -->
+    <color name="red_50">#FEF3F2</color>
+    <color name="red_600">#DC2626</color>
+    <color name="red_700">#B91C1C</color>
+
+    <!-- Orange -->
+    <color name="orange_50">#FFF7ED</color>
+    <color name="orange_100">#FFEDD5</color>
+    <color name="orange_200">#FED7AA</color>
+    <color name="orange_600">#F97316</color>
+
+    <!-- Stone -->
+    <color name="stone_200">#E7E5E4</color>
+    <color name="stone_500">#78716C</color>
+
+    <!-- Green -->
+    <color name="green_600">#16A34A</color>
+
+    <!-- Borders -->
+    <color name="border_primary">#FED7AA</color>
+    <color name="border_light">#FFEDD5</color>
+
 </resources>

@@ -74,16 +74,37 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter> 
+            <!-- TODO: Restore this intent-filter after testing -->
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
         </activity>
         <activity
             android:name=".ui.activity.LoginActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.activity.MainActivity"
             android:exported="false"
             android:label="TransferBank"
-            android:theme="@style/Theme.TAD_Bank_T1.NoActionBar" />
+            android:theme="@style/Theme.TAD_Bank_T1.NoActionBar" />  
+            
+        <activity
+            android:name=".saving.SavingsOverviewActivity"
+            android:exported="false">
+            <!-- TEST: Temporary launcher for testing Savings Overview -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".saving.AccountDetailActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

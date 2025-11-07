@@ -73,6 +73,9 @@
         <activity
             android:name=".saving.AccountDetailActivity"
             android:exported="false" />
+        <activity
+            android:name=".saving.CreateAccountActivity"
+            android:exported="false" />
 
     </application>
 

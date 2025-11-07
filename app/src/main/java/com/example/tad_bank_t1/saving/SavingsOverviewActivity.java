@@ -174,11 +174,13 @@ public class SavingsOverviewActivity extends AppCompatActivity {
 
     private void setupListeners() {
         fabAddAccount.setOnClickListener(v -> {
-            Toast.makeText(this, "Mở tài khoản tiết kiệm mới", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, CreateAccountActivity.class);
+            startActivity(intent);
         });
 
         findViewById(R.id.btnOpenFirstAccount).setOnClickListener(v -> {
-            Toast.makeText(this, "Mở sổ tiết kiệm đầu tiên", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, CreateAccountActivity.class);
+            startActivity(intent);
         });
     }
 }

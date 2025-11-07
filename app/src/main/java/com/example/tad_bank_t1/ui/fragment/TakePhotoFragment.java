@@ -186,7 +186,7 @@ public class TakePhotoFragment extends Fragment {
                 return;
             }
             ekyc.setUserId(uid);
-            ekycRepository.createWithUploads(ekyc)
+            ekycRepository.create(ekyc)
                     .addOnSuccessListener(id -> {
                         // Sau khi tạo thành công trên server và nhận lại ID, gán nó vào object
                         ekyc.setId(id);
@@ -195,7 +195,7 @@ public class TakePhotoFragment extends Fragment {
                         // Ở đây bạn có thể điều hướng người dùng sang màn hình khác
                     })
                     .addOnFailureListener(e -> {
-                        Toast.makeText(getContext(), "Lưu eKYC thất bại: ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Lưu eKYC thất bại: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         btnXacThuc.setEnabled(true);
                     });
         });

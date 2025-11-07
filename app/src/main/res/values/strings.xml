@@ -9,6 +9,31 @@
     <string name="cai_dat_nav">Setting</string>
     <string name="tai_khoan_nguon">Debit Account</string>
     <string name="noi_dung_chuyen_khoan">Content</string>
+
+    <!-- Savings Feature Strings -->
+    <string name="savings_accounts_title">Tài khoản tiết kiệm</string>
+    <string name="total_savings_balance">Tổng số dư tiết kiệm</string>
+    <string name="active_accounts_section">Tài khoản đang hoạt động</string>
+    <string name="closed_accounts_section">Tài khoản đã đóng</string>
+
+    <string name="label_balance">Số dư:</string>
+    <string name="label_term">Thời hạn:</string>
+    <string name="label_interest_rate">Lãi suất (APR):</string>
+    <string name="label_payment_method">Trả lãi:</string>
+
+    <string name="status_active">Đang hoạt động</string>
+    <string name="status_closed">Đã đóng</string>
+
+    <string name="action_view_details">Xem chi tiết</string>
+
+    <string name="empty_state_title">Chưa có tài khoản tiết kiệm</string>
+    <string name="empty_state_description">Bắt đầu tiết kiệm ngay hôm nay để đạt được mục tiêu tài chính của bạn</string>
+    <string name="empty_state_action">Mở sổ tiết kiệm đầu tiên</string>
+
+    <string name="payment_monthly">Hàng tháng</string>
+    <string name="payment_quarterly">Hàng quý</string>
+    <string name="active_accounts_count">%d tài khoản đang hoạt động</string>
+
     <string name="chuyen_tien">Transfer</string>
     <string name="so_du_de_chuyen_khoan">Balance</string>
     <string name="thong_tin_nguoi_nhan_ck">Beneficiary Information</string>
@@ -85,4 +110,37 @@
     <string name="info_sign_up_err_email_empty">Email can\'t be empty.</string>
     <string name="info_sign_up_err_invalid_email">Invalid email format. Should be like: example@gmail.com.</string>
     <string name="info_sign_up_loading">Loading...</string>
+
+    <!-- Detail Screen -->
+    <string name="detail_title">Chi tiết tài khoản tiết kiệm</string>
+
+    <!-- Card Titles -->
+    <string name="card_general_info">Thông tin chung</string>
+    <string name="card_interest_policy">Chính sách lãi suất</string>
+    <string name="card_current_status">Tình trạng hiện tại</string>
+
+    <!-- Labels -->
+    <string name="label_account_number">Số tài khoản:</string>
+    <string name="label_branch">Chi nhánh:</string>
+    <string name="label_start_date">Ngày mở:</string>
+    <string name="label_maturity_date">Ngày đáo hạn:</string>
+    <string name="label_policy_name">Tên chính sách:</string>
+    <string name="label_interest_rate_detail">Lãi suất:</string>
+    <string name="label_term_length">Kỳ hạn:</string>
+    <string name="label_interest_payment">Hình thức nhận lãi:</string>
+    <string name="label_principal">Số dư gốc:</string>
+    <string name="label_estimated_interest">Tiền lãi tạm tính:</string>
+    <string name="label_total_maturity">Tổng tiền dự kiến khi đáo hạn</string>
+
+    <!-- Actions -->
+    <string name="action_close_account">Đóng sổ tiết kiệm</string>
+    <string name="action_extend_term">Gia hạn kỳ hạn mới</string>
+
+    <!-- Alert -->
+    <string name="alert_note_title">Lưu ý</string>
+    <string name="alert_note_content">Số tiền lãi là tạm tính và có thể thay đổi theo chính sách của ngân hàng. Đóng sổ trước hạn có thể ảnh hưởng đến lãi suất.</string>
+
+    <!-- Others -->
+    <string name="per_year">/năm</string>
+    <string name="cd_back_button">Back</string>
 </resources>

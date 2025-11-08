@@ -49,6 +49,19 @@ public class FirebaseAccountRepository implements AccountRepository {
     }
 
     @Override
+    public Task<Account> getByAccountNumber(String accountNumber) {
+        Query q = adapter.query()
+                .whereEqualTo("accountNumber", accountNumber)
+                .limit(1);
+        return adapter.where(q).continueWith(t -> {
+            if (!t.isSuccessful() || t.getResult() == null || t.getResult().isEmpty()) {
+                return null;
+            }
+            return t.getResult().getDocuments().get(0).toObject(Account.class);
+        });
+    }
+
+    @Override
     public Task<List<Account>> getAccountsByUserId(String userId) {
         Query q = adapter.query()
                 .whereEqualTo("userId", userId);

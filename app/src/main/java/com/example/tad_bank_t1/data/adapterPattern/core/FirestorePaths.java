@@ -9,6 +9,8 @@ public final class FirestorePaths {
     public static final String BRANCHES = "branches";
     public static final String BANKS = "banks";
     public static final String ACCOUNTS = "accounts";
+    public static final String EXTERNAL_ACCOUNTS = "external_accounts";
+
     public static final String SAVING_RATE_POLICIES = "savingRatePolicies";
     public static final String SAVING_ACCOUNTS = "savingAccounts";
     public static final String MORTGAGE_ACCOUNTS = "mortgageAccounts";

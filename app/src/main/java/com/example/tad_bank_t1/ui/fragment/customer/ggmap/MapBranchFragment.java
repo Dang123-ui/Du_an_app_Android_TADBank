@@ -1,4 +1,4 @@
-package com.example.tad_bank_t1.ui.fragment;
+package com.example.tad_bank_t1.ui.fragment.customer.ggmap;
 
 import android.Manifest;
 import android.content.pm.PackageManager;

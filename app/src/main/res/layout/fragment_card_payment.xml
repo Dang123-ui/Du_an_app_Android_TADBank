@@ -11,7 +11,7 @@
     app:cardCornerRadius="16dp"
     app:cardElevation="4dp"
 
-    tools:context=".ui.fragment.CardPaymentFragment"
+    tools:context=".ui.fragment.customer.transfer.CardPaymentFragment"
     >
 
     <LinearLayout

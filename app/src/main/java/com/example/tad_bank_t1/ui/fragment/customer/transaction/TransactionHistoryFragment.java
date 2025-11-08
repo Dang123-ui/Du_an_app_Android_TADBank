@@ -1,4 +1,4 @@
-package com.example.tad_bank_t1.ui.fragment;
+package com.example.tad_bank_t1.ui.fragment.customer.transaction;
 
 import android.os.Bundle;
 
@@ -16,10 +16,7 @@ import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.fake_data.TxnFakeData;
-import com.example.tad_bank_t1.data.model.Account;
 import com.example.tad_bank_t1.data.model.Transaction;
-import com.example.tad_bank_t1.data.repository.transaction.FirebaseTransactionRepository;
-import com.example.tad_bank_t1.data.session.SessionManager;
 import com.example.tad_bank_t1.ui.activity.MainActivity;
 import com.example.tad_bank_t1.ui.viewadapter.TxnHistoryAdapter;
 import com.example.tad_bank_t1.ui.viewmodel.SessionViewModel;

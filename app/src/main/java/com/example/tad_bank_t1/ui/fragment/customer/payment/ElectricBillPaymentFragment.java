@@ -1,4 +1,4 @@
-package com.example.tad_bank_t1.ui.fragment;
+package com.example.tad_bank_t1.ui.fragment.customer.payment;
 
 import android.os.Bundle;
 
@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.example.tad_bank_t1.R;
+import com.example.tad_bank_t1.ui.fragment.customer.transfer.SearchTransferInfomationFragment;
+import com.example.tad_bank_t1.ui.fragment.customer.transfer.CardPaymentFragment;
 import com.example.tad_bank_t1.util.Constants;
 import com.example.tad_bank_t1.util.FragmentUtil;
 

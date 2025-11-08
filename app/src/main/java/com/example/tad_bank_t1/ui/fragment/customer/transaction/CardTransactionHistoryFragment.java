@@ -1,4 +1,4 @@
-package com.example.tad_bank_t1.ui.fragment;
+package com.example.tad_bank_t1.ui.fragment.customer.transaction;
 
 import android.os.Bundle;
 
@@ -15,10 +15,9 @@ import android.widget.TextView;
 
 import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.model.Account;
-import com.example.tad_bank_t1.data.session.SessionManager;
 import com.example.tad_bank_t1.ui.activity.MainActivity;
+import com.example.tad_bank_t1.ui.fragment.customer.account.AccountDetailFragment;
 import com.example.tad_bank_t1.ui.viewmodel.SessionViewModel;
-import com.example.tad_bank_t1.ui.viewmodel.TransactionViewModel;
 
 
 public class CardTransactionHistoryFragment extends Fragment {

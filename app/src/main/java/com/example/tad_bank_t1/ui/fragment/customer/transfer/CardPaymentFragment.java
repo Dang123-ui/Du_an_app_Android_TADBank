@@ -1,10 +1,12 @@
-package com.example.tad_bank_t1.ui.fragment;
+package com.example.tad_bank_t1.ui.fragment.customer.transfer;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.transition.Slide;
 import android.util.Log;
 import android.view.Gravity;
@@ -14,20 +16,30 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.tad_bank_t1.R;
-import com.example.tad_bank_t1.ui.activity.MainActivity;
 import com.example.tad_bank_t1.ui.viewmodel.AccountSharedViewModel;
+import com.example.tad_bank_t1.ui.viewmodel.SessionViewModel;
+import com.example.tad_bank_t1.util.CurrencyUtil;
 
 
 public class CardPaymentFragment extends Fragment {
 
     private AccountSharedViewModel accountSharedViewModel;
-    private TextView txtTransferAccNumber;
+    private SessionViewModel sessionViewModel;
+    private final Handler handler = new Handler(Looper.getMainLooper());
+    private Runnable searchJob;
+    private String lastQuery = "";
+
+
+    private TextView txtTransferAccNumber, txtTransferAccBalance;
+
+    public CardPaymentFragment() {
+        // Required empty public constructor
+        sessionViewModel = new ViewModelProvider(requireActivity()).get(SessionViewModel.class);
+    }
 
     public static CardPaymentFragment newInstance(String param1, String param2) {
         CardPaymentFragment fragment = new CardPaymentFragment();
         Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,13 +66,36 @@ public class CardPaymentFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_card_payment, container, false);
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         txtTransferAccNumber = view.findViewById(R.id.txtTransferAccNumber);
+        txtTransferAccBalance = view.findViewById(R.id.txtTransferAccBalance);
 
         // Khởi tạo ViewModel
         accountSharedViewModel = new ViewModelProvider(requireActivity()).get(AccountSharedViewModel.class);
         accountSharedViewModel.setDebitAccountNumberCurrent(txtTransferAccNumber.getText().toString().trim());
-        return view;
+
+        sessionViewModel.defaultAccount.observe(getViewLifecycleOwner(), account -> {
+            if (account != null) {
+                txtTransferAccNumber.setText(account.getAccountNumber());
+                txtTransferAccBalance.setText(CurrencyUtil.formatVND(account.getBalance()) + " " + account.getCurrency());
+            }
+        });
+
+        sessionViewModel.selectedAccount.observe(getViewLifecycleOwner(), account -> {
+            if (account != null) {
+                txtTransferAccNumber.setText(account.getAccountNumber());
+                txtTransferAccBalance.setText(CurrencyUtil.formatVND(account.getBalance()) + " " + account.getCurrency());
+            }
+        });
+
     }
+
 
     @Override
     public void onStart() {
@@ -68,15 +103,12 @@ public class CardPaymentFragment extends Fragment {
         // Hide the bottom navigation bar when this fragment starts
         Log.d("TAG", "CARD TRANSFER onstart");
 
-//        ((MainActivity) requireActivity()).setBottomNavigationVisibility(View.GONE);
+    //        ((MainActivity) requireActivity()).setBottomNavigationVisibility(View.GONE);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        // Show the bottom navigation bar when the user leaves this fragment
-        Log.d("TAG", "CARD TRANSFER onstop");
 
-//        ((MainActivity) requireActivity()).setBottomNavigationVisibility(View.VISIBLE);
     }
 }

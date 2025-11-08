@@ -1,4 +1,4 @@
-package com.example.tad_bank_t1.ui.fragment;
+package com.example.tad_bank_t1.ui.fragment.customer.payment;
 
 import android.os.Bundle;
 
@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 
 import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.ui.activity.MainActivity;
-import com.example.tad_bank_t1.util.FragmentUtil;
 import com.google.android.material.card.MaterialCardView;
 
 public class BillsPaymentFragment extends Fragment {

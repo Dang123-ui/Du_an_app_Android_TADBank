@@ -4,8 +4,8 @@
 //
 //import com.example.tad_bank_t1.data.model.Account;
 //import com.example.tad_bank_t1.data.model.User;
-//import com.example.tad_bank_t1.data.repository.account.AccountRepository;
-//import com.example.tad_bank_t1.data.repository.account.FirebaseAccountRepository;
+//import com.example.tad_bank_t1.data.repository.account.ExternalAccountRepository;
+//import com.example.tad_bank_t1.data.repository.account.FirebaseExternalAccountRepository;
 //import com.example.tad_bank_t1.data.repository.users.FirebaseUserRepository;
 //import com.example.tad_bank_t1.data.repository.users.UserRepository;
 //import com.example.tad_bank_t1.data.session.SessionManager;
@@ -14,7 +14,7 @@
 //
 //public class CurrentUser {
 //    private static final UserRepository userRepository = new FirebaseUserRepository();
-//    private static final AccountRepository accountRepository = new FirebaseAccountRepository();
+//    private static final ExternalAccountRepository accountRepository = new FirebaseExternalAccountRepository();
 //    public static final String CURRENT_USER_ID = "u000001";
 //
 //    // 🔹 Interface callback

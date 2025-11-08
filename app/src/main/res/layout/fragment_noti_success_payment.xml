@@ -6,7 +6,7 @@
     android:id="@+id/main_scroll_bill_payment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.NotiSuccessPaymentFragment">
+    tools:context=".ui.fragment.customer.transfer.NotiSuccessPaymentFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

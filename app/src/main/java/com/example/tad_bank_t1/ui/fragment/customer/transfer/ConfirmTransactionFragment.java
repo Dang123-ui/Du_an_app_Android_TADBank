@@ -1,7 +1,5 @@
-package com.example.tad_bank_t1.ui.fragment;
+package com.example.tad_bank_t1.ui.fragment.customer.transfer;
 
-import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -21,10 +19,8 @@ import android.widget.TextView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.dto.TransferInfoDTO;
-import com.example.tad_bank_t1.ui.activity.MainActivity;
 import com.example.tad_bank_t1.ui.viewmodel.AccountSharedViewModel;
 import com.example.tad_bank_t1.util.CurrencyUtil;
-import com.example.tad_bank_t1.util.FragmentUtil;
 
 
 public class ConfirmTransactionFragment extends Fragment {

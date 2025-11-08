@@ -12,6 +12,7 @@ public interface AccountRepository {
     Task<Void> delete(String id);
     Task<Account> getById(String id);
     Task<Account> getByUserId(String userId);
+    Task<Account> getByAccountNumber(String accountNumber);
     Task<Boolean> isAccountNumberAvailable(String accountNumber);
     Task<List<Account>> getAccountsByUserId(String userId);
     ListenerRegistration listenAccountsByUserId(String userId, OnAccountsChanged listener);

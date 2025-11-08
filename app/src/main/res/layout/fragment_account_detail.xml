@@ -6,7 +6,7 @@
     android:padding="8dp"
     android:orientation="vertical"
     android:background="@color/primaryBackgroundColor"
-    tools:context=".ui.fragment.AccountDetailFragment">
+    tools:context=".ui.fragment.customer.account.AccountDetailFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout

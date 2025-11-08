@@ -4,14 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.tad_bank_t1.ui.fragment.BalanceAlertFragment;
-import com.example.tad_bank_t1.ui.fragment.NotiItemFragment;
+import com.example.tad_bank_t1.ui.fragment.customer.notification.BalanceAlertFragment;
+import com.example.tad_bank_t1.ui.fragment.customer.notification.NotiItemFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class VPNotiAdapter extends FragmentStateAdapter {

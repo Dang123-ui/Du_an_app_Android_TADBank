@@ -1,4 +1,4 @@
-package com.example.tad_bank_t1.ui.fragment;
+package com.example.tad_bank_t1.ui.fragment.customer.notification;
 
 import android.os.Bundle;
 
@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.fake_data.NotiFakeData;
 import com.example.tad_bank_t1.data.model.Notification;
-import com.example.tad_bank_t1.data.model.Transaction;
 import com.example.tad_bank_t1.data.model.enums.NotificationType;
 import com.example.tad_bank_t1.ui.viewadapter.NotiAdapter;
 import com.example.tad_bank_t1.ui.viewmodel.NotificationViewModel;

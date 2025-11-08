@@ -6,7 +6,7 @@
     android:id="@+id/main_scroll_transfer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.MobileTopupTransferFragment">
+    tools:context=".ui.fragment.customer.transfer.MobileTopupTransferFragment">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout

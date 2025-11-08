@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/primaryBackgroundColor"
-    tools:context=".ui.fragment.NotiFragment">
+    tools:context=".ui.fragment.customer.notification.NotiFragment">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tloNoti"

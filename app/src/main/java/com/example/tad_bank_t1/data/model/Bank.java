@@ -7,7 +7,7 @@ public class Bank {
     private String bankLongName;
     private String bankImageUrl;
 
-
+    public Bank() {}
     public Bank(String bankId, String bankImageUrl, String bankName, String bankCode, String bankLongName) {
         this.bankId = bankId;
         this.bankImageUrl = bankImageUrl;

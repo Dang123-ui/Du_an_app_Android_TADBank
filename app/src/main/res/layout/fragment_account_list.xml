@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context=".ui.fragment.AccountListFragment">
+    tools:context=".ui.fragment.customer.account.AccountListFragment">
 
     <com.google.android.material.button.MaterialButtonToggleGroup
         android:id="@+id/toggleGroupAccList"

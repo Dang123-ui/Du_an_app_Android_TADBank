@@ -7,7 +7,7 @@
     android:paddingVertical="10dp"
     android:background="@drawable/bg_main_white_custom"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.fragment.SearchTransferInfomationFragment">
+    tools:context=".ui.fragment.customer.transfer.SearchTransferInfomationFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
@@ -88,7 +88,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="0dp"
         android:orientation="vertical"
         android:layout_marginTop="15dp"
         android:padding="5dp"
@@ -96,6 +96,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lnloSearchTransferInfo"
+        app:layout_constraintBottom_toBottomOf="parent"
         >
         <TextView
             android:id="@+id/txtSearchResultListTitle"
@@ -108,12 +109,11 @@
             />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcvResultList"
+            android:id="@+id/rcvSearchResult"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
             />
-
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

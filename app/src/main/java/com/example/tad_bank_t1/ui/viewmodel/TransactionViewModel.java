@@ -25,21 +25,21 @@ public class TransactionViewModel extends ViewModel {
 
     // transaction list
     public void loadTransactions(String accountId) {
-        _isLoading.setValue(true);
+        _isLoading.postValue(true);
         repo.getTransactionsByAccount(accountId)
                 .addOnSuccessListener(list -> {
                     Log.d("TransactionViewModel", "Loaded " + list.size() + " transactions");
-                    _transactions.setValue(list);
-                    _isLoading.setValue(false);
+                    _transactions.postValue(list);
+                    _isLoading.postValue(false);
                 })
                 .addOnFailureListener(e -> {
-                    _isLoading.setValue(false);
+                    _isLoading.postValue(false);
                 });
     }
 
     // transaction detail selected
     public void selectTransaction(Transaction transaction) {
-        _selectedTransaction.setValue(transaction);
+        _selectedTransaction.postValue(transaction);
     }
 
     public LiveData<Transaction> getSelectedTransaction() {
@@ -47,7 +47,7 @@ public class TransactionViewModel extends ViewModel {
     }
 
     public void setSelectedAccountId(String accountId) {
-        _selectedAccountId.setValue(accountId);
+        _selectedAccountId.postValue(accountId);
     }
 
     public LiveData<String> getSelectedAccountId() {
@@ -62,9 +62,9 @@ public class TransactionViewModel extends ViewModel {
 
     // clear selected
     public void clearSelection() {
-        _selectedAccountId.setValue(null);
-        _selectedTransaction.setValue(null);
-        _transactions.setValue(null);
+        _selectedAccountId.postValue(null);
+        _selectedTransaction.postValue(null);
+        _transactions.postValue(null);
     }
 
 }

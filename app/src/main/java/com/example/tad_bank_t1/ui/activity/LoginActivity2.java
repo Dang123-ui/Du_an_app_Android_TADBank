@@ -70,7 +70,9 @@ public class LoginActivity2 extends AppCompatActivity {
         tvName = findViewById(R.id.tvName);
         logoLogin2 = findViewById(R.id.logoLogin2);
         etPassword = findViewById(R.id.etPassword);
+        etPassword.setText("Deptraico102!");
         etEmailorPhone = findViewById(R.id.edtNumberAccount);
+        etEmailorPhone.setText("0706613468");
         tilPassword = findViewById(R.id.textInputLayout);
         tilEmailorPhone = findViewById(R.id.tlUsername);
         btnLogin2 = findViewById(R.id.btnLogin2);

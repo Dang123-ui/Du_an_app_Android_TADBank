@@ -1,4 +1,4 @@
-package com.example.tad_bank_t1.ui.fragment;
+package com.example.tad_bank_t1.ui.fragment.customer.account;
 
 import android.os.Bundle;
 
@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.model.Account;
 import com.example.tad_bank_t1.data.model.enums.AccountType;
-import com.example.tad_bank_t1.data.session.SessionManager;
 import com.example.tad_bank_t1.ui.activity.MainActivity;
+import com.example.tad_bank_t1.ui.fragment.customer.transaction.TransactionHistoryFragment;
 import com.example.tad_bank_t1.ui.viewadapter.AccountListAdapter;
 import com.example.tad_bank_t1.ui.viewmodel.SessionViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.TransactionViewModel;

@@ -2,7 +2,6 @@ package com.example.tad_bank_t1.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.activity.OnBackPressedCallback;
@@ -16,15 +15,11 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.tad_bank_t1.R;
-import com.example.tad_bank_t1.data.model.Account;
-import com.example.tad_bank_t1.data.model.User;
-import com.example.tad_bank_t1.ui.fragment.BankTransferFragment;
+import com.example.tad_bank_t1.ui.fragment.customer.transfer.BankTransferFragment;
 import com.example.tad_bank_t1.ui.fragment.HomeCustomerFragment;
 import com.example.tad_bank_t1.ui.fragment.SettingFragment;
 import com.example.tad_bank_t1.ui.viewmodel.SessionViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;

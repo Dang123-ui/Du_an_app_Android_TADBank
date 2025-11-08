@@ -41,42 +41,42 @@ public class SessionViewModel extends ViewModel {
     private ListenerRegistration accountListener;
 
     public void loadCurrentUserAndAccounts(String userId) {
-        _isLoading.setValue(true);
+        _isLoading.postValue(true);
         userRepo.getById(userId)
                 .addOnSuccessListener(user -> {
-                    _user.setValue(user);
+                    _user.postValue(user);
                     Log.d("SessionViewModel", "User loaded:" + user.getFullName());
                     accountRepo.getAccountsByUserId(user.getUserId())
                             .addOnSuccessListener(list -> {
-                                _accounts.setValue(list);
+                                _accounts.postValue(list);
                                 if (list != null) {
                                     for (Account acc : list) {
                                         if (acc.isDefault()) {
-                                            _defaultAccount.setValue(acc);
+                                            _defaultAccount.postValue(acc);
                                             break;
                                         }
                                     }
                                 }
-                                _isLoading.setValue(false);
+                                _isLoading.postValue(false);
                             })
                             .addOnFailureListener(e -> {
-                                _error.setValue(e.getMessage());
-                                _isLoading.setValue(false);
+                                _error.postValue(e.getMessage());
+                                _isLoading.postValue(false);
                             });
                 })
                 .addOnFailureListener(e -> {
-                    _error.setValue(e.getMessage());
+                    _error.postValue(e.getMessage());
                     Log.d("SessionViewModel", "Error loading user:" + e.getMessage());
-                    _isLoading.setValue(false);
+                    _isLoading.postValue(false);
                 });
     }
 
 
     public void observeUserAndAccountsRealtime(String userId) {
-        _isLoading.setValue(true);
+        _isLoading.postValue(true);
         userRepo.getById(userId)
                 .addOnSuccessListener(user -> {
-                    _user.setValue(user);
+                    _user.postValue(user);
                     Log.d("SessionViewModel", "User loaded:" + user.getFullName());
 
 
@@ -84,26 +84,26 @@ public class SessionViewModel extends ViewModel {
                     accountListener = accountRepo.listenAccountsByUserId(userId, new AccountRepository.OnAccountsChanged() {
                         @Override
                         public void onChanged(List<Account> accounts) {
-                            _accounts.setValue(accounts);
+                            _accounts.postValue(accounts);
                             for (Account a : accounts) {
-                                if (a.isDefault()) _defaultAccount.setValue(a);
+                                if (a.isDefault()) _defaultAccount.postValue(a);
                                 Log.d("SessionViewModel", "Account loaded:" + a.getAccountName());
                             }
-                            _isLoading.setValue(false);
+                            _isLoading.postValue(false);
                         }
 
                         @Override
                         public void onError(Exception e) {
                             Log.d("SessionViewModel", "Error account:" + e.getMessage());
-                            _error.setValue(e.getMessage());
-                            _isLoading.setValue(false);
+                            _error.postValue(e.getMessage());
+                            _isLoading.postValue(false);
                         }
                     });
                 })
                 .addOnFailureListener(e -> {
                     Log.d("SessionViewModel", "Error loading user:" + e.getMessage());
-                    _error.setValue(e.getMessage());
-                    _isLoading.setValue(false);
+                    _error.postValue(e.getMessage());
+                    _isLoading.postValue(false);
                 });
     }
 
@@ -117,17 +117,17 @@ public class SessionViewModel extends ViewModel {
     }
 
     public void setSelectedAccount(Account account) {
-        _selectedAccount.setValue(account);
+        _selectedAccount.postValue(account);
     }
 
     public void clearSession() {
-        _user.setValue(null);
-        _accounts.setValue(null);
-        _defaultAccount.setValue(null);
-        _selectedAccount.setValue(null);
+        _user.postValue(null);
+        _accounts.postValue(null);
+        _defaultAccount.postValue(null);
+        _selectedAccount.postValue(null);
     }
 
     public void clearSelectedAccount() {
-        _selectedAccount.setValue(null);
+        _selectedAccount.postValue(null);
     }
 }

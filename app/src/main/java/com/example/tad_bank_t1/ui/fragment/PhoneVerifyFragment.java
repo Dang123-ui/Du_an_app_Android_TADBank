@@ -43,7 +43,7 @@ public class PhoneVerifyFragment extends Fragment {
     private static final String ARG_EMAIL    = "email";
 
     // --- Test account (Auth console) ---
-    private static final String TEST_PHONE_NUMBER = "+84706613468";
+    private static final String TEST_PHONE_NUMBER = "+84373436163";
 
 
     // --- State ---

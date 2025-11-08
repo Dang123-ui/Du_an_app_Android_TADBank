@@ -1,9 +1,16 @@
-package com.example.tad_bank_t1.ui.fragment;
+package com.example.tad_bank_t1.ui.fragment.customer.transfer;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.transition.Slide;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,14 +21,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tad_bank_t1.R;
+import com.example.tad_bank_t1.data.model.Bank;
+import com.example.tad_bank_t1.ui.viewadapter.BankAdapter;
+import com.example.tad_bank_t1.ui.viewmodel.BankViewModel;
 import com.example.tad_bank_t1.util.Constants;
 import com.example.tad_bank_t1.util.FragmentUtil;
 import com.google.android.material.textfield.TextInputEditText;
 
-public class SearchTransferInfomationFragment extends Fragment {
+import java.util.Collections;
+import java.util.List;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+public class SearchTransferInfomationFragment extends Fragment {
     private static final String TITLE = "title_search";
     private static final String HINT_SEARCH = "hint_search";
     private static final String LIST_RESULT_TITLE = "list_result_title";
@@ -31,9 +41,16 @@ public class SearchTransferInfomationFragment extends Fragment {
     private TextInputEditText edtEnterInfoSearch;
     private ImageButton imbtSearchCancel;
     private ImageButton imbtSearchTransfer;
-
-    // TODO: Rename and change types of parameters
     private String title_search, hint_search, list_result_title, search_for;
+    // view model
+    private BankViewModel bankViewModel;
+    private RecyclerView recyclerViewSearch;
+    private RecyclerView.Adapter adapter;
+
+    private final Handler handler = new Handler(Looper.getMainLooper());
+    private Runnable searchJob;
+    private String lastQuery = "";
+
 
     public SearchTransferInfomationFragment() {
         // Required empty public constructor
@@ -42,14 +59,14 @@ public class SearchTransferInfomationFragment extends Fragment {
     public static SearchTransferInfomationFragment newInstance(String title_search, String hint_search,
                                                                String list_result_title, String search_for) {
         SearchTransferInfomationFragment fragment = new SearchTransferInfomationFragment();
+
         Bundle args = new Bundle();
         args.putString(TITLE, title_search);
         args.putString(HINT_SEARCH, hint_search);
         args.putString(LIST_RESULT_TITLE, list_result_title);
         args.putString(SEARCH_FOR, search_for);
-
-
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -66,7 +83,7 @@ public class SearchTransferInfomationFragment extends Fragment {
         setEnterTransition(new Slide(Gravity.BOTTOM));
 
         // Transition khi Fragment hiện tại biến mất (Exit)
-        setExitTransition(new Slide(Gravity.TOP));
+        setExitTransition(new Slide(Gravity.BOTTOM));
 
 
     }
@@ -87,8 +104,19 @@ public class SearchTransferInfomationFragment extends Fragment {
         edtEnterInfoSearch.setHint(hint_search);
         txtSearchResultListTitle.setText(list_result_title);
 
+        recyclerViewSearch = view.findViewById(R.id.rcvSearchResult);
+
+
         if(search_for.equals(Constants.SEARCH_BANK)){
-            Toast.makeText(getContext(), Constants.SEARCH_BANK, Toast.LENGTH_SHORT).show();
+            adapter = new BankAdapter(List.of( ));
+            recyclerViewSearch.setAdapter(adapter);
+            recyclerViewSearch.setLayoutManager(new LinearLayoutManager(getContext()));
+            bankViewModel = new ViewModelProvider(this).get(BankViewModel.class);
+            bankViewModel.getBanks().observe(getViewLifecycleOwner(), bank ->{
+                List<Bank> safe = (bank != null) ? bank : Collections.emptyList();
+                ((BankAdapter) adapter).setData(safe);
+            });
+//            bankViewModel.searchBanks("");
         } else if (search_for.equalsIgnoreCase(Constants.SEARCH_ACCOUNT)) {
             Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
         } else if(search_for.equalsIgnoreCase(Constants.SEARCH_BENEFICIARY_ACCOUNT)){
@@ -113,6 +141,56 @@ public class SearchTransferInfomationFragment extends Fragment {
         imbtSearchTransfer.setOnClickListener(v -> {
             Toast.makeText(getContext(), "Search for ...", Toast.LENGTH_LONG).show();
         });
+
+
+        edtEnterInfoSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                String key = s.toString().trim();
+
+
+                if(search_for.equals(Constants.SEARCH_BANK)){
+                    if (key.equals(lastQuery)) return;         // tránh gọi lại cùng chuỗi
+                    lastQuery = key;
+
+                    handler.removeCallbacks(searchJob);        // huỷ job cũ
+                    searchJob = () -> {
+                        if (key.isEmpty()) {
+//                        exte.loadAll();               // hoặc clear list tuỳ bạn
+                        } else if (key.length() < 2) {
+                            // tối thiểu 2 ký tự để tránh spam
+                            bankViewModel.searchBanks(key); // hoặc: adapter.setData(Collections.emptyList())
+                        } else {
+                            bankViewModel.searchBanks(key);
+                        }
+                    };
+                    handler.postDelayed(searchJob, 350);
+                } else if (search_for.equalsIgnoreCase(Constants.SEARCH_ACCOUNT)) {
+                    Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
+                } else if(search_for.equalsIgnoreCase(Constants.SEARCH_BENEFICIARY_ACCOUNT)){
+                    Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
+                } else if(search_for.equalsIgnoreCase(Constants.SEARCH_BENEFICIARY_PHONE)){
+                    Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
+                } else if(search_for.equalsIgnoreCase(Constants.SEARCH_ELECTRICITY_PROVIDER)){
+                    Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
+                } else if(search_for.equalsIgnoreCase(Constants.SEARCH_WATER_PROVIDER)){
+                    Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
+                } else if(search_for.equalsIgnoreCase(Constants.SEARCH_TUITION_PROVIDER)){
+                    Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+        });
+
         return view;
 
     }

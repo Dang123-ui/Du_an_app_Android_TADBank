@@ -1,4 +1,4 @@
-package com.example.tad_bank_t1.ui.fragment;
+package com.example.tad_bank_t1.ui.fragment.customer.transfer;
 
 import android.os.Bundle;
 
@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.tad_bank_t1.R;
-import com.example.tad_bank_t1.util.FragmentUtil;
 
 public class NotiSuccessPaymentFragment extends Fragment {
 

@@ -101,7 +101,7 @@ public class HomeCustomerFragment extends Fragment {
                 txtBadgeNotify.setText(count > 99 ? "99+" : String.valueOf(count));
                 Toast.makeText(getActivity(), "New notifications", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(getActivity(), "No unread notifications", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "No unread notifications", Toast.LENGTH_SHORT).show();
                 txtBadgeNotify.setVisibility(View.GONE);
             }
         });

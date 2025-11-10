@@ -1,6 +1,7 @@
 package com.example.tad_bank_t1.util;
 
 public class Constants {
+    public static final String MY_BANK = "TADBANK";
     public static final String SEARCH_BANK = "BANK";
     public static final String SEARCH_ACCOUNT = "ACCOUNT";
     public static final String SEARCH_BENEFICIARY_ACCOUNT = "BENEFICIARY_ACCOUNT";

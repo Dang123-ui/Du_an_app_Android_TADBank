@@ -6,6 +6,7 @@ import com.example.tad_bank_t1.data.model.Account;
 import com.example.tad_bank_t1.data.model.Bank;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Filter;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 
@@ -41,13 +42,15 @@ public class FirebaseBankRepository implements BankRepository {
     }
 
     @Override
-    public Task<List<Bank>> search(String key) {
+    public Task<List<Bank>> searchRealtime(String key) {
         Query q = adapter.query()
-                .startAt(key)
-                .endAt(key + "\uf8ff")
-                .whereEqualTo("bankName", key)
-                .whereEqualTo("bankCode", key)
-                .whereEqualTo("bankLongName", key);
+                .where(
+                       Filter.or(
+                               Filter.equalTo("bankName", key),
+                               Filter.equalTo("bankCode", key),
+                               Filter.equalTo("bankLongName", key)
+                       )
+                );
 
         return adapter.where(q).continueWith(task -> {
                     if (!task.isSuccessful() || task.getResult() == null || task.getResult().isEmpty()) {

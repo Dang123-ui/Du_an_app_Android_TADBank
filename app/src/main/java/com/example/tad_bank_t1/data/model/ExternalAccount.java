@@ -6,6 +6,8 @@ public class ExternalAccount {
     private String accountNumber;
     private String bankId;
 
+    public ExternalAccount() {
+    }
     public ExternalAccount(String accountId, String accountName, String accountNumber, String bankId) {
         this.accountId = accountId;
         this.accountName = accountName;

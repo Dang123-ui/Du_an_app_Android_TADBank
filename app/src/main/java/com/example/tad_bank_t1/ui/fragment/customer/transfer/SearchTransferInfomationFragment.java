@@ -12,6 +12,7 @@ import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.transition.Slide;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -94,6 +95,13 @@ public class SearchTransferInfomationFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search_transfer_infomation, container, false);
 
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         txtSearchTransferInfomationTitle = view.findViewById(R.id.txtSearchTransferInfomationTitle);
         edtEnterInfoSearch = view.findViewById(R.id.edtEnterInfoSearch);
         txtSearchResultListTitle = view.findViewById(R.id.txtSearchResultListTitle);
@@ -110,12 +118,23 @@ public class SearchTransferInfomationFragment extends Fragment {
         if(search_for.equals(Constants.SEARCH_BANK)){
             adapter = new BankAdapter(List.of( ));
             recyclerViewSearch.setAdapter(adapter);
+            ((BankAdapter) adapter).setOnItemClickListener(new BankAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(Bank bank) {
+                    if (bank != null){
+                        bankViewModel.setSelectedBank(bank);
+                        Log.d("BANK SELECTED", bank.getBankCode());
+                        FragmentUtil.destroyFragment(SearchTransferInfomationFragment.this, getParentFragmentManager());
+                    }
+                }
+            });
             recyclerViewSearch.setLayoutManager(new LinearLayoutManager(getContext()));
-            bankViewModel = new ViewModelProvider(this).get(BankViewModel.class);
+            bankViewModel = new ViewModelProvider(requireActivity()).get(BankViewModel.class);
             bankViewModel.getBanks().observe(getViewLifecycleOwner(), bank ->{
                 List<Bank> safe = (bank != null) ? bank : Collections.emptyList();
                 ((BankAdapter) adapter).setData(safe);
             });
+
 //            bankViewModel.searchBanks("");
         } else if (search_for.equalsIgnoreCase(Constants.SEARCH_ACCOUNT)) {
             Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
@@ -148,21 +167,13 @@ public class SearchTransferInfomationFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 String key = s.toString().trim();
 
-
                 if(search_for.equals(Constants.SEARCH_BANK)){
                     if (key.equals(lastQuery)) return;         // tránh gọi lại cùng chuỗi
                     lastQuery = key;
 
                     handler.removeCallbacks(searchJob);        // huỷ job cũ
                     searchJob = () -> {
-                        if (key.isEmpty()) {
-//                        exte.loadAll();               // hoặc clear list tuỳ bạn
-                        } else if (key.length() < 2) {
-                            // tối thiểu 2 ký tự để tránh spam
-                            bankViewModel.searchBanks(key); // hoặc: adapter.setData(Collections.emptyList())
-                        } else {
-                            bankViewModel.searchBanks(key);
-                        }
+                        bankViewModel.searchCacheBanks(key);
                     };
                     handler.postDelayed(searchJob, 350);
                 } else if (search_for.equalsIgnoreCase(Constants.SEARCH_ACCOUNT)) {
@@ -190,8 +201,10 @@ public class SearchTransferInfomationFragment extends Fragment {
 
             }
         });
-
-        return view;
-
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        handler.removeCallbacksAndMessages(null);
     }
 }

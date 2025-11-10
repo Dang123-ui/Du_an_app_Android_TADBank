@@ -154,11 +154,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void replaceFragment(Fragment fragment, boolean addToBackStack) {
-        var ft = getSupportFragmentManager().beginTransaction();
+        var ft = this.getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.frame_main_container, fragment);
         if (addToBackStack) ft.addToBackStack(null);
         ft.commit();
-        getSupportFragmentManager().executePendingTransactions();
+        this.getSupportFragmentManager().executePendingTransactions();
         updateUIForFragment(fragment);
         checkCurrentFragment();
     }

@@ -8,13 +8,13 @@
     tools:context=".ui.fragment.customer.transfer.BankTransferFragment"
     >
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFF2F6"
 
         android:padding="20dp">
+
         <FrameLayout
             android:id="@+id/fragment_card_transfer"
             android:layout_width="match_parent"
@@ -24,6 +24,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
+
 
         <TextView
             android:id="@+id/txtTranferInfoReceiverText"
@@ -67,7 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/ngan_hang_nhan_ck"
-                    android:textSize="12sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
 
                     />
@@ -85,7 +86,7 @@
                     android:ellipsize="end"
                     android:hint="@string/hint_chon_ngan_hang_nhan"
                     android:maxLines="1"
-                    android:textSize="15sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <View
@@ -132,7 +133,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/tai_khoan_nhan_ck"
-                    android:textSize="12sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
 
                     />
@@ -150,6 +151,9 @@
                     android:background="@null"
                     android:ellipsize="end"
                     android:hint="@string/hint_chon_tai_khoan_nhan_ck"
+                    android:inputType="number"
+                    android:imeOptions="actionSearch"
+                    android:singleLine="true"
                     android:maxLines="1"
                     android:textSize="15sp" />
             </LinearLayout>
@@ -172,6 +176,7 @@
                 android:src="@drawable/ic_transfer_beneficiary" />
         </LinearLayout>
 
+
         <!--            Ten nguoi nhan-->
         <LinearLayout
             android:id="@+id/lnloTransferReceiverName"
@@ -181,6 +186,7 @@
             android:background="@drawable/bg_card_white"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:visibility="gone"
 
             android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -200,7 +206,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/ten_nguoi_nhan_ck"
-                    android:textSize="12sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
 
                     />
@@ -223,7 +229,6 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
-
         </LinearLayout>
 
         <!--            Thong tin chuyen khoản-->
@@ -269,7 +274,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/so_tien_chuyen_khoan"
-                    android:textSize="12sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
 
                     />
@@ -288,7 +293,7 @@
                     android:hint="@string/hint_so_tien_ck"
                     android:inputType="number"
                     android:textColor="#E46868"
-                    android:textSize="15sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <View
@@ -333,7 +338,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/noi_dung_chuyen_khoan"
-                    android:textSize="12sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
 
                     />
@@ -348,6 +353,7 @@
                     style="@style/TextAppearance.Material3.BodySmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxLines="1"
                     android:background="@null"
                     android:text="TRAN MINH THUYEN chuyen tien"
                     android:textSize="15sp" />
@@ -427,6 +433,20 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+        <!-- Loading animation -->
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_loading_search_beneficiary_account"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -440,5 +460,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,6 +10,7 @@ import com.example.tad_bank_t1.data.model.Bank;
 import com.example.tad_bank_t1.data.repository.bank.BankRepository;
 import com.example.tad_bank_t1.data.repository.bank.FirebaseBankRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BankViewModel extends ViewModel {
@@ -19,6 +20,7 @@ public class BankViewModel extends ViewModel {
     private MutableLiveData<Bank> _selectedBank = new MutableLiveData<>(null);
     private MutableLiveData<Boolean> _loading = new MutableLiveData<>(false);
     private MutableLiveData<String> _error = new MutableLiveData<>(null);
+    private List<Bank> cacheBank = new ArrayList<>();
 
     public BankViewModel(){
         loadAll();
@@ -28,12 +30,15 @@ public class BankViewModel extends ViewModel {
         return _banks;
     }
 
-    public void loadAll(){
+    private void loadAll(){
         _loading.postValue(true);
         _error.postValue(null);
         repo.getAll()
                 .addOnSuccessListener(banks -> {
                     Log.d("TAG BANK", "loadAll: success" + banks.size());
+                    if (banks != null){
+                        cacheBank = banks;
+                    }
                     _banks.postValue(banks);
                     _loading.postValue(false);
                 })
@@ -44,10 +49,26 @@ public class BankViewModel extends ViewModel {
                 });
     }
 
+    public void searchCacheBanks(String key){
+        if (key.isEmpty()){
+            _banks.postValue(new ArrayList<>(cacheBank));
+            return;
+        }
+        List<Bank> result = new ArrayList<>();
+        for (Bank bank : cacheBank){
+            if (bank.getBankCode().toLowerCase().contains(key.toLowerCase())
+            || bank.getBankName().toLowerCase().contains(key.toLowerCase())
+            || bank.getBankLongName().toLowerCase().contains(key.toLowerCase())){
+                result.add(bank);
+            }
+        }
+        _banks.postValue(result);
+    }
+
     public void searchBanks(String key){
         _loading.postValue(true);
         _error.postValue(null);
-        repo.search(key)
+        repo.searchRealtime(key)
                 .addOnSuccessListener(banks -> {
                     _banks.postValue(banks);
                     _loading.postValue(false);

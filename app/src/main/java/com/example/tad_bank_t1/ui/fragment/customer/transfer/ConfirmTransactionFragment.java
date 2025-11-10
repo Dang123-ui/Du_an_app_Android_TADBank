@@ -55,7 +55,7 @@ public class ConfirmTransactionFragment extends Fragment {
     public static ConfirmTransactionFragment newInstance(TransferInfoDTO transferInfoDTO) {
         ConfirmTransactionFragment fragment = new ConfirmTransactionFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_DEBIT_ACCOUNT, transferInfoDTO.getDebitAccount());
+//        args.putString(ARG_DEBIT_ACCOUNT, transferInfoDTO.getDebitAccount());
         fragment.setArguments(args);
         return fragment;
     }
@@ -87,10 +87,10 @@ public class ConfirmTransactionFragment extends Fragment {
             txtConfirmTransactionAccountSource.setText(newAccountNumber);
         });
         // Transition khi Fragment mới xuất hiện (Enter)
-        setEnterTransition(new Slide(Gravity.BOTTOM));
+        setEnterTransition(new Slide(Gravity.RIGHT));
 
         // Transition khi Fragment hiện tại biến mất (Exit)
-        setExitTransition(new Slide(Gravity.TOP));
+        setExitTransition(new Slide(Gravity.RIGHT));
     }
 
     @Override

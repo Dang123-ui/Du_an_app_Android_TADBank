@@ -100,7 +100,7 @@ public class TransactionHistoryFragment extends Fragment {
         transactionViewModel.getSelectedAccountId().observe(getViewLifecycleOwner(), accountId -> {
             if (accountId != null) {
                 transactionViewModel.loadTransactions(accountId);
-                Toast.makeText(requireContext(), "Selected account id: " + accountId, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(requireContext(), "Selected account id: " + accountId, Toast.LENGTH_SHORT).show();
                 return;
             }
 

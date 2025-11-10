@@ -30,34 +30,63 @@ public class ExternalAccountViewModel extends ViewModel {
         if (isTadBank) {
             repoInternal.getByAccountNumber(accountNumber)
                     .addOnSuccessListener(account -> {
-                        _internalAccount.postValue(account);
-                        _externalAccount.postValue(null);
                         _loading.postValue(false);
+                        _internalAccount.postValue(null);
+                        if (account == null) {
+                            // KHÔNG TÌM THẤY
+                            _internalAccount.postValue(null);
+                            _error.postValue("NOT_FOUND");
+                        } else {
+                            _internalAccount.postValue(account);
+                            _error.postValue(null);
+                        }
                     })
                     .addOnFailureListener(e -> {
                         _error.postValue(e.getMessage());
+                        _internalAccount.postValue(null);
                         _externalAccount.postValue(null);
                         _loading.postValue(false);
                     });
         } else{
             repoExternal.getByBankIdAndAccountNumber(bankId, accountNumber)
                     .addOnSuccessListener(externalAccount -> {
-                        _externalAccount.postValue(externalAccount);
-                        _internalAccount.postValue(null);
                         _loading.postValue(false);
+                        _internalAccount.postValue(null);
+                        if (externalAccount == null) {
+                            // KHÔNG TÌM THẤY
+                            _externalAccount.postValue(null);
+                            _error.postValue("NOT_FOUND");
+                        } else {
+                            _externalAccount.postValue(externalAccount);
+                            _error.postValue(null);
+                        }
 
                     })
                     .addOnFailureListener(e -> {
                         _error.postValue(e.getMessage());
+                        _internalAccount.postValue(null);
                         _externalAccount.postValue(null);
                         _loading.postValue(false);
                     });
         }
     }
 
+    public void clearError() {
+        _error.postValue(null);
+    }
+    public void clearAccounts() {
+        _externalAccount.setValue(null);
+        _internalAccount.setValue(null);
+    }
+
+
     public MutableLiveData<ExternalAccount> getExternalAccount() {
         return _externalAccount;
     }
+    public MutableLiveData<Account> getInternalAccount() {
+        return _internalAccount;
+    }
+
 
     public MutableLiveData<Boolean> getLoading() {
         return _loading;

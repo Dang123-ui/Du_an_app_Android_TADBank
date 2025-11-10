@@ -1,8 +1,10 @@
 package com.example.tad_bank_t1.ui.fragment.customer.transfer;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -11,31 +13,51 @@ import android.text.TextWatcher;
 import android.transition.Slide;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.dto.TransferInfoDTO;
+import com.example.tad_bank_t1.data.model.Account;
+import com.example.tad_bank_t1.data.model.Bank;
 import com.example.tad_bank_t1.ui.activity.MainActivity;
+import com.example.tad_bank_t1.ui.form.BankTransferForm;
+import com.example.tad_bank_t1.ui.viewmodel.BankViewModel;
+import com.example.tad_bank_t1.ui.viewmodel.ExternalAccountViewModel;
+import com.example.tad_bank_t1.ui.viewmodel.SessionViewModel;
 import com.example.tad_bank_t1.util.Constants;
 import com.example.tad_bank_t1.util.CurrencyUtil;
 import com.example.tad_bank_t1.util.FragmentUtil;
+import com.google.android.material.textfield.TextInputEditText;
 
 
 public class BankTransferFragment extends Fragment {
     private ImageButton imbtShowListBank, imbtShowListBeneficiaryTransfer;
     private Button btnContinueTransfer;
-    private LottieAnimationView lottie_loading_waiting_transfer;
+    private LottieAnimationView lottie_loading_waiting_transfer, lottie_loading_search_beneficiary_account;
 
-    private TextView txtReceiverBankName, txtReceiverAccNumber, txtReceiverName,
+    private TextView txtReceiverBankName, txtReceiverName,
             txtTransferAmount, txtTransferDescription, txtTransferAccNumber;
+    private TextInputEditText txtReceiverAccNumber;
+    private LinearLayout lnloTransferReceiverName;
 
+    private SessionViewModel sessionViewModel;
+    private BankViewModel bankViewModel;
+    private ExternalAccountViewModel externalAccountViewModel;
+    private Bank selectedBank;
+    private Account accountSource;
+    private boolean userTriggeredSearch = false;
+    private boolean beneficiaryVerified = false;
 
 
     @Override
@@ -47,7 +69,6 @@ public class BankTransferFragment extends Fragment {
 
         // Transition khi Fragment hiện tại biến mất (Exit)
         setExitTransition(new Slide(Gravity.RIGHT));
-
 
     }
 
@@ -70,16 +91,91 @@ public class BankTransferFragment extends Fragment {
                 R.id.fragment_card_transfer,
                 false);
 
+        // bank va nguoi thu huong
         imbtShowListBank = view.findViewById(R.id.imbtShowListBank);
         imbtShowListBeneficiaryTransfer = view.findViewById(R.id.imbtShowListBeneficiaryTransfer);
+        // xac nhan chuyen tien
         btnContinueTransfer = view.findViewById(R.id.btnContinueTransfer);
+        // loading cho tao giao dich va tiem kien nguoi thu huong
         lottie_loading_waiting_transfer = view.findViewById(R.id.lottie_loading_waiting_transfer);
+        lottie_loading_search_beneficiary_account = view.findViewById(R.id.lottie_loading_search_beneficiary_account);
+        // nguoi nhan tien
         txtReceiverBankName = view.findViewById(R.id.txtReceiverBankName);
         txtReceiverAccNumber = view.findViewById(R.id.txtReceiverAccNumber);
         txtReceiverName = view.findViewById(R.id.txtReceiverName);
+        lnloTransferReceiverName = view.findViewById(R.id.lnloTransferReceiverName);
+        // thong tin chuyen tien
         txtTransferAmount = view.findViewById(R.id.txtTransferAmount);
         txtTransferDescription = view.findViewById(R.id.txtTransferDescription);
 
+        // view model
+        bankViewModel = new ViewModelProvider(requireActivity()).get(BankViewModel.class);
+        externalAccountViewModel = new ViewModelProvider(requireActivity()).get(ExternalAccountViewModel.class);
+        sessionViewModel = new ViewModelProvider(requireActivity()).get(SessionViewModel.class);
+
+        // observe
+        bankViewModel.getSelectedBank().observe(getViewLifecycleOwner(), bank -> {
+            if (bank == null) return;
+
+            boolean changed = (selectedBank == null) || !selectedBank.getBankId().equalsIgnoreCase(bank.getBankId());
+            selectedBank = bank;
+
+            String bankNameUppercase = bank.getBankName().toUpperCase();
+            txtReceiverBankName.setText(bankNameUppercase + " - " + bank.getBankLongName());
+
+            if (changed){
+                txtReceiverAccNumber.setText("");
+                beneficiaryVerified = false;
+                lnloTransferReceiverName.setVisibility(View.GONE);
+                externalAccountViewModel.clearError();
+                externalAccountViewModel.clearAccounts();
+            }
+        });
+
+        sessionViewModel.defaultAccount.observe(getViewLifecycleOwner(), account -> {
+            if (account != null) {
+                accountSource = account;
+            }
+        });
+
+        externalAccountViewModel.getExternalAccount().observe(getViewLifecycleOwner(), account -> {
+            if (account != null) {
+                txtReceiverName.setText(account.getAccountName().toUpperCase());
+                lnloTransferReceiverName.setVisibility(View.VISIBLE);
+                beneficiaryVerified = true;
+                userTriggeredSearch = false;
+//                Toast.makeText(getContext(), "External account: " + account.getAccountName(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        externalAccountViewModel.getInternalAccount().observe(getViewLifecycleOwner(), account -> {
+            if (account != null) {
+                txtReceiverName.setText(account.getAccountName().toUpperCase());
+                lnloTransferReceiverName.setVisibility(View.VISIBLE);
+                beneficiaryVerified = true;
+                userTriggeredSearch = false;
+//                Toast.makeText(getContext(), "Internal account: " + account.getAccountName(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        externalAccountViewModel.getLoading().observe(getViewLifecycleOwner(), isLoading -> {
+            lottie_loading_search_beneficiary_account.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+            lottie_loading_search_beneficiary_account.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+            if (isLoading) {
+                lnloTransferReceiverName.setVisibility(View.GONE);
+                beneficiaryVerified = false; // đang tra lại → coi như chưa xác minh
+            }
+        });
+        // 1) Clear trạng thái cũ trước khi đăng ký observer
+        externalAccountViewModel.clearError(); // _error.setValue(null);
+
+        // 2) Observe error: chỉ show dialog nếu là search do user kích hoạt
+        externalAccountViewModel.getError().observe(getViewLifecycleOwner(), err -> {
+            if (!userTriggeredSearch || err == null) return;
+            userTriggeredSearch = false; // reset cờ
+            showLookupDialog("Tra cứu người thụ hưởng",
+                    "NOT_FOUND".equals(err) ? "Không tìm thấy tài khoản." : "Lỗi tra cứu: " + err
+            , txtReceiverAccNumber);
+            resetReceiverSection();
+        });
 
 
         imbtShowListBank.setOnClickListener(new View.OnClickListener() {
@@ -109,42 +205,138 @@ public class BankTransferFragment extends Fragment {
                     R.id.fragment_container_search);
         });
 
+        txtReceiverAccNumber.setOnEditorActionListener((v, actionId, event) -> {
+            boolean isEnterKey = event != null
+                    && event.getKeyCode() == KeyEvent.KEYCODE_ENTER
+                    && event.getAction() == KeyEvent.ACTION_UP;
+            if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || isEnterKey) {
+                triggerSearch();
+                return true; // đã xử lý
+            }
+            return false;
+        });
 
+        txtReceiverAccNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                beneficiaryVerified = false;
+                lnloTransferReceiverName.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+        });
 
         btnContinueTransfer.setOnClickListener(v -> {
+            if (accountSource == null) { showLookupDialog("Thiếu thông tin", "Chưa chọn tài khoản nguồn.",  null); return; }
+            if (!beneficiaryVerified)  { showLookupDialog("Chưa xác minh", "Hãy tra cứu người thụ hưởng trước.", txtReceiverAccNumber); return; }
+
+            double amount;
+            try {
+                amount = CurrencyUtil.convertToDouble(txtTransferAmount.getText().toString().trim());
+            } catch (Exception e) {
+                txtTransferAmount.setError("Số tiền không hợp lệ");
+                txtTransferAmount.requestFocus();
+                return;
+            }
+            if (amount <= 0) { txtTransferAmount.setError("Số tiền phải > 0"); txtTransferAmount.requestFocus(); return; }
+
+            if (amount > accountSource.getBalance()){
+                showLookupDialog("Thiếu tiền", "Số dư tài khoản không đủ.", (TextInputEditText) txtTransferAmount);
+                return;
+            }
+
             lottie_loading_waiting_transfer.setVisibility(View.VISIBLE);
             btnContinueTransfer.setEnabled(false);
             btnContinueTransfer.setText("...");
 
-            // Giả lập một tác vụ xử lý (ví dụ: gọi API)
-            new Handler().postDelayed(() -> {
-                // Khi tác vụ hoàn thành:
-                // Ẩn Lottie và hiện lại button
+            BankTransferForm form = new BankTransferForm(
+                    accountSource.getAccountId(),
+                    accountSource.getAccountNumber(),
+                    accountSource.getAccountName(),
+                    txtReceiverAccNumber.getText().toString().trim(),
+                    txtReceiverName.getText().toString().trim(),
+                    selectedBank,
+                    amount,
+                    txtTransferDescription.getText().toString().trim()
+            );
+
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 lottie_loading_waiting_transfer.setVisibility(View.GONE);
-//                btnSubmit.setVisibility(View.VISIBLE);
-
-                // Có thể hiển thị thông báo thành công
-                Toast.makeText(getContext(), "Chuyen sang trang xac nhan!", Toast.LENGTH_LONG).show();
-
-
-                TransferInfoDTO transferInfoDTO = new TransferInfoDTO(
-                        "debit acount",
-                        txtReceiverAccNumber.getText().toString().trim(),
-                        txtReceiverName.getText().toString().trim(),
-                        txtReceiverBankName.getText().toString().trim(),
-                        txtTransferDescription.getText().toString().trim(),
-                        CurrencyUtil.convertToDouble(txtTransferAmount.getText().toString().trim()),
-                        0,
-                        "OTP"
-                );
+                btnContinueTransfer.setEnabled(true);
+                btnContinueTransfer.setText(getString(R.string.tiep_tuc));
 
                 ((MainActivity) requireActivity())
-                        .openFeatureFragment(ConfirmTransactionFragment.newInstance(transferInfoDTO), getString(R.string.xac_nhan_giao_dich));
-
-                btnContinueTransfer.setText(getResources().getString(R.string.tiep_tuc));
-            }, 2000); // 3 giây
-
+                        .openFeatureFragment(new ConfirmTransactionFragment(),
+                                getString(R.string.xac_nhan_giao_dich));
+            }, 400);
         });
+
+    }
+
+    private void triggerSearch() {
+        String accNumber = txtReceiverAccNumber.getText().toString().trim();
+        if (selectedBank == null) { Toast.makeText(getContext(), "Hãy chọn ngân hàng", Toast.LENGTH_SHORT).show(); return; }
+        if (accNumber.isEmpty())  { txtReceiverAccNumber.setError("Nhập số tài khoản"); txtReceiverAccNumber.requestFocus(); return; }
+
+        // Tránh bấm liên tục khi đang loading
+        Boolean isLoading = externalAccountViewModel.getLoading().getValue();
+        if (Boolean.TRUE.equals(isLoading)) return;
+
+        userTriggeredSearch = true;
+        externalAccountViewModel.clearError();
+//        externalAccountViewModel.clearExternalAccount(); // clear kết quả cũ trước khi tra
+
+        InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(txtReceiverAccNumber.getWindowToken(), 0);
+
+        boolean isTadBank = "TAD".equalsIgnoreCase(selectedBank.getBankCode());
+        externalAccountViewModel.searchAccounts(isTadBank, selectedBank.getBankId(), accNumber);
+    }
+
+
+    private void resetReceiverSection() {
+        // Ẩn card + xoá nội dung
+        lnloTransferReceiverName.setVisibility(View.GONE);
+        txtReceiverName.setText("");
+        // Tắt loading nếu còn
+        lottie_loading_search_beneficiary_account.setVisibility(View.GONE);
+        // Clear error để không hiện lại dialog
+        externalAccountViewModel.clearError();
+        externalAccountViewModel.clearAccounts();
+        // (tuỳ chọn) xoá số tài khoản & focus lại
+        // txtReceiverAccNumber.setText("");
+        txtReceiverAccNumber.requestFocus();
+        // Ẩn bàn phím -> hiện lại nếu muốn gõ tiếp
+        InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(txtReceiverAccNumber, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    private void showLookupDialog(String title, String message, TextInputEditText txtEdit) {
+        new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+                .setTitle(title)
+                .setMessage(message)
+                .setCancelable(true) // người dùng có thể bấm ra ngoài để tắt
+                .setPositiveButton("OK", (d, w) -> {
+                    resetReceiverSection(); // reset khi bấm OK
+                    d.dismiss();
+                })
+                .setNegativeButton("Thử lại", (d, w) -> {
+                    // chỉ đóng dialog, focus vào ô nhập để người dùng sửa
+                    externalAccountViewModel.clearError();
+                    if (txtEdit != null){
+                        txtEdit.requestFocus();
+                    }
+                    d.dismiss();
+                })
+                .show();
     }
 
     @Override

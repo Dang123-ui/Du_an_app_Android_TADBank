@@ -34,7 +34,6 @@ public class CardPaymentFragment extends Fragment {
 
     public CardPaymentFragment() {
         // Required empty public constructor
-        sessionViewModel = new ViewModelProvider(requireActivity()).get(SessionViewModel.class);
     }
 
     public static CardPaymentFragment newInstance(String param1, String param2) {
@@ -73,6 +72,8 @@ public class CardPaymentFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        sessionViewModel = new ViewModelProvider(requireActivity()).get(SessionViewModel.class);
+
         txtTransferAccNumber = view.findViewById(R.id.txtTransferAccNumber);
         txtTransferAccBalance = view.findViewById(R.id.txtTransferAccBalance);
 

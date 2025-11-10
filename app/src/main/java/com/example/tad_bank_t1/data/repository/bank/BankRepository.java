@@ -9,5 +9,6 @@ public interface BankRepository {
 
     Task<Bank> getById(String bankId);
     Task<List<Bank>> getAll();
-    Task<List<Bank>> search(String key);
+    Task<List<Bank>> searchRealtime(String key);
+
 }

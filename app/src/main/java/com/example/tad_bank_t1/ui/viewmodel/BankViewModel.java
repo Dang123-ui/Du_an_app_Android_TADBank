@@ -54,11 +54,19 @@ public class BankViewModel extends ViewModel {
             _banks.postValue(new ArrayList<>(cacheBank));
             return;
         }
+        String lowerKey = key.toLowerCase();
+        Log.d("TAG BANK", "Lenth cached bank: " + cacheBank.size());
+
         List<Bank> result = new ArrayList<>();
         for (Bank bank : cacheBank){
-            if (bank.getBankCode().toLowerCase().contains(key.toLowerCase())
-            || bank.getBankName().toLowerCase().contains(key.toLowerCase())
-            || bank.getBankLongName().toLowerCase().contains(key.toLowerCase())){
+            String code = bank.getBankCode() == null ? "" : bank.getBankCode();
+            String name = bank.getBankName() == null ? "" : bank.getBankName();
+            String longName = bank.getBankLongName() == null ? "" : bank.getBankLongName();
+
+            if (code.toLowerCase().contains(lowerKey)
+                    || name.toLowerCase().contains(lowerKey)
+                    || longName.toLowerCase().contains(lowerKey)) {
+
                 result.add(bank);
             }
         }

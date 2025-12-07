@@ -31,7 +31,9 @@ public class SplashActivity extends AppCompatActivity {
     private static final String KEY_HAS_REGISTERED = "hasRegistered";
     private static final String KEY_LAST_UID = "lastUserId";
 
-    private final UserRepository userRepo = new FirebaseUserRepository();
+//    private final UserRepository userRepo = new FirebaseUserRepository();
+    // bi loi App
+    private UserRepository userRepo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +41,15 @@ public class SplashActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_splash);
 
+        // Khoi tao repo
+        userRepo = new FirebaseUserRepository();
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         Toast.makeText(this, "Chào mừng trở lại, chúc quý khách một ngày tốt lành!", Toast.LENGTH_LONG).show();
         ImageView logoSplash = findViewById(R.id.logoSplash);
         ViewCompat.setTransitionName(logoSplash, "app_logo");
@@ -92,6 +98,7 @@ public class SplashActivity extends AppCompatActivity {
                 goToLoginWithMorph(logoSplash);
             }
         }, 1200);
+
     }
 
     private void goToLoginWithMorph(ImageView logoSplash) {

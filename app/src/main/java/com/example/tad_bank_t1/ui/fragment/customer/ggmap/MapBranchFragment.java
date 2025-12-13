@@ -14,8 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.tad_bank_t1.R;
-import com.example.tad_bank_t1.data.fake_data.BranchFakeData;
 import com.example.tad_bank_t1.data.model.Branch;
+import com.example.tad_bank_t1.ui.base.UiConfig;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -23,11 +23,19 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class MapBranchFragment extends Fragment implements OnMapReadyCallback {
+public class MapBranchFragment extends Fragment implements OnMapReadyCallback, UiConfig {
     private GoogleMap googleMap;
+
+
+
+    @Override
+    public String getAppBarTitle() {
+        return getString(R.string.tim_kiem_chi_nhanh);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,6 +59,15 @@ public class MapBranchFragment extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
+    public List<Branch> getData() {
+        List<Branch> data = new ArrayList<>();
+        data.add(new Branch(1, "Chi nhánh 1", "ATM", "Địa chỉ 1", "Tỉnh 1", 10.7349906, 106.6983554, "09890909", "0989098mail"));
+        data.add(new Branch(2, "Chi nhánh 2", "ATM", "Địa chỉ 2", "Tỉnh 2", 10.7349236, 106.7006434, "09890909", "0989098mail"));
+        data.add(new Branch(3, "Chi nhánh 3", "ATM", "Địa chỉ 3", "Tỉnh 3", 10.7325392, 106.6963412, "09890909", "0989"));
+
+        return data;
+    }
+
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         this.googleMap = googleMap;
@@ -59,7 +76,7 @@ public class MapBranchFragment extends Fragment implements OnMapReadyCallback {
         enableMyLocation();
 
         // Load danh sách chi nhánh từ cơ sở dữ liệu
-        List<Branch> branches = BranchFakeData.getData();
+        List<Branch> branches = getData();
 
         // Thêm marker cho từng chi nhánh
         for (Branch b : branches) {

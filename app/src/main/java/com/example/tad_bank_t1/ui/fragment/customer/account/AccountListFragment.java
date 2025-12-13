@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.model.Account;
 import com.example.tad_bank_t1.data.model.enums.AccountType;
 import com.example.tad_bank_t1.ui.activity.MainActivity;
+import com.example.tad_bank_t1.ui.base.UiConfig;
 import com.example.tad_bank_t1.ui.fragment.customer.transaction.TransactionHistoryFragment;
 import com.example.tad_bank_t1.ui.viewadapter.AccountListAdapter;
 import com.example.tad_bank_t1.ui.viewmodel.SessionViewModel;
@@ -24,7 +27,7 @@ import com.google.android.material.button.MaterialButtonToggleGroup;
 import java.util.List;
 
 
-public class AccountListFragment extends Fragment {
+public class AccountListFragment extends Fragment implements UiConfig {
     private AccountType accountType = AccountType.CHECKING;
     private AccountListAdapter accountListAdapter;
     private RecyclerView rvAccountList;
@@ -32,6 +35,20 @@ public class AccountListFragment extends Fragment {
     private TransactionViewModel transactionViewModel;
     private List<Account> accounts;
 
+    @Override
+    public boolean showBottomNav() {
+        return false;
+    }
+
+    @Override
+    public boolean showAppBar() {
+        return true;
+    }
+
+    @Override
+    public String getAppBarTitle() {
+        return getString(R.string.danh_sach_tai_khoan);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +57,13 @@ public class AccountListFragment extends Fragment {
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
+        // Transition khi Fragment mới xuất hiện (Enter)
+        setEnterTransition(new Slide(Gravity.RIGHT));
+
+        // Transition khi Fragment hiện tại biến mất (Exit)
+        setExitTransition(new Slide(Gravity.RIGHT));
     }
 
     @Override

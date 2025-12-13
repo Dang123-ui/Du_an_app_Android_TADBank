@@ -30,4 +30,15 @@
     <string name="ngay_mo_tai_khoan">Account opening date</string>
     <string name="ngay_gd_gan_nhat">Date of last transaction</string>
     <string name="chi_tiet_tai_khoan">Account detail</string>
+    <string name="hinh_thuc_chuyen_tien">Transfer type</string>
+    <string name="ma_giao_dich">Transaction code</string>
+    <string name="ket_qua_giao_dich">Transaction result</string>
+    <string name="giao_dich_moi">New transaction</string>
+    <string name="luu_anh">Save image</string>
+    <string name="share_image">Share image</string>
+    <string name="tim_chi_nhanh">Search branch</string>
+    <string name="tiet_kiem">Saving</string>
+    <string name="the_chap">Mortgage</string>
+    <string name="nap_tien">Deposit</string>
+    <string name="rut_tien">Withdraw</string>
 </resources>

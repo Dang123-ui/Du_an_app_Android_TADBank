@@ -51,13 +51,13 @@ public class CardPaymentFragment extends Fragment {
 //            mParam2 = getArguments().getString(ARG_PARAM2);
 //        }
 
-
-
-        // Transition khi Fragment mới xuất hiện (Enter)
-        setEnterTransition(new Slide(Gravity.BOTTOM));
-
-        // Transition khi Fragment hiện tại biến mất (Exit)
-        setExitTransition(new Slide(Gravity.TOP));
+//
+//
+//        // Transition khi Fragment mới xuất hiện (Enter)
+//        setEnterTransition(new Slide(Gravity.BOTTOM));
+//
+//        // Transition khi Fragment hiện tại biến mất (Exit)
+//        setExitTransition(new Slide(Gravity.TOP));
     }
 
     @Override
@@ -84,14 +84,14 @@ public class CardPaymentFragment extends Fragment {
         sessionViewModel.defaultAccount.observe(getViewLifecycleOwner(), account -> {
             if (account != null) {
                 txtTransferAccNumber.setText(account.getAccountNumber());
-                txtTransferAccBalance.setText(CurrencyUtil.formatVND(account.getBalance()) + " " + account.getCurrency());
+                txtTransferAccBalance.setText(CurrencyUtil.formatAmount(account.getBalance()) + " " + account.getCurrency());
             }
         });
 
         sessionViewModel.selectedAccount.observe(getViewLifecycleOwner(), account -> {
             if (account != null) {
                 txtTransferAccNumber.setText(account.getAccountNumber());
-                txtTransferAccBalance.setText(CurrencyUtil.formatVND(account.getBalance()) + " " + account.getCurrency());
+                txtTransferAccBalance.setText(CurrencyUtil.formatAmount(account.getBalance()) + " " + account.getCurrency());
             }
         });
 

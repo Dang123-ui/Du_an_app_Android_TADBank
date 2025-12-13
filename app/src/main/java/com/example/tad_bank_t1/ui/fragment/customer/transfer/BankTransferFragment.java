@@ -6,8 +6,6 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.transition.Slide;
@@ -19,52 +17,62 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.example.tad_bank_t1.R;
-import com.example.tad_bank_t1.data.dto.TransferInfoDTO;
 import com.example.tad_bank_t1.data.model.Account;
 import com.example.tad_bank_t1.data.model.Bank;
+import com.example.tad_bank_t1.data.model.Transaction;
+import com.example.tad_bank_t1.data.model.enums.TnxStatus;
+import com.example.tad_bank_t1.data.model.enums.TxnChannel;
+import com.example.tad_bank_t1.data.model.enums.TxnType;
+import com.example.tad_bank_t1.databinding.FragmentBankTransferBinding;
 import com.example.tad_bank_t1.ui.activity.MainActivity;
-import com.example.tad_bank_t1.ui.form.BankTransferForm;
+import com.example.tad_bank_t1.ui.base.UiConfig;
+import com.example.tad_bank_t1.ui.form.payload.transactions.TransferPayload;
+import com.example.tad_bank_t1.ui.fragment.customer.transaction.TransactionConfirmFragment;
 import com.example.tad_bank_t1.ui.viewmodel.BankViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.ExternalAccountViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.SessionViewModel;
+import com.example.tad_bank_t1.ui.viewmodel.TransactionPayloadViewModel;
+import com.example.tad_bank_t1.ui.viewmodel.TransactionViewModel;
 import com.example.tad_bank_t1.util.Constants;
-import com.example.tad_bank_t1.util.CurrencyUtil;
 import com.example.tad_bank_t1.util.FragmentUtil;
+import com.example.tad_bank_t1.util.TransactionUtil;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.NumberFormat;
+import java.util.Date;
 import java.util.Locale;
 
 
-public class BankTransferFragment extends Fragment {
-    private ImageButton imbtShowListBank, imbtShowListBeneficiaryTransfer;
-    private Button btnContinueTransfer;
-    private LottieAnimationView lottie_loading_waiting_transfer, lottie_loading_search_beneficiary_account;
+public class BankTransferFragment extends Fragment implements UiConfig {
+    // View binding
+    private FragmentBankTransferBinding binding;
 
-    private TextView txtReceiverBankName, txtReceiverName;
-    private TextInputEditText txtTransferAmount, txtTransferDescription, txtTransferAccNumber;
-    private TextInputEditText txtReceiverAccNumber;
-    private LinearLayout lnloTransferReceiverName;
-
+    // declare view model declare
     private SessionViewModel sessionViewModel;
     private BankViewModel bankViewModel;
     private ExternalAccountViewModel externalAccountViewModel;
+    private TransactionPayloadViewModel transactionPayloadViewModel;
+    private TransactionViewModel transactionViewModel;
+
+
+    // declare data
     private Bank selectedBank;
     private Account accountSource;
     private boolean userTriggeredSearch = false;
     private boolean beneficiaryVerified = false;
 
-    private double transferAmount;
+    private long transferAmount;
     private boolean isEditingAmount = false;
+
+
+    @Override
+    public String getAppBarTitle() {
+        return getString(R.string.chuyen_tien);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,7 +82,7 @@ public class BankTransferFragment extends Fragment {
         setEnterTransition(new Slide(Gravity.RIGHT));
 
         // Transition khi Fragment hiện tại biến mất (Exit)
-        setExitTransition(new Slide(Gravity.RIGHT));
+        setExitTransition(new Slide(Gravity.TOP));
 
     }
 
@@ -83,8 +91,9 @@ public class BankTransferFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_bank_transfer, container, false);
+        binding = FragmentBankTransferBinding.inflate(inflater, container, false);
 
+        View view = binding.getRoot();
         return view;
     }
 
@@ -107,27 +116,10 @@ public class BankTransferFragment extends Fragment {
                 R.id.fragment_card_transfer,
                 false);
 
-        // bank va nguoi thu huong
-        imbtShowListBank = view.findViewById(R.id.imbtShowListBank);
-        imbtShowListBeneficiaryTransfer = view.findViewById(R.id.imbtShowListBeneficiaryTransfer);
-        // xac nhan chuyen tien
-        btnContinueTransfer = view.findViewById(R.id.btnContinueTransfer);
-        // loading cho tao giao dich va tiem kien nguoi thu huong
-        lottie_loading_waiting_transfer = view.findViewById(R.id.lottie_loading_waiting_transfer);
-        lottie_loading_search_beneficiary_account = view.findViewById(R.id.lottie_loading_search_beneficiary_account);
-        // nguoi nhan tien
-        txtReceiverBankName = view.findViewById(R.id.txtReceiverBankName);
-        txtReceiverAccNumber = view.findViewById(R.id.txtReceiverAccNumber);
-        txtReceiverName = view.findViewById(R.id.txtReceiverName);
-        lnloTransferReceiverName = view.findViewById(R.id.lnloTransferReceiverName);
-        // thong tin chuyen tien
-        txtTransferAmount = view.findViewById(R.id.txtTransferAmount);
-        txtTransferDescription = view.findViewById(R.id.txtTransferDescription);
-
         // ------------
         // event handle
         // -----------
-        imbtShowListBank.setOnClickListener(new View.OnClickListener() {
+        binding.imbtShowListBank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SearchTransferInfomationFragment searchTransferInfomationFragment = SearchTransferInfomationFragment.newInstance(
@@ -142,7 +134,7 @@ public class BankTransferFragment extends Fragment {
             }
         });
 
-        imbtShowListBeneficiaryTransfer.setOnClickListener(v -> {
+        binding.imbtShowListBeneficiaryTransfer.setOnClickListener(v -> {
             SearchTransferInfomationFragment searchTransferInfomationFragment = SearchTransferInfomationFragment.newInstance(
                     "Chọn danh bạ thụ hưởng",
                     "Nhập người thụ hưởng",
@@ -154,7 +146,7 @@ public class BankTransferFragment extends Fragment {
                     R.id.fragment_container_search);
         });
 
-        txtReceiverAccNumber.setOnEditorActionListener((v, actionId, event) -> {
+        binding.txtReceiverAccNumber.setOnEditorActionListener((v, actionId, event) -> {
             boolean isEnterKey = event != null
                     && event.getKeyCode() == KeyEvent.KEYCODE_ENTER
                     && event.getAction() == KeyEvent.ACTION_UP;
@@ -165,11 +157,11 @@ public class BankTransferFragment extends Fragment {
             return false;
         });
 
-        txtReceiverAccNumber.addTextChangedListener(new TextWatcher() {
+        binding.txtReceiverAccNumber.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
                 beneficiaryVerified = false;
-                lnloTransferReceiverName.setVisibility(View.GONE);
+                binding.lnloTransferReceiverName.setVisibility(View.GONE);
             }
 
             @Override
@@ -184,7 +176,7 @@ public class BankTransferFragment extends Fragment {
         });
 
         // xử lý UI khi nhập số tiền
-        txtTransferAmount.addTextChangedListener(new TextWatcher() {
+        binding.txtTransferAmount.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
                 if (isEditingAmount) return;
@@ -209,14 +201,19 @@ public class BankTransferFragment extends Fragment {
                     String formatted = nf.format(value);
 
                     // 5. Gán lại text nhưng giữ con trỏ ở cuối
-                    txtTransferAmount.setText(formatted);
-                    txtTransferAmount.setSelection(formatted.length());
+                    binding.txtTransferAmount.setText(formatted);
+                    binding.txtTransferAmount.setSelection(formatted.length());
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
                 isEditingAmount = false;
+
+                // set idempotency thành null
+                if (transactionViewModel != null) {
+                    transactionViewModel.setIdempotencyKey(null);
+                }
             }
 
             @Override
@@ -231,51 +228,137 @@ public class BankTransferFragment extends Fragment {
         });
 
         // xử lý continue btn
-        btnContinueTransfer.setOnClickListener(v -> {
+        binding.btnContinueTransfer.setOnClickListener(v -> {
             if (accountSource == null) {
                 showLookupDialog("Thiếu thông tin", "Chưa chọn tài khoản nguồn.", null);
                 return;
             }
             if (!beneficiaryVerified) {
-                showLookupDialog("Chưa xác minh", "Hãy tra cứu người thụ hưởng trước.", txtReceiverAccNumber);
+                showLookupDialog("Chưa xác minh", "Hãy tra cứu người thụ hưởng trước.", binding.txtReceiverAccNumber);
                 return;
             }
 
             if (transferAmount <= 0) {
-                txtTransferAmount.setError("Nhập số tiền cần chuyển");
-                txtTransferAmount.requestFocus();
+                binding.txtTransferAmount.setError("Nhập số tiền cần chuyển");
+                binding.txtTransferAmount.requestFocus();
                 return;
             }
 
-            if (transferAmount > accountSource.getBalance()){
-                showLookupDialog("Không đủ số dư", "Số dư hiện tại không đủ cho giao dịch.", txtTransferAmount);
+            if (transferAmount > accountSource.getBalance()) {
+                showLookupDialog("Không đủ số dư", "Số dư hiện tại không đủ cho giao dịch.", binding.txtTransferAmount);
                 return;
             }
 
-            lottie_loading_waiting_transfer.setVisibility(View.VISIBLE);
-            btnContinueTransfer.setEnabled(false);
-            btnContinueTransfer.setText("Đang chuyển hướng...");
+            // check account nguồn được chọn để chuyển tiền
+            if (accountSource == null) {
+                Toast.makeText(getContext(), "accountSource is null", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-            BankTransferForm payloadTransfer = new BankTransferForm(
-                    accountSource.getAccountId(),
-                    accountSource.getAccountNumber(),
-                    accountSource.getAccountName(),
-                    txtReceiverAccNumber.getText().toString().trim(),
-                    txtReceiverName.getText().toString().trim(),
-                    selectedBank,
-                    transferAmount,
-                    txtTransferDescription.getText().toString().trim()
+            // check view model
+            if (transactionPayloadViewModel == null) {
+                Toast.makeText(getContext(), "transactionPayloadViewModel is null", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+
+            // set loading
+            binding.btnContinueTransfer.setEnabled(false);
+            binding.btnContinueTransfer.setText("Đang chuyển hướng...");
+
+            // check type
+            boolean isInternalTransfer = "TAD".equalsIgnoreCase(selectedBank.getBankCode());
+            TxnType type = isInternalTransfer ? TxnType.TRANSFER_INTERNAL : TxnType.TRANSFER_EXTERNAL;
+
+            // Input form
+            String sourceAccNumber = accountSource.getAccountNumber();
+            String targetAccNumber = binding.txtReceiverAccNumber.getText().toString().trim();
+
+            // id phải độc nhất vô nhị
+            String newId = TransactionUtil.generateTransactionId();
+            // tạo idempotency key
+            // Kiem tra view model co idem chua neu chua co thi phai tao moi
+            boolean hasIdempotencyKey = transactionViewModel.getIdempotencyKey() != null;
+            String idempotencyKey = "";
+            if (!hasIdempotencyKey) {
+                idempotencyKey = TransactionUtil.generateIdempotencyKey(transferAmount, sourceAccNumber, targetAccNumber, type);
+                transactionViewModel.setIdempotencyKey(idempotencyKey);
+
+                Log.d("TAG CREATE TRANSACTION", "idempotencyKey mới tạo: " + idempotencyKey);
+            } else {
+                idempotencyKey = transactionViewModel.getIdempotencyKey();
+
+                // log idem
+                Log.d("TAG CREATE TRANSACTION", "idempotencyKey đã có: " + idempotencyKey);
+            }
+
+            // Tạo ref
+            String transactionRef = TransactionUtil.generateRef();
+
+
+            // ---------------------
+            // Tạo đối tượng giao dịch pending
+            // ---------------------
+            // log acc
+            Log.d("TAG CREATE TRANSACTION", "SourceAccNumber: " + accountSource);
+            Transaction transaction = Transaction.builder()
+                    .transactionId(newId)
+                    .accountId(accountSource.getAccountId())
+                    .accountNumber(sourceAccNumber)
+                    .accountName(accountSource.getAccountName())
+                    .counterpartyAccount(targetAccNumber)
+                    .counterpartyName(binding.txtReceiverName.getText().toString())
+                    .counterpartyBankCode(selectedBank.getBankCode())
+                    .counterpartyBankName(selectedBank.getBankLongName())
+                    .counterpartyBankLogo(selectedBank.getBankImageUrl())
+                    .description(binding.txtTransferDescription.getText().toString())
+                    .amount(transferAmount)
+                    .feeAmount(0L)
+                    .status(TnxStatus.PENDING)
+                    .type(type)
+                    .channel(TxnChannel.MOBILE_APP)
+                    .currency("VND")
+                    .idempotencyKey(idempotencyKey)
+                    .transactionReference(transactionRef)
+                    .createdAt(new Date())
+                    .build();
+
+            // ------------------
+            // Tạo transaction lên server
+            // ------------------
+            Log.d("TAG TRANSACTION", transaction.toString());
+
+            // chỉ cần preview chưa cần tạo giao dịch thật trên server ở bước này
+            //transactionViewModel.createTransaction(transaction);
+
+            // ---------------------
+            // Lưu transactionId, transactionRef, idempotencyKey,... vào payload
+            // ---------------------
+
+
+            // =============================
+            // save payload và chuyển màn hình
+            // =============================
+            TransferPayload payloadTransfer = new TransferPayload(
+                    accountSource,
+                    transaction,
+                    selectedBank
             );
 
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                lottie_loading_waiting_transfer.setVisibility(View.GONE);
-                btnContinueTransfer.setEnabled(true);
-                btnContinueTransfer.setText(getString(R.string.tiep_tuc));
 
-                ((MainActivity) requireActivity())
-                        .openFeatureFragment(new ConfirmTransactionFragment(),
-                                getString(R.string.xac_nhan_giao_dich));
-            }, 400);
+            transactionPayloadViewModel.setTxnPayload(payloadTransfer);
+
+            // =============================
+            //Chuyển màn hình
+            // =============================
+            binding.btnContinueTransfer.setEnabled(true);
+            binding.btnContinueTransfer.setText(getString(R.string.tiep_tuc));
+
+            ((MainActivity) requireActivity()).openFeatureFragment(
+                    new TransactionConfirmFragment(),
+                    getString(R.string.xac_nhan_giao_dich)
+            );
+
         });
     }
 
@@ -286,6 +369,9 @@ public class BankTransferFragment extends Fragment {
         bankViewModel = new ViewModelProvider(requireActivity()).get(BankViewModel.class);
         externalAccountViewModel = new ViewModelProvider(requireActivity()).get(ExternalAccountViewModel.class);
         sessionViewModel = new ViewModelProvider(requireActivity()).get(SessionViewModel.class);
+        transactionPayloadViewModel = new ViewModelProvider(requireActivity()).get(TransactionPayloadViewModel.class);
+        transactionViewModel = new ViewModelProvider(requireActivity()).get(TransactionViewModel.class);
+
 
         // observe
         bankViewModel.getSelectedBank().observe(getViewLifecycleOwner(), bank -> {
@@ -295,12 +381,12 @@ public class BankTransferFragment extends Fragment {
             selectedBank = bank;
 
             String bankNameUppercase = bank.getBankName().toUpperCase();
-            txtReceiverBankName.setText(bankNameUppercase + " - " + bank.getBankLongName());
+            binding.txtReceiverBankName.setText(bankNameUppercase + " - " + bank.getBankLongName());
 
             if (changed) {
-                txtReceiverAccNumber.setText("");
+                binding.txtReceiverAccNumber.setText("");
                 beneficiaryVerified = false;
-                lnloTransferReceiverName.setVisibility(View.GONE);
+                binding.lnloTransferReceiverName.setVisibility(View.GONE);
                 externalAccountViewModel.clearError();
                 externalAccountViewModel.clearAccounts();
             }
@@ -314,8 +400,8 @@ public class BankTransferFragment extends Fragment {
 
         externalAccountViewModel.getExternalAccount().observe(getViewLifecycleOwner(), account -> {
             if (account != null) {
-                txtReceiverName.setText(account.getAccountName().toUpperCase());
-                lnloTransferReceiverName.setVisibility(View.VISIBLE);
+                binding.txtReceiverName.setText(account.getAccountName().toUpperCase());
+                binding.lnloTransferReceiverName.setVisibility(View.VISIBLE);
                 beneficiaryVerified = true;
                 userTriggeredSearch = false;
 //                Toast.makeText(getContext(), "External account: " + account.getAccountName(), Toast.LENGTH_SHORT).show();
@@ -323,18 +409,17 @@ public class BankTransferFragment extends Fragment {
         });
         externalAccountViewModel.getInternalAccount().observe(getViewLifecycleOwner(), account -> {
             if (account != null) {
-                txtReceiverName.setText(account.getAccountName().toUpperCase());
-                lnloTransferReceiverName.setVisibility(View.VISIBLE);
+                binding.txtReceiverName.setText(account.getAccountName().toUpperCase());
+                binding.lnloTransferReceiverName.setVisibility(View.VISIBLE);
                 beneficiaryVerified = true;
                 userTriggeredSearch = false;
 //                Toast.makeText(getContext(), "Internal account: " + account.getAccountName(), Toast.LENGTH_SHORT).show();
             }
         });
         externalAccountViewModel.getLoading().observe(getViewLifecycleOwner(), isLoading -> {
-            lottie_loading_search_beneficiary_account.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-            lottie_loading_search_beneficiary_account.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+            ((MainActivity)requireActivity()).showLoadingFeature(isLoading);
             if (isLoading) {
-                lnloTransferReceiverName.setVisibility(View.GONE);
+                binding.lnloTransferReceiverName.setVisibility(View.GONE);
                 beneficiaryVerified = false; // đang tra lại → coi như chưa xác minh
             }
         });
@@ -347,24 +432,58 @@ public class BankTransferFragment extends Fragment {
             userTriggeredSearch = false; // reset cờ
             showLookupDialog("Tra cứu người thụ hưởng",
                     "NOT_FOUND".equals(err) ? "Không tìm thấy tài khoản." : "Lỗi tra cứu: " + err
-                    , txtReceiverAccNumber);
+                    , binding.txtReceiverAccNumber);
             resetReceiverSection();
         });
 
 
+        // tránsaction với result || chưa cần dùng tới nha
+        transactionViewModel.getResultState().observe(getViewLifecycleOwner(), result -> {
+            if (result == null) {
+                return;
+            }
+
+            if (result.getData() != null){
+//                binding.lottieLoadingWaitingTransfer.setVisibility(View.GONE);
+                binding.btnContinueTransfer.setEnabled(true);
+                binding.btnContinueTransfer.setText(getString(R.string.tiep_tuc));
+                ((MainActivity) requireActivity()).openFeatureFragment(
+                        new TransactionConfirmFragment(),
+                        getString(R.string.xac_nhan_giao_dich)
+                );
+
+                return;
+            }
+            if (result.getError() != null) {
+//                binding.lottieLoadingWaitingTransfer.setVisibility(View.GONE);
+                binding.btnContinueTransfer.setEnabled(true);
+                binding.btnContinueTransfer.setText(getString(R.string.tiep_tuc));
+
+                showError("Lỗi tạo giao dịch", result.getError());
+                return;
+            }
+
+            if (result.isLoading()) {
+                binding.btnContinueTransfer.setEnabled(false);
+                binding.btnContinueTransfer.setText("Đang chuyển hướng...");
+//                binding.lottieLoadingWaitingTransfer.setVisibility(View.VISIBLE);
+            } else {
+//                binding.lottieLoadingWaitingTransfer.setVisibility(View.GONE);
+            }
+        });
     }
 
 
     // trigger bắt lỗi tìm kiếm tài khoản nhận
     private void triggerSearch() {
-        String accNumber = txtReceiverAccNumber.getText().toString().trim();
+        String accNumber = binding.txtReceiverAccNumber.getText().toString().trim();
         if (selectedBank == null) {
             Toast.makeText(getContext(), "Hãy chọn ngân hàng", Toast.LENGTH_SHORT).show();
             return;
         }
         if (accNumber.isEmpty()) {
-            txtReceiverAccNumber.setError("Nhập số tài khoản");
-            txtReceiverAccNumber.requestFocus();
+            binding.txtReceiverAccNumber.setError("Nhập số tài khoản");
+            binding.txtReceiverAccNumber.requestFocus();
             return;
         }
 
@@ -377,7 +496,7 @@ public class BankTransferFragment extends Fragment {
 //        externalAccountViewModel.clearExternalAccount(); // clear kết quả cũ trước khi tra
 
         InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(txtReceiverAccNumber.getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(binding.txtReceiverAccNumber.getWindowToken(), 0);
 
         boolean isTadBank = "TAD".equalsIgnoreCase(selectedBank.getBankCode());
         externalAccountViewModel.searchAccounts(isTadBank, selectedBank.getBankId(), accNumber);
@@ -386,25 +505,26 @@ public class BankTransferFragment extends Fragment {
     // clear kết quả lỗi
     private void resetReceiverSection() {
         // Ẩn card + xoá nội dung
-        lnloTransferReceiverName.setVisibility(View.GONE);
-        txtReceiverName.setText("");
+        binding.lnloTransferReceiverName.setVisibility(View.GONE);
+        binding.txtReceiverName.setText("");
         // Tắt loading nếu còn
-        lottie_loading_search_beneficiary_account.setVisibility(View.GONE);
+//        binding.lottieLoadingSearchBeneficiaryAccount.setVisibility(View.GONE);
+        ((MainActivity)requireActivity()).showLoadingFeature(false);
         // Clear error để không hiện lại dialog
         externalAccountViewModel.clearError();
         externalAccountViewModel.clearAccounts();
         // (tuỳ chọn) xoá số tài khoản & focus lại
         // txtReceiverAccNumber.setText("");
-        txtReceiverAccNumber.requestFocus();
+        binding.txtReceiverAccNumber.requestFocus();
         // Ẩn bàn phím -> hiện lại nếu muốn gõ tiếp
         InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(txtReceiverAccNumber, InputMethodManager.SHOW_IMPLICIT);
+        imm.showSoftInput(binding.txtReceiverAccNumber, InputMethodManager.SHOW_IMPLICIT);
     }
 
 
     // hiển thị lỗi khi bấm tiếp tục, trỏ chuột tới nơi lỗi
     private void showLookupDialog(String title, String message, TextInputEditText txtEdit) {
-        new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+        new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(title)
                 .setMessage(message)
                 .setCancelable(true) // người dùng có thể bấm ra ngoài để tắt
@@ -418,6 +538,18 @@ public class BankTransferFragment extends Fragment {
                     if (txtEdit != null) {
                         txtEdit.requestFocus();
                     }
+                    d.dismiss();
+                })
+                .show();
+    }
+
+    // hiển thị lỗi khi tạo giao dịch PENDING ở firebase
+    private void showError(String title, String message) {
+        new MaterialAlertDialogBuilder(requireContext())
+                .setTitle(title)
+                .setMessage(message)
+                .setCancelable(true) // người dùng có thể bấm ra ngoài để tắt
+                .setPositiveButton("OK", (d, w) -> {
                     d.dismiss();
                 })
                 .show();
@@ -439,5 +571,11 @@ public class BankTransferFragment extends Fragment {
 //        Log.d("TAG", "BANK TRANSFER onstop");
 
 //        ((MainActivity) requireActivity()).setBottomNavigationVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

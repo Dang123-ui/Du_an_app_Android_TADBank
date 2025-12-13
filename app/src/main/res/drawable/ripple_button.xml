@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:color="@color/btnRippleColor"
+    tools:targetApi="lollipop">
+
+    <item android:drawable="@drawable/bg_button_transfer_gradient" />
+    <item android:id="@android:id/mask">
+        <shape android:shape="rectangle">
+            <corners android:radius="30dp" />
+            <solid android:color="@color/white" />
+        </shape>
+    </item>
+</ripple>

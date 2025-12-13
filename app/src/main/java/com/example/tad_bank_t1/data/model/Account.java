@@ -188,4 +188,20 @@ public class Account implements Serializable {
         map.put("updatedAt", updatedAt);
         return map;
     }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "accountId='" + accountId + '\'' +
+                ", accountName='" + accountName + '\'' +
+                ", accountNumber='" + accountNumber + '\'' +
+                ", type=" + type +
+                ", currency='" + currency + '\'' +
+                ", balance=" + balance +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                ", closedAt=" + closedAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 }

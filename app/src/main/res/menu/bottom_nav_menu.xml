@@ -6,8 +6,8 @@
         android:title="@string/trang_chu"/>
     <item
         android:id="@+id/nav_transfer"
-        android:icon="@drawable/ic_home_money_qrcode"
-        android:title="@string/quet_ma_nav"/>
+        android:icon="@drawable/ic_home_bottom_nav_transfer"
+        android:title="@string/chuyen_tien"/>
     <item
         android:id="@+id/nav_setting"
         android:icon="@drawable/ic_home_settings"

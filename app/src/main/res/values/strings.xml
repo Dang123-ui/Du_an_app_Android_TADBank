@@ -108,4 +108,15 @@
     <!-- Error messages -->
     <string name="error_fragment_message">An error occurred</string>
     <string name="dismiss_error">Dismiss</string>
+    <string name="hinh_thuc_chuyen_tien">Transfer type</string>
+    <string name="ma_giao_dich">Transaction code</string>
+    <string name="ket_qua_giao_dich">Transaction result</string>
+    <string name="giao_dich_moi">New transaction</string>
+    <string name="luu_anh">Save image</string>
+    <string name="share_image">Share image</string>
+    <string name="tim_chi_nhanh">Search branch</string>
+    <string name="tiet_kiem">Saving</string>
+    <string name="the_chap">Mortgage</string>
+    <string name="nap_tien">Deposit</string>
+    <string name="rut_tien">Withdraw</string>
 </resources>

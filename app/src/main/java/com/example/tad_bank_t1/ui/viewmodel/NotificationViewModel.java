@@ -8,10 +8,12 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.tad_bank_t1.data.model.Notification;
 import com.example.tad_bank_t1.data.model.enums.NotificationType;
+import com.example.tad_bank_t1.data.repository.callbacks.ResultCallback;
 import com.example.tad_bank_t1.data.repository.notification.FirebaseNotificationRepository;
 import com.example.tad_bank_t1.data.repository.notification.NotificationRepository;
 import com.example.tad_bank_t1.data.repository.notification.OnNotificationsChanged;
 import com.example.tad_bank_t1.data.repository.notification.OnUnreadCountNotificationChanged;
+import com.example.tad_bank_t1.data.response.ResultWrapper;
 import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.List;
@@ -28,6 +30,10 @@ public class NotificationViewModel extends ViewModel {
 
     private final MutableLiveData<Integer> _unreadCount = new MutableLiveData<>();
     public LiveData<Integer> unreadCount = _unreadCount;
+
+    // result state
+    private final MutableLiveData<ResultWrapper<Notification>> _resultState = new MutableLiveData<>();
+
 
     private ListenerRegistration listenerSystem;
     private ListenerRegistration listenerTransaction;
@@ -49,6 +55,8 @@ public class NotificationViewModel extends ViewModel {
         });
 
     }
+
+
 
     public void startListeningTransaction(String userId){
         listenerTransaction = notificationRepository.listenerGetNotificationsByUser(userId, NotificationType.TRANSACTION, new OnNotificationsChanged(){
@@ -84,9 +92,33 @@ public class NotificationViewModel extends ViewModel {
         if (list == null) return;
         notificationRepository.markNotificationsAsRead(list);
     }
+
     public void stopListening() {
         if (listenerSystem != null) listenerSystem.remove();
         if (listenerTransaction != null) listenerTransaction.remove();
         if (unreadListener != null) unreadListener.remove();
     }
+
+    // Tao thong bao khi giao dich thanh cong
+    public void createNotification(Notification notification){
+        if (notification == null) return;
+        _resultState.postValue(ResultWrapper.loading());
+
+        notificationRepository.createNotification(notification, new ResultCallback<Notification>() {
+            @Override
+            public void onSucces(Notification data) {
+                if (data == null) {
+                    _resultState.postValue(ResultWrapper.error("Tạo Notification bị lỗi"));
+                } else {
+                    _resultState.postValue(ResultWrapper.success(data));
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                _resultState.postValue(ResultWrapper.error(error));
+            }
+        });
+    }
+
 }

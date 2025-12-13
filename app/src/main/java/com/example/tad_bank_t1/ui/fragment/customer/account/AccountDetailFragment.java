@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +14,13 @@ import android.widget.TextView;
 
 import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.model.Account;
+import com.example.tad_bank_t1.ui.base.UiConfig;
 import com.example.tad_bank_t1.ui.viewmodel.SessionViewModel;
 import com.example.tad_bank_t1.util.DateTimeUtil;
 
 import java.util.Date;
 
-public class AccountDetailFragment extends Fragment {
+public class AccountDetailFragment extends Fragment implements UiConfig {
 
     private SessionViewModel sessionViewModel;
 
@@ -25,13 +28,19 @@ public class AccountDetailFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static AccountDetailFragment newInstance(String param1, String param2) {
-        AccountDetailFragment fragment = new AccountDetailFragment();
-        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    @Override
+    public boolean showBottomNav() {
+        return false;
+    }
+
+    @Override
+    public boolean showAppBar() {
+        return true;
+    }
+
+    @Override
+    public String getAppBarTitle() {
+        return getString(R.string.chi_tiet_tai_khoan);
     }
 
     @Override
@@ -41,6 +50,14 @@ public class AccountDetailFragment extends Fragment {
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
+        // Transition khi Fragment mới xuất hiện (Enter)
+        setEnterTransition(new Slide(Gravity.RIGHT));
+
+        // Transition khi Fragment hiện tại biến mất (Exit)
+        setExitTransition(new Slide(Gravity.RIGHT));
+
     }
 
     @Override

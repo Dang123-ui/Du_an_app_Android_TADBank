@@ -18,6 +18,7 @@ import com.example.tad_bank_t1.data.model.Account;
 import com.example.tad_bank_t1.ui.activity.MainActivity;
 import com.example.tad_bank_t1.ui.fragment.customer.account.AccountDetailFragment;
 import com.example.tad_bank_t1.ui.viewmodel.SessionViewModel;
+import com.example.tad_bank_t1.util.CurrencyUtil;
 
 
 public class CardTransactionHistoryFragment extends Fragment {
@@ -78,6 +79,6 @@ public class CardTransactionHistoryFragment extends Fragment {
     private void bindingCard(Account account) {
         txtTxnHistoryAccName.setText(account.getAccountName());
         txtTxnHistoryAccNumber.setText(account.getAccountNumber());
-        txtTxnHistoryAccBalance.setText(account.getBalance() + " " + account.getCurrency());
+        txtTxnHistoryAccBalance.setText(CurrencyUtil.formatAmount(account.getBalance()) + " " + account.getCurrency());
     }
 }

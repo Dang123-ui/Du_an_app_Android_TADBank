@@ -6,7 +6,7 @@
     android:id="@+id/main_scroll_transfer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.customer.transfer.MobileTopupTransferFragment">
+    tools:context=".ui.fragment.customer.topup.MobileTopupFragment">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -246,7 +246,7 @@
             android:textColor="#E46868"
             android:textSize="16sp"
             app:buttonTint="#E46868"
-            app:layout_constraintBottom_toTopOf="@id/btnContinue"
+            app:layout_constraintBottom_toTopOf="@id/btnContinueTopup"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
@@ -254,25 +254,29 @@
             app:layout_constraintVertical_bias="1" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnContinue"
+            android:id="@+id/btnContinueTopup"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/bg_button_transfer_gradient"
+
+
+            app:backgroundTint="@null"
+            android:background="@drawable/ripple_button"
+
             android:letterSpacing="0.05"
             android:text="@string/tiep_tuc"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:backgroundTint="@null"
+
             app:cornerRadius="30dp"
             app:elevation="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintVertical_bias="1"
-            app:rippleColor="#40FFFFFF" />
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--        MODAL SEARCH-->

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.model.Notification;
+import com.example.tad_bank_t1.util.DateTimeUtil;
 
 import java.util.List;
 
@@ -55,8 +56,8 @@ public class NotiAdapter extends RecyclerView.Adapter<NotiAdapter.ViewHolder> {
         }
 
         public void bind(Notification notification) {
-            txtTimeNoti.setText(notification.getCreatedAt().toString());
-            txtNotiContent.setText(notification.getTitle() + " | | + " + notification.getMessage());
+            txtTimeNoti.setText(DateTimeUtil.formatDateToVNTime(notification.getCreatedAt()));
+            txtNotiContent.setText(notification.getTitle() + "\n" + notification.getMessage());
         }
     }
 }

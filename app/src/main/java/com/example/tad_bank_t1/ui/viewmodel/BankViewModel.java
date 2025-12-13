@@ -101,4 +101,10 @@ public class BankViewModel extends ViewModel {
     public LiveData<String> getError(){
         return _error;
     }
+
+    public void clearBankSelected(){
+        _selectedBank.postValue(null);
+        _loading.postValue(false);
+        _error.postValue(null);
+    }
 }

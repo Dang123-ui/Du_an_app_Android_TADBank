@@ -1,16 +1,28 @@
 package com.example.tad_bank_t1.util;
 
 
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.Date;
 import java.util.Locale;
 
 public class DateTimeUtil {
     public static final ZoneId LOCAL_ZONE_ID = ZoneId.of("Asia/Ho_Chi_Minh");
+
+    // nhan vào giờ UTC +7 trả ra format dd-mm-YYYY hh:mm:ss
+    public static String formatDateToVNTime(Date date){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
+        // Format the Date object into a String
+        String formattedDate = formatter.format(date);
+
+        return formattedDate;
+    }
 
     public static ZonedDateTime toUTC(LocalDateTime localDateTime, ZoneId zoneId) {
 

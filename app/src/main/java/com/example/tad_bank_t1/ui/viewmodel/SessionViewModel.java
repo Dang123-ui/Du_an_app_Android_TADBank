@@ -10,8 +10,10 @@ import com.example.tad_bank_t1.data.model.Account;
 import com.example.tad_bank_t1.data.model.User;
 import com.example.tad_bank_t1.data.repository.account.AccountRepository;
 import com.example.tad_bank_t1.data.repository.account.FirebaseAccountRepository;
+import com.example.tad_bank_t1.data.repository.callbacks.ResultCallback;
 import com.example.tad_bank_t1.data.repository.users.FirebaseUserRepository;
 import com.example.tad_bank_t1.data.repository.users.UserRepository;
+import com.example.tad_bank_t1.data.response.ResultWrapper;
 import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.List;
@@ -22,6 +24,9 @@ public class SessionViewModel extends ViewModel {
 
     private final MutableLiveData<User> _user = new MutableLiveData<>();
     public LiveData<User> user = _user;
+
+    // user id
+    private MutableLiveData<String> userId = new MutableLiveData<>();
 
     private final MutableLiveData<List<Account>> _accounts = new MutableLiveData<>();
     public LiveData<List<Account>> accounts = _accounts;
@@ -39,6 +44,15 @@ public class SessionViewModel extends ViewModel {
     public LiveData<String> error = _error;
 
     private ListenerRegistration accountListener;
+
+
+    public void setUserId(String id) {
+        userId.setValue(id);
+    }
+
+    public LiveData<String> getUserId() {
+        return userId;
+    }
 
     public void loadCurrentUserAndAccounts(String userId) {
         _isLoading.postValue(true);
@@ -71,7 +85,6 @@ public class SessionViewModel extends ViewModel {
                 });
     }
 
-
     public void observeUserAndAccountsRealtime(String userId) {
         _isLoading.postValue(true);
         userRepo.getById(userId)
@@ -86,8 +99,10 @@ public class SessionViewModel extends ViewModel {
                         public void onChanged(List<Account> accounts) {
                             _accounts.postValue(accounts);
                             for (Account a : accounts) {
-                                if (a.isDefault()) _defaultAccount.postValue(a);
-                                Log.d("SessionViewModel", "Account loaded:" + a.getAccountName());
+                                if (a.isDefault()) {
+                                    _defaultAccount.postValue(a);
+                                    Log.d("SessionViewModel", "Account loaded:" + a.getAccountName());
+                                }
                             }
                             _isLoading.postValue(false);
                         }
@@ -127,7 +142,9 @@ public class SessionViewModel extends ViewModel {
         _selectedAccount.postValue(null);
     }
 
+
     public void clearSelectedAccount() {
         _selectedAccount.postValue(null);
     }
+
 }

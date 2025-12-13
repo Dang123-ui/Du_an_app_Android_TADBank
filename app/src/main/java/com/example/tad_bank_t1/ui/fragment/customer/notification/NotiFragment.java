@@ -5,19 +5,28 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.tad_bank_t1.R;
+import com.example.tad_bank_t1.ui.base.UiConfig;
 import com.example.tad_bank_t1.ui.viewadapter.VPNotiAdapter;
 import com.example.tad_bank_t1.ui.viewmodel.NotificationViewModel;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 
-public class NotiFragment extends Fragment {
+public class NotiFragment extends Fragment implements UiConfig {
     private NotificationViewModel notificationViewModel;
+
+
+    @Override
+    public String getAppBarTitle() {
+        return getString(R.string.thong_bao);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,6 +35,13 @@ public class NotiFragment extends Fragment {
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
+        // Transition khi Fragment mới xuất hiện (Enter)
+        setEnterTransition(new Slide(Gravity.RIGHT));
+
+        // Transition khi Fragment hiện tại biến mất (Exit)
+        setExitTransition(new Slide(Gravity.RIGHT));
     }
 
     @Override

@@ -2,29 +2,38 @@ package com.example.tad_bank_t1.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.tad_bank_t1.R;
+import com.example.tad_bank_t1.databinding.ActivityMainBinding;
+import com.example.tad_bank_t1.ui.base.UiConfig;
 import com.example.tad_bank_t1.ui.fragment.customer.transfer.BankTransferFragment;
-import com.example.tad_bank_t1.ui.fragment.HomeCustomerFragment;
-import com.example.tad_bank_t1.ui.fragment.SettingFragment;
+import com.example.tad_bank_t1.ui.fragment.customer.HomeCustomerFragment;
+import com.example.tad_bank_t1.ui.fragment.customer.setting.SettingFragment;
 import com.example.tad_bank_t1.ui.viewmodel.SessionViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+
 public class MainActivity extends AppCompatActivity {
-    private Toolbar toolbar;
-    private BottomNavigationView bottomNav;
-    private LottieAnimationView loadingAnim;
+    private ActivityMainBinding binding;
+
     private SessionViewModel sessionViewModel;
 
     public static final String EXTRA_USERID = "extra_userid";
@@ -44,40 +53,71 @@ public class MainActivity extends AppCompatActivity {
             getWindow().setSharedElementReturnTransition(shared);
             supportPostponeEnterTransition();
         }
-        setContentView(R.layout.activity_main);
-        toolbar = findViewById(R.id.toolbar);
-        bottomNav = findViewById(R.id.bottom_nav);
-        loadingAnim = findViewById(R.id.lottie_loading_waiting_redirect);
-        setSupportActionBar(toolbar);
-        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-                    getSupportFragmentManager().popBackStack();
-                    getSupportFragmentManager().executePendingTransactions();
-                    Fragment current = getSupportFragmentManager()
-                            .findFragmentById(R.id.frame_main_container);
-                    updateUIForFragment(current);
-                    checkCurrentFragment();
-                } else {
-                    // Cho phép hành vi mặc định (thoát app)
-                    setEnabled(false);
-                    getOnBackPressedDispatcher().onBackPressed();
-                }
-            }
-        });
-        replaceFragment(new HomeCustomerFragment(), false);
-        updateUIForFragment(new HomeCustomerFragment());
 
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+//        setContentView(R.layout.activity_main);
+
+//        setupInsetBehavior();
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+
+        initView();
+
+        initAndObserverViewModel();
+
+        initEvents();
+    }
+
+    private void initView() {
+        setSupportActionBar(binding.toolbar);
+
+        // back icon
+        binding.toolbar.setNavigationIcon(R.drawable.ic_back_previous_activity);
+
+        // margin status bar
+        ViewCompat.setOnApplyWindowInsetsListener(binding.toolbar, (v, insets) -> {
+            int topInset = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top;
+
+            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            lp.topMargin = (int)(topInset * 0.75);    // ⭐ auto margin theo status bar
+            v.setLayoutParams(lp);
+
+            return WindowInsetsCompat.CONSUMED;
+        });
+
+        // bottom nav inset
+        ViewCompat.setOnApplyWindowInsetsListener(binding.bottomNav, (v, insets) -> {
+            int bottom = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom;
+
+            // giữ sát đáy, không chừa khoảng
+            v.setPadding(
+                    v.getPaddingLeft(),
+                    v.getPaddingTop(),
+                    v.getPaddingRight(),
+                    0  // KHÔNG dùng bottom inset
+            );
+
+            return WindowInsetsCompat.CONSUMED;
+        });
+
+
+        // home is Ui default
+        replaceFragment(new HomeCustomerFragment(), false);
+    }
+
+    private void initAndObserverViewModel() {
         // load user account bang session viewmodel
         sessionViewModel = new ViewModelProvider(this).get(SessionViewModel.class);
+
         Intent intent = getIntent();
         String userId = null;
         if (intent != null) {
             userId = intent.getStringExtra(EXTRA_USERID);
         }
         if (userId != null) {
-            sessionViewModel.loadCurrentUserAndAccounts(userId);
+            sessionViewModel.setUserId(userId);
+//            sessionViewModel.loadCurrentUserAndAccounts(userId);
             sessionViewModel.observeUserAndAccountsRealtime(userId);
             sessionViewModel.isLoading.observe(this, isLoading -> {
                 if (isLoading) {
@@ -87,35 +127,50 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-        checkCurrentFragment();
+    }
+
+    private void initEvents() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    getSupportFragmentManager().popBackStack();
+                    getSupportFragmentManager().executePendingTransactions();
+                    Fragment current = getSupportFragmentManager()
+                            .findFragmentById(R.id.frame_main_container);
+                    updateUIForFragment(current);
+//                    checkCurrentFragment();
+                } else {
+                    // Cho phép hành vi mặc định (thoát app)
+                    setEnabled(false);
+                    getOnBackPressedDispatcher().onBackPressed();
+                }
+            }
+        });
+
         // Sự kiện chọn bottom navigation
-        bottomNav.setOnItemSelectedListener(item -> {
+        binding.bottomNav.setOnItemSelectedListener(item -> {
             Fragment fragment;
             int id = item.getItemId();
+
             if (id == R.id.nav_home) {
                 fragment = new HomeCustomerFragment();
                 replaceFragment(fragment, false);
-                updateUIForFragment(fragment);
                 return true;
             } else if (id == R.id.nav_transfer) {
                 fragment = new BankTransferFragment();
                 replaceFragment(fragment, true);
-                setupToolbar("Chuyển tiền", true);
-                bottomNav.setVisibility(View.GONE);
                 return true;
             } else if (id == R.id.nav_setting) {
                 fragment = new SettingFragment();
                 replaceFragment(fragment, true);
-                setupToolbar("Cài đặt", true);
-                bottomNav.setVisibility(View.GONE);
                 return true;
             }
             return false;
         });
 
         // Nút back trên toolbar
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
-
+        binding.toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
     @Override
@@ -128,90 +183,107 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
         if (item.getItemId() == R.id.action_home) {
             // Khi bấm icon home → quay lại Home
-            replaceFragment(new HomeCustomerFragment(), false);
-            updateUIForFragment(new HomeCustomerFragment());
-            bottomNav.setSelectedItemId(R.id.nav_home);
+//            replaceFragment(new HomeCustomerFragment(), false);
+            navigateHomeAndClearStack();
+//            bottomNav.setSelectedItemId(R.id.nav_home);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    // open fragment
     public void openFeatureFragment(Fragment fragment, String title) {
         replaceFragment(fragment, true);
-        setupToolbar(title, true);
-        bottomNav.setVisibility(View.GONE);
     }
 
-
-    public void setupToolbar(String title, boolean showBackButton) {
-        toolbar.setVisibility(View.VISIBLE);
-        toolbar.setTitle(title);
-        if (showBackButton) {
-            toolbar.setNavigationIcon(R.drawable.ic_back_previous_activity);
-        } else {
-            toolbar.setNavigationIcon(null);
-        }
-    }
 
     private void replaceFragment(Fragment fragment, boolean addToBackStack) {
-        var ft = this.getSupportFragmentManager().beginTransaction();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.frame_main_container, fragment);
-        if (addToBackStack) ft.addToBackStack(null);
+        if (addToBackStack)
+            ft.addToBackStack(null);
         ft.commit();
-        this.getSupportFragmentManager().executePendingTransactions();
-        updateUIForFragment(fragment);
-        checkCurrentFragment();
+
+        // CHỈ update UI sau khi view đã tạo xong (viewLifecycleOwnerAvailable)
+        fragment.getViewLifecycleOwnerLiveData().observe(this, owner -> {
+            if (owner != null) {
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    updateUIForFragment(fragment);
+                    animateToolbar(fragment);
+                });
+            }
+        });
+
     }
 
     private void updateUIForFragment(Fragment fragment) {
-        if (fragment instanceof HomeCustomerFragment) {
-            toolbar.setVisibility(View.GONE);
-            bottomNav.setVisibility(View.VISIBLE);
-        } else {
-            toolbar.setVisibility(View.VISIBLE);
-            bottomNav.setVisibility(View.GONE);
+        if (fragment instanceof UiConfig) {
+            if (((UiConfig) fragment).showAppBar()) {
+                binding.toolbar.setTitle(((UiConfig) fragment).getAppBarTitle());
+                binding.toolbar.setVisibility(View.VISIBLE);
+            }
+            binding.bottomNav.setVisibility(((UiConfig) fragment).showBottomNav() ? View.VISIBLE : View.GONE);
         }
     }
+
     // ✅ Hàm show/hide loading
     private void showLoading(boolean show) {
         if (show) {
-            loadingAnim.setVisibility(View.VISIBLE);
-            toolbar.setVisibility(View.GONE);
-            bottomNav.setVisibility(View.GONE);
+            binding.lottieLoadingWaitingRedirect.setVisibility(View.VISIBLE);
+            binding.toolbar.setVisibility(View.GONE);
+            binding.bottomNav.setVisibility(View.GONE);
+            binding.mainCustomer.setEnabled(false);
         } else {
-            loadingAnim.setVisibility(View.GONE);
-            toolbar.setVisibility(View.GONE);
-            bottomNav.setVisibility(View.VISIBLE);
+            binding.lottieLoadingWaitingRedirect.setVisibility(View.GONE);
+            binding.toolbar.setVisibility(View.GONE);
+            binding.bottomNav.setVisibility(View.VISIBLE);
+            binding.mainCustomer.setEnabled(true);
         }
     }
-    public void checkCurrentFragment() {
-        // ID của container mà bạn dùng để host các Fragment (ví dụ: R.id.fragment_container)
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_main_container);
 
-        if (currentFragment instanceof HomeCustomerFragment) {
-            // Fragment hiện tại là HomeCustomerFragment
-            // Trong Activity/Fragment, sau khi View được tạo
-            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.appbar), (v, insets) -> {
-                // Lấy chiều cao của thanh trạng thái
-                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+    // hàm show/hide loading features
+    public void showLoadingFeature(boolean show) {
+        binding.lottieLoadingWaitingRedirect.setEnabled(!show);
+        binding.lottieLoadingWaitingRedirect.setVisibility(show ? View.VISIBLE : View.GONE);
+        binding.loadingMainIcon.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
 
-                // Áp dụng padding: Padding cũ + Chiều cao thanh trạng thái + Thêm khoảng cách 10dp
-                v.setPadding(v.getPaddingLeft(), 0, v.getPaddingRight(), v.getPaddingBottom());
+    private void animateToolbar(Fragment fragment) {
+        if (!(fragment instanceof UiConfig)) return;
 
-                return insets;
-            });
-        } else {
-            // Trong Activity/Fragment, sau khi View được tạo
-            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.appbar), (v, insets) -> {
-                // Lấy chiều cao của thanh trạng thái
-                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+        UiConfig ui = (UiConfig) fragment;
 
-                // Áp dụng padding: Padding cũ + Chiều cao thanh trạng thái + Thêm khoảng cách 10dp
-                v.setPadding(v.getPaddingLeft(), (int) (systemBars.top * 0.75), v.getPaddingRight(), v.getPaddingBottom());
-
-                return insets;
-            });
+        if (!ui.showAppBar()) {
+            binding.toolbar.setVisibility(View.GONE);
+            return;
         }
+
+        binding.toolbar.setVisibility(View.VISIBLE);
+        binding.toolbar.startAnimation(
+                AnimationUtils.loadAnimation(this, R.anim.toolbar_slide_up)
+        );
+    }
+
+
+    // Tro ve Home Fragment Clear stack
+    public void navigateHomeAndClearStack() {
+        getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.frame_main_container, new HomeCustomerFragment());
+        ft.commit();
+
+        // show bottom nav, hide toolbar
+        binding.bottomNav.setVisibility(View.VISIBLE);
+        binding.bottomNav.setSelectedItemId(R.id.nav_home);
+        binding.toolbar.setVisibility(View.GONE);
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 
 }

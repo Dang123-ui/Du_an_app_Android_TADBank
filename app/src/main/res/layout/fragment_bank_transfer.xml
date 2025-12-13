@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_scroll_transfer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.customer.transfer.BankTransferFragment"
-    >
+    tools:context=".ui.fragment.customer.transfer.BankTransferFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -98,11 +97,11 @@
                 android:id="@+id/imbtShowListBank"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:scaleType="fitCenter"
-
                 android:layout_gravity="center_vertical"
+
                 android:background="@android:color/transparent"
                 android:paddingBottom="0dp"
+                android:scaleType="fitCenter"
                 android:src="@drawable/ic_transfer_downarrow_red" />
         </LinearLayout>
 
@@ -151,10 +150,11 @@
                     android:background="@null"
                     android:ellipsize="end"
                     android:hint="@string/hint_chon_tai_khoan_nhan_ck"
-                    android:inputType="number"
                     android:imeOptions="actionSearch"
-                    android:singleLine="true"
+                    android:inputType="number"
                     android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="1031095555"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -168,14 +168,13 @@
 
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:scaleType="fitCenter"
                 android:layout_gravity="center"
                 android:background="@android:color/transparent"
                 android:foregroundGravity="center"
                 android:padding="0dp"
+                android:scaleType="fitCenter"
                 android:src="@drawable/ic_transfer_beneficiary" />
         </LinearLayout>
-
 
         <!--            Ten nguoi nhan-->
         <LinearLayout
@@ -186,9 +185,9 @@
             android:background="@drawable/bg_card_white"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:visibility="gone"
-
             android:padding="10dp"
+
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
 
             app:layout_constraintHorizontal_bias="0"
@@ -292,6 +291,7 @@
                     android:background="@null"
                     android:hint="@string/hint_so_tien_ck"
                     android:inputType="number"
+                    android:text="1000"
                     android:textColor="#E46868"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -353,8 +353,8 @@
                     style="@style/TextAppearance.Material3.BodySmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
                     android:background="@null"
+                    android:maxLines="1"
                     android:text="TRAN MINH THUYEN chuyen tien"
                     android:textSize="15sp" />
             </LinearLayout>
@@ -363,90 +363,61 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
-
-
         </LinearLayout>
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/chbSaveReceiverBankInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
             android:layout_marginBottom="10dp"
             android:text="@string/luu_nguoi_nhan_ck"
             android:textColor="#E46868"
             android:textSize="16sp"
             app:buttonTint="#E46868"
-            app:layout_constraintBottom_toTopOf="@id/ctloBtnContinue_Waiting"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/btnContinueTransfer"
             app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lnloTransferDescription"
-            app:layout_constraintVertical_bias="0.8" />
+            app:layout_constraintVertical_bias="1" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/ctloBtnContinue_Waiting"
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnContinueTransfer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+
+            android:text="@string/tiep_tuc"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+
+            app:backgroundTint="@null"
+            android:background="@drawable/ripple_button"
+
+            app:cornerRadius="30dp"
+            app:elevation="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lnloTransferDescription"
-            app:layout_constraintVertical_bias="0.9">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnContinueTransfer"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/bg_button_transfer_gradient"
-                android:letterSpacing="0.05"
-                android:text="@string/tiep_tuc"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:backgroundTint="@null"
-                app:cornerRadius="30dp"
-                app:elevation="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintVertical_bias="1"
-                app:rippleColor="#40FFFFFF" />
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/lottie_loading_waiting_transfer"
-                android:layout_width="100dp"
-                android:layout_height="60dp"
-                android:foregroundGravity="center"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/btnContinueTransfer"
-                app:layout_constraintHorizontal_bias="0.8"
-                app:layout_constraintStart_toStartOf="@id/btnContinueTransfer"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.5"
-                app:lottie_autoPlay="true"
-                app:lottie_loop="true"
-                app:lottie_rawRes="@raw/redirect_loading" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintVertical_bias="1" />
 
 
-        <!-- Loading animation -->
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/lottie_loading_search_beneficiary_account"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/loading" />
+        <!--        &lt;!&ndash; Loading animation &ndash;&gt;-->
+        <!--        <com.airbnb.lottie.LottieAnimationView-->
+        <!--            android:id="@+id/lottie_loading_search_beneficiary_account"-->
+        <!--            android:layout_width="150dp"-->
+        <!--            android:layout_height="150dp"-->
+        <!--            android:layout_gravity="center"-->
+        <!--            android:visibility="gone"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"-->
+        <!--            app:lottie_autoPlay="true"-->
+        <!--            app:lottie_loop="true"-->
+        <!--            app:lottie_rawRes="@raw/loading" />-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

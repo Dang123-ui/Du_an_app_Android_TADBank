@@ -90,4 +90,15 @@
     <string name="ngay_mo_tai_khoan">Ngày mở tài khoản</string>
     <string name="ngay_gd_gan_nhat">Ngày giao dịch gần nhất</string>
     <string name="chi_tiet_tai_khoan">Chi tiết tài khoản</string>
+    <string name="hinh_thuc_chuyen_tien">Hình thức chuyển tiền</string>
+    <string name="ma_giao_dich">Mã giao dịch</string>
+    <string name="ket_qua_giao_dich">Kết quả giao dịch</string>
+    <string name="giao_dich_moi">Giao dịch mới</string>
+    <string name="luu_anh">Lưu ảnh</string>
+    <string name="share_image">Chia sẻ ảnh</string>
+    <string name="tim_chi_nhanh">Tìm chi nhánh</string>
+    <string name="tiet_kiem">Tiết kiệm</string>
+    <string name="the_chap">Thế chấp</string>
+    <string name="nap_tien">Nạp tiền</string>
+    <string name="rut_tien">Rút tiền</string>
 </resources>

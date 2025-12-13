@@ -63,8 +63,10 @@ public class TxnHistoryAdapter extends RecyclerView.Adapter<TxnHistoryAdapter.Vi
 
     @Override
     public int getItemCount() {
+        if (data == null) return 0;
         return data.size();
     }
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         private TextView txtTxnHistoryDate, txtTxnHistoryContent, txtTxnHistoryAmount;

@@ -12,7 +12,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.tad_bank_t1.R;
-import com.example.tad_bank_t1.ui.activity.MainActivity;
+import com.example.tad_bank_t1.ui.fragment.customer.HomeCustomerFragment;
 import com.example.tad_bank_t1.util.FragmentUtil;
 
 /**

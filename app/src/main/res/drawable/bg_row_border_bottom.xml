@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Layer 1: background white + corner + ripple nếu cần -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/white"/>
+        </shape>
+    </item>
+
+    <!-- Layer 2: border bottom -->
+    <item android:gravity="bottom">
+        <shape android:shape="rectangle">
+            <size android:height="1dp"/>   <!-- Độ dày border -->
+            <solid android:color="#DADADA"/> <!-- Màu border -->
+        </shape>
+    </item>
+
+</layer-list>

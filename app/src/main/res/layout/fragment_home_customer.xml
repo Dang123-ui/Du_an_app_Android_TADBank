@@ -3,11 +3,12 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_scroll"
+    android:id="@+id/home_main_scroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".ui.fragment.HomeCustomerFragment">
+
+    tools:context=".ui.fragment.customer.HomeCustomerFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -18,14 +19,12 @@
             android:id="@+id/lnloHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="40dp"
 
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingStart="15dp"
             android:paddingEnd="15dp"
-            android:paddingBottom="50dp"
+            android:paddingBottom="30dp"
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -416,7 +415,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:background="@android:color/transparent"
-                        android:src="@drawable/ic_home_card_transfer" />
+                        android:src="@drawable/ic_home_card_transfer_plus" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -452,7 +451,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:background="@android:color/transparent"
-                        android:src="@drawable/ic_home_card_money_deposit" />
+                        android:src="@drawable/ic_home_mobile_topup" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -487,7 +486,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:background="@android:color/transparent"
-                        android:src="@drawable/ic_home_card_money_deposit" />
+                        android:src="@drawable/ic_home_card_billpayment" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -503,7 +502,7 @@
 
                 <!-- Ô 4 -->
                 <LinearLayout
-                    android:id="@+id/lnloCardPlaneTicket"
+                    android:id="@+id/lnloCardTransactionHistory"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_rowWeight="1"
@@ -522,14 +521,14 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:background="@android:color/transparent"
-                        android:src="@drawable/ic_bill_plane" />
+                        android:src="@drawable/ic_home_card_transaction_history" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:gravity="center"
-                        android:text="@string/thanh_toan_ve_may_bay"
+                        android:text="@string/lich_su_giao_dich"
                         android:textStyle="bold"
                         android:minLines="2"
                         android:ellipsize="middle"
@@ -539,7 +538,7 @@
 
                 <!-- Ô 5 -->
                 <LinearLayout
-                    android:id="@+id/lnloCardTuitionPayment"
+                    android:id="@+id/lnloCardWithdraw"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_rowWeight="1"
@@ -558,14 +557,14 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:background="@android:color/transparent"
-                        android:src="@drawable/ic_bill_tuition" />
+                        android:src="@drawable/ic_home_card_withdraw" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:gravity="center"
-                        android:text="@string/thanh_toan_hoc_phi"
+                        android:text="@string/rut_tien"
                         android:textStyle="bold"
                         android:minLines="2"
                         android:ellipsize="middle"
@@ -575,7 +574,7 @@
 
                 <!-- Ô 6 -->
                 <LinearLayout
-                    android:id="@+id/lnloCardDepositCredit"
+                    android:id="@+id/lnloCardDeposit"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_rowWeight="1"
@@ -601,7 +600,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:gravity="center"
-                        android:text="@string/nap_rut_tien"
+                        android:text="@string/nap_tien"
                         android:textStyle="bold"
                         android:minLines="2"
                         android:ellipsize="middle"
@@ -636,7 +635,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:gravity="center"
-                        android:text="Tìm chi nhánh"
+                        android:text="@string/tim_chi_nhanh"
                         android:textStyle="bold"
                         android:minLines="2"
                         android:ellipsize="middle"
@@ -645,7 +644,7 @@
 
                 <!-- Ô 8 -->
                 <LinearLayout
-                    android:id="@+id/lnloCardO8"
+                    android:id="@+id/lnloCardSavingAccount"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_rowWeight="1"
@@ -664,14 +663,14 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:background="@android:color/transparent"
-                        android:src="@drawable/ic_home_card_creditdeposit" />
+                        android:src="@drawable/ic_home_card_saving" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:gravity="center"
-                        android:text="Nạp/rút tiền"
+                        android:text="@string/tiet_kiem"
                         android:textStyle="bold"
                         android:minLines="2"
                         android:ellipsize="middle"
@@ -680,7 +679,7 @@
 
                 <!-- Ô 9 -->
                 <LinearLayout
-                    android:id="@+id/lnloCardO9"
+                    android:id="@+id/lnloCardMortgageAccount"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_rowWeight="1"
@@ -699,14 +698,14 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:background="@android:color/transparent"
-                        android:src="@drawable/ic_home_card_creditdeposit" />
+                        android:src="@drawable/ic_home_card_mortgage" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:gravity="center"
-                        android:text="Nạp/rút tiền"
+                        android:text="@string/the_chap"
                         android:textStyle="bold"
                         android:minLines="2"
                         android:ellipsize="middle"
@@ -720,8 +719,8 @@
             <!-- View de lắp đầy navbar-->
             <View
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:backgroundTint="@color/black" />
+                android:layout_height="200dp"
+                android:background="@color/white" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

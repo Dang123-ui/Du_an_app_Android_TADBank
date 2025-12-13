@@ -4,6 +4,9 @@ import android.app.DownloadManager;
 
 import com.example.tad_bank_t1.data.adapterPattern.account.AccountAdapter;
 import com.example.tad_bank_t1.data.model.Account;
+import com.example.tad_bank_t1.data.model.Transaction;
+import com.example.tad_bank_t1.data.model.enums.TnxStatus;
+import com.example.tad_bank_t1.data.repository.callbacks.ResultCallback;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.ListenerRegistration;
@@ -11,6 +14,7 @@ import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class FirebaseAccountRepository implements AccountRepository {
@@ -106,4 +110,83 @@ public class FirebaseAccountRepository implements AccountRepository {
             if (listener != null) listener.onChanged(accounts);
         });
     }
+
+
+    // --------------------------------
+    // Cap nhat thong tin tai khoan
+    // --------------------------------
+    @Override
+    public void updateAccount(Account account, ResultCallback<Account> callback) {
+        account.setUpdatedAt(new Date());
+
+        adapter.col()
+                .document(account.getAccountId())
+                .update(account.toMap())
+                .continueWithTask(task -> {
+                    if (!task.isSuccessful()) throw task.getException();
+                    return adapter.col().document(account.getAccountId()).get();
+                })
+                .addOnSuccessListener(documentSnapshot -> {
+                    Account obj = documentSnapshot.toObject(Account.class);
+                    callback.onSucces(obj);
+                })
+                .addOnFailureListener(e -> {
+                    callback.onError(e.getMessage());
+                });
+    }
+
+    @Override
+    public void getAccountByAccountNumber(String accountNumber, ResultCallback<Account> callback) {
+
+        adapter.col()
+                .whereEqualTo("accountNumber", accountNumber)
+                .limit(1)
+                .get()
+                .addOnSuccessListener(snap -> {
+                    if (snap == null || snap.isEmpty()) {
+                        callback.onSucces(null); // không tìm thấy
+                        return;
+                    }
+
+                    DocumentSnapshot doc = snap.getDocuments().get(0);
+                    Account account = doc.toObject(Account.class);
+                    callback.onSucces(account);  // trả về account
+                })
+                .addOnFailureListener(e -> {
+                    callback.onError(e.getMessage());
+                });
+    }
+
+    public void updateBalanceAccount(String accountNumber, Long amount) {
+        adapter.col()
+                .whereEqualTo("accountNumber", accountNumber)
+                .limit(1)
+                .get()
+                .addOnSuccessListener(snap -> {
+                    if (snap == null || snap.isEmpty()) {
+                        return; // không tìm thấy
+                    }
+                    DocumentSnapshot doc = snap.getDocuments().get(0);
+                    Account account = doc.toObject(Account.class);
+
+                    Long newBalance = account.getBalance() + amount;
+                    account.setBalance(newBalance);
+                    account.setUpdatedAt(new Date());
+
+
+                    adapter.col()
+                            .document(account.getAccountId())
+                            .update("balance", newBalance)
+                            .addOnSuccessListener(aVoid -> {
+                                // cập nhật thành công
+                            })
+                            .addOnFailureListener(e -> {
+                                // cập nhật thất bại
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    // không tìm thấy tài khoản
+                });
+    }
+
 }

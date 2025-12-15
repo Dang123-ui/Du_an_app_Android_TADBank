@@ -43,30 +43,42 @@ public class Transaction {
     // ======= Builder-based private constructor =======
     private Transaction(Builder builder) {
         this.transactionId = builder.transactionId;
+        this.parentId = builder.parentId;
+
         this.accountId = builder.accountId;
         this.accountNumber = builder.accountNumber;
         this.accountName = builder.accountName;
-        this.type = builder.type;
+
         this.status = builder.status;
+        this.type = builder.type;
         this.channel = builder.channel;
+
+        this.branchId = builder.branchId;
+
         this.amount = builder.amount;
+        this.feeAmount = builder.feeAmount;
         this.currency = builder.currency;
+
         this.description = builder.description;
+
         this.createdAt = builder.createdAt;
         this.updatedAt = builder.updateAt != null ? builder.updateAt : new Date();
-        this.parentId = builder.parentId;
+
         this.counterpartyAccount = builder.counterpartyAccount;
         this.counterpartyName = builder.counterpartyName;
         this.counterpartyBankCode = builder.counterpartyBankCode;
         this.counterpartyBankName = builder.counterpartyBankName;
         this.counterpartyBankLogo = builder.counterpartyBankLogo;
-        this.branchId = builder.branchId;
-        this.feeAmount = builder.feeAmount;
+
         this.billId = builder.billId;
+
         this.paymentId = builder.paymentId;
+
         this.scheduleId = builder.scheduleId;
+
         this.otpRequired = builder.otpRequired;
         this.otpVerifiedAt = builder.otpVerifiedAt;
+
         this.idempotencyKey = builder.idempotencyKey;
         this.transactionReference = builder.transactionReference;
     }

@@ -31,6 +31,11 @@
             versionName = "1.0"
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 //            manifestPlaceholders["MAPS_API_KEY"] = MAPS_API_KEY
+//            buildConfigField("String", "SMTP_HOST", "\"${localProps.getProperty("SMTP_HOST","")}\"")
+//            buildConfigField("int",    "SMTP_PORT",  "${localProps.getProperty("SMTP_PORT","587")}")
+//            buildConfigField("String", "SMTP_USER", "\"${localProps.getProperty("SMTP_USER","")}\"")
+//            buildConfigField("String", "SMTP_PASS", "\"${localProps.getProperty("SMTP_PASS","")}\"")
+//            buildConfigField("String", "SMTP_FROM_NAME", "\"${localProps.getProperty("SMTP_FROM_NAME","TAD Bank")}\"")
         }
 
         packaging {

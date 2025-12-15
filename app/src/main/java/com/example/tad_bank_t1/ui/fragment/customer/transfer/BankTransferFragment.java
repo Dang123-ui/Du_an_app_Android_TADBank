@@ -354,6 +354,8 @@ public class BankTransferFragment extends Fragment implements UiConfig {
             binding.btnContinueTransfer.setEnabled(true);
             binding.btnContinueTransfer.setText(getString(R.string.tiep_tuc));
 
+
+
             ((MainActivity) requireActivity()).openFeatureFragment(
                     new TransactionConfirmFragment(),
                     getString(R.string.xac_nhan_giao_dich)
@@ -567,11 +569,30 @@ public class BankTransferFragment extends Fragment implements UiConfig {
     @Override
     public void onStop() {
         super.onStop();
-        // Show the bottom navigation bar when the user leaves this fragment
-//        Log.d("TAG", "BANK TRANSFER onstop");
 
-//        ((MainActivity) requireActivity()).setBottomNavigationVisibility(View.VISIBLE);
+        Log.d("TAG FRAGMENT", "BANK TRANSFER onStop");
+
+        // Người dùng BACK về Home → fragment bị dừng vì rời screen
+        if (!requireActivity().getSupportFragmentManager().getFragments()
+                .contains(this)) {
+            Log.d("TAG FRAGMENT", "BANK TRANSFER onStop and clear view model");
+
+
+            selectedBank = null;
+
+            binding.txtReceiverBankName.setText("");
+
+            // Clear UI state (Transfer-specific ViewModel)
+            bankViewModel.clearBankSelected();
+
+            // Clear UI account state (Transfer-specific ViewModel)
+            externalAccountViewModel.clearAccounts();
+
+            // Clear payload nếu user thực sự rời flow chuyển tiền
+//            transactionPayloadViewModel.clearPayload();
+        }
     }
+
 
     @Override
     public void onDestroyView() {

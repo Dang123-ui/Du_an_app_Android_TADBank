@@ -7,7 +7,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-
     tools:context=".ui.fragment.customer.HomeCustomerFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,6 +21,7 @@
 
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:paddingTop="8dp"
             android:paddingStart="15dp"
             android:paddingEnd="15dp"
             android:paddingBottom="30dp"
@@ -56,7 +56,8 @@
                     android:id="@+id/imbtHomeNotify"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:background="@drawable/ic_home_notify"
+                    android:background="@drawable/ic_home_notify3"
+                    android:backgroundTint="@null"
                     android:contentDescription="icon notify" />
 
                 <!-- Badge đỏ -->
@@ -184,7 +185,7 @@
                         <ImageView
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@drawable/ic_user" />
+                            android:src="@drawable/ic_home_user" />
 
                         <TextView
                             android:id="@+id/txtHomeUsername"
@@ -246,8 +247,7 @@
 
                             android:background="@android:color/transparent"
                             android:scaleType="centerInside"
-                            android:src="@drawable/ic_home_copy"
-
+                            android:src="@drawable/ic_home_copy2"
                             />
 
 
@@ -295,7 +295,7 @@
 
                             android:background="@android:color/transparent"
                             android:scaleType="centerInside"
-                            android:src="@drawable/ic_password_eye_close"
+                            android:src="@drawable/ic_home_eye_close"
 
                             />
 
@@ -719,7 +719,8 @@
             <!-- View de lắp đầy navbar-->
             <View
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:background="@color/white" />
         </LinearLayout>
 

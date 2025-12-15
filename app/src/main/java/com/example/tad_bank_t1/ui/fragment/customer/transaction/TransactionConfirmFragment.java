@@ -178,10 +178,6 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
 
                 ((MainActivity) requireActivity()).showLoadingFeature(true);
 //                binding.lottieLoadingWaitingConfirm.setVisibility(View.VISIBLE);
-            } else {
-//                binding.lottieLoadingWaitingConfirm.setVisibility(View.GONE);
-                ((MainActivity) requireActivity()).showLoadingFeature(true);
-
             }
         });
     }
@@ -214,6 +210,10 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
         new Handler(Looper.getMainLooper()).post(() -> {
             if (!isAdded()) return;
 
+            // clear stack
+            ((MainActivity) requireActivity()).clearBackStack();
+
+            // chuyển sang màn hình kết quả
             ((MainActivity) requireActivity()).openFeatureFragment(
                     new TransactionResultFragment(),
                     getString(R.string.ket_qua_giao_dich)

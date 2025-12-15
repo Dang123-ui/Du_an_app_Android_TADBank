@@ -66,7 +66,4 @@ public class AccountViewModel extends ViewModel {
         });
     }
 
-    public void updateBalanceAccount(String accountNumber, Long amount) {
-        accountRepo.updateBalanceAccount(accountNumber, amount);
-    }
 }

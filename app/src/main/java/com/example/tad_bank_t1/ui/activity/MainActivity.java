@@ -38,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_USERID = "extra_userid";
 
+    private static final int REQ_NOTI = 1001;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,20 +70,24 @@ public class MainActivity extends AppCompatActivity {
         initAndObserverViewModel();
 
         initEvents();
+
+
+        // permission
+        ensureNotiPermission();
     }
 
     private void initView() {
         setSupportActionBar(binding.toolbar);
 
         // back icon
-        binding.toolbar.setNavigationIcon(R.drawable.ic_back_previous_activity);
+        binding.toolbar.setNavigationIcon(R.drawable.ic_back_previous_activity2);
 
         // margin status bar
         ViewCompat.setOnApplyWindowInsetsListener(binding.toolbar, (v, insets) -> {
             int topInset = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top;
 
             ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
-            lp.topMargin = (int)(topInset * 0.75);    // ⭐ auto margin theo status bar
+            lp.topMargin = topInset;    // ⭐ auto margin theo status bar
             v.setLayoutParams(lp);
 
             return WindowInsetsCompat.CONSUMED;
@@ -191,11 +198,23 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void ensureNotiPermission() {
+        if (android.os.Build.VERSION.SDK_INT >= 33) {
+            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
+                    != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, REQ_NOTI);
+            }
+        }
+    }
+
     // open fragment
     public void openFeatureFragment(Fragment fragment, String title) {
         replaceFragment(fragment, true);
     }
 
+    public void clearBackStack() {
+        getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
 
     private void replaceFragment(Fragment fragment, boolean addToBackStack) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -230,13 +249,13 @@ public class MainActivity extends AppCompatActivity {
     private void showLoading(boolean show) {
         if (show) {
             binding.lottieLoadingWaitingRedirect.setVisibility(View.VISIBLE);
-            binding.toolbar.setVisibility(View.GONE);
-            binding.bottomNav.setVisibility(View.GONE);
+//            binding.toolbar.setVisibility(View.GONE);
+//            binding.bottomNav.setVisibility(View.GONE);
             binding.mainCustomer.setEnabled(false);
         } else {
             binding.lottieLoadingWaitingRedirect.setVisibility(View.GONE);
-            binding.toolbar.setVisibility(View.GONE);
-            binding.bottomNav.setVisibility(View.VISIBLE);
+//            binding.toolbar.setVisibility(View.GONE);
+//            binding.bottomNav.setVisibility(View.VISIBLE);
             binding.mainCustomer.setEnabled(true);
         }
     }

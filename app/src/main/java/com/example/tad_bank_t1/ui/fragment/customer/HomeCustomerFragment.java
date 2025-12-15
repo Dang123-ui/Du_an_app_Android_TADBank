@@ -29,8 +29,10 @@ import com.example.tad_bank_t1.ui.fragment.customer.transaction.TransactionHisto
 import com.example.tad_bank_t1.ui.fragment.customer.transfer.BankTransferFragment;
 import com.example.tad_bank_t1.ui.fragment.customer.topup.MobileTopupFragment;
 import com.example.tad_bank_t1.ui.viewmodel.BankViewModel;
+import com.example.tad_bank_t1.ui.viewmodel.ExternalAccountViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.NotificationViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.SessionViewModel;
+import com.example.tad_bank_t1.ui.viewmodel.TransactionPayloadViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.TransactionViewModel;
 import com.example.tad_bank_t1.util.CurrencyUtil;
 
@@ -174,7 +176,21 @@ public class HomeCustomerFragment extends Fragment implements UiConfig {
 
 
         // on click listener for features card
-        binding.lnloCardTranfer.setOnClickListener(v -> featureCardOnClick(new BankTransferFragment(), getString(R.string.chuyen_tien)));
+        binding.lnloCardTranfer.setOnClickListener(v -> {
+            new ViewModelProvider(this)
+                    .get(BankViewModel.class)
+                    .clearBankSelected();
+
+            new ViewModelProvider(this)
+                    .get(ExternalAccountViewModel.class)
+                    .clearAccounts();
+
+            new ViewModelProvider(this)
+                    .get(TransactionPayloadViewModel.class)
+                    .clearPayload();
+
+            featureCardOnClick(new BankTransferFragment(), getString(R.string.chuyen_tien));
+        });
         binding.lnloCardDepositPhone.setOnClickListener(v -> featureCardOnClick(new MobileTopupFragment(), getString(R.string.nap_tien_dien_thoai)));
         binding.lnloCardTransactionHistory.setOnClickListener(v -> featureCardOnClick(new TransactionHistoryFragment(), getString(R.string.lich_su_giao_dich)));
         binding.lnloCardBillPayment.setOnClickListener(v -> featureCardOnClick(new BillsPaymentFragment(), getString(R.string.thanh_toan_hoa_don)));

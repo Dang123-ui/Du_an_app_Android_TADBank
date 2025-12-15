@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_home"
-        android:icon="@drawable/ic_home_bottom_home"
+        android:icon="@drawable/ic_home_bottom_home3"
         android:title="Trang chu"
         app:showAsAction="always" />
 </menu>

@@ -157,7 +157,7 @@ public class FirebaseAccountRepository implements AccountRepository {
                 });
     }
 
-    public void updateBalanceAccount(String accountNumber, Long amount) {
+    public void updateBalanceAccount(String accountNumber, Long amount, ResultCallback<Void> callback) {
         adapter.col()
                 .whereEqualTo("accountNumber", accountNumber)
                 .limit(1)
@@ -179,13 +179,16 @@ public class FirebaseAccountRepository implements AccountRepository {
                             .update("balance", newBalance)
                             .addOnSuccessListener(aVoid -> {
                                 // cập nhật thành công
+                                callback.onSucces(null);
                             })
                             .addOnFailureListener(e -> {
                                 // cập nhật thất bại
+                                callback.onError(e.getMessage());
                             });
                 })
                 .addOnFailureListener(e -> {
                     // không tìm thấy tài khoản
+                    callback.onError(e.getMessage());
                 });
     }
 

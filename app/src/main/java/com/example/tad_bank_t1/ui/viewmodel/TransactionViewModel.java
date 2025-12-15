@@ -1,11 +1,13 @@
 package com.example.tad_bank_t1.ui.viewmodel;
 
+import android.app.Application;
 import android.util.Log;
 
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
+import com.example.tad_bank_t1.app.notification.AppNotificationHelper;
 import com.example.tad_bank_t1.data.model.Account;
 import com.example.tad_bank_t1.data.model.Notification;
 import com.example.tad_bank_t1.data.model.Transaction;
@@ -14,18 +16,22 @@ import com.example.tad_bank_t1.data.model.enums.TnxStatus;
 import com.example.tad_bank_t1.data.model.enums.TxnType;
 import com.example.tad_bank_t1.data.repository.account.FirebaseAccountRepository;
 import com.example.tad_bank_t1.data.repository.callbacks.ResultCallback;
+import com.example.tad_bank_t1.data.repository.email.EmailRepository;
 import com.example.tad_bank_t1.data.repository.notification.FirebaseNotificationRepository;
 import com.example.tad_bank_t1.data.repository.transaction.FirebaseTransactionRepository;
 import com.example.tad_bank_t1.data.response.ResultWrapper;
 import com.example.tad_bank_t1.util.NotificationUtil;
 import com.example.tad_bank_t1.util.TransactionUtil;
+import com.example.tad_bank_t1.util.email.SmtpEmailSender;
 
 import java.util.List;
 
-public class TransactionViewModel extends ViewModel {
+public class TransactionViewModel extends AndroidViewModel {
     private final FirebaseTransactionRepository repo = new FirebaseTransactionRepository();
     private final FirebaseAccountRepository accountRepository = new FirebaseAccountRepository();
     private final FirebaseNotificationRepository notificationRepository = new FirebaseNotificationRepository();
+    private final EmailRepository emailRepository = new EmailRepository();
+
 
     private final MutableLiveData<List<Transaction>> _transactions = new MutableLiveData<>();
     public LiveData<List<Transaction>> transactions = _transactions;
@@ -41,6 +47,15 @@ public class TransactionViewModel extends ViewModel {
 
     // state idempotency key
     private String idempotencyKey = null;
+
+    public TransactionViewModel(Application application) {
+        super(application);
+    }
+
+    private Application app() {
+        return getApplication();
+    }
+
 
     public String getIdempotencyKey() {
         return idempotencyKey;
@@ -202,52 +217,84 @@ public class TransactionViewModel extends ViewModel {
     // execute transaction
     // ================
     public void executeTransaction(Transaction transaction, Account sender, User user) {
-        if (transaction.getAccountId() == null){
-            _state.postValue(ResultWrapper.error("Tài khoản chưa có ID"));
-            return;
-        }
-
+        if (transaction.getAccountId() == null) { _state.postValue(ResultWrapper.error("Tài khoản chưa có ID")); return; }
         if (transaction.getStatus() == TnxStatus.COMPLETED) return;
 
-        // loading
         _state.postValue(ResultWrapper.loading());
 
-        // update tu repository
         repo.updateTransactionStatus(transaction.getTransactionId(), TnxStatus.COMPLETED, new ResultCallback<Transaction>() {
             @Override
             public void onSucces(Transaction data) {
-                if (data == null) {
-                    _state.postValue(ResultWrapper.error("Transaction not found"));
-                } else {
-                    // update balance
-                    boolean isComing = TransactionUtil.isIncoming(transaction);
-                    Long finalAmount = isComing ? transaction.getAmount() : -transaction.getAmount();
-                    accountRepository.updateBalanceAccount(transaction.getAccountNumber(), finalAmount);
-                    sender.setBalance(sender.getBalance() + finalAmount);
+                if (data == null) { _state.postValue(ResultWrapper.error("Transaction not found")); return; }
 
+                boolean isComing = TransactionUtil.isIncoming(transaction);
+                long finalAmount = isComing ? transaction.getAmount() : -transaction.getAmount();
 
-                    if (transaction.getType() == TxnType.TRANSFER_INTERNAL){
-                        accountRepository.updateBalanceAccount(transaction.getCounterpartyAccount(), transaction.getAmount());
+                accountRepository.updateBalanceAccount(transaction.getAccountNumber(), finalAmount, new ResultCallback<Void>() {
+                    @Override public void onSucces(Void ignored) {
+                        sender.setBalance(sender.getBalance() + finalAmount);
+
+                        // nếu nội bộ thì cộng người nhận
+                        if (transaction.getType() == TxnType.TRANSFER_INTERNAL) {
+                            accountRepository.updateBalanceAccount(transaction.getCounterpartyAccount(), transaction.getAmount(), new ResultCallback<Void>() {
+                                @Override public void onSucces(Void ignored2) {
+                                    afterBalanceDone(data);
+                                }
+                                @Override public void onError(String error) {
+                                    _state.postValue(ResultWrapper.error("Update receiver balance failed: " + error));
+                                }
+                            });
+                        } else {
+                            afterBalanceDone(data);
+                        }
                     }
 
-                    // thong bao
-                    // gui thong bao qua email va app mobile
-                    Notification noti = NotificationUtil.createNotificationTxn(user, sender, transaction);
-                    notificationRepository.createNotification(noti, new ResultCallback<Notification>() {
-                        @Override
-                        public void onSucces(Notification data) {
-                            Log.d("TransactionViewModel", "onSucces: " + data.toString());
-                        }
+                    @Override public void onError(String error) {
+                        _state.postValue(ResultWrapper.error("Update sender balance failed: " + error));
+                    }
 
-                        @Override
-                        public void onError(String error) {
-                            Log.d("TransactionViewModel", "onError: " + error);
-                        }
-                    });
+                    private void afterBalanceDone(Transaction completedTxn) {
+                        Notification noti = NotificationUtil.createNotificationTxn(user, sender, transaction);
 
+                        notificationRepository.createNotification(noti, new ResultCallback<Notification>() {
+                            @Override public void onSucces(Notification n) {
+                                // thông báo trong app
+                                Log.d("TRANSACTION NOTI", noti.toString());
+                                AppNotificationHelper.showTransactionNoti(app(), noti);
 
-                    _state.postValue(ResultWrapper.success(data));
-                }
+                                // ✅ GỬI EMAIL Ở ĐÂY (sau khi đã thành công)
+                                emailRepository.sendTxnReceipt(user, sender, transaction, new SmtpEmailSender.Callback() {
+                                    @Override public void onSuccess() {
+                                        _state.postValue(ResultWrapper.success(completedTxn));
+                                    }
+
+                                    @Override public void onError(String error) {
+                                        // giao dịch vẫn success, chỉ email fail
+                                        Log.e("Email", "Send email failed: " + error);
+                                        _state.postValue(ResultWrapper.success(completedTxn));
+                                    }
+                                });
+                            }
+
+                            @Override public void onError(String error) {
+                                // thông báo trong app
+                                AppNotificationHelper.showTransactionNoti(app(), noti);
+
+                                // notification fail cũng không làm fail transaction
+                                Log.e("Noti", "Create noti failed: " + error);
+
+                                // vẫn gửi email (tuỳ bạn). Nếu muốn chắc chắn vẫn gửi:
+                                emailRepository.sendTxnReceipt(user, sender, transaction, new SmtpEmailSender.Callback() {
+                                    @Override public void onSuccess() { _state.postValue(ResultWrapper.success(completedTxn)); }
+                                    @Override public void onError(String e) {
+                                        Log.e("Email", "Send email failed: " + e);
+                                        _state.postValue(ResultWrapper.success(completedTxn));
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
             }
 
             @Override
@@ -255,7 +302,7 @@ public class TransactionViewModel extends ViewModel {
                 _state.postValue(ResultWrapper.error(error));
             }
         });
-
     }
+
 
 }

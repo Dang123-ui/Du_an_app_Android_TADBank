@@ -5,48 +5,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
+    android:paddingHorizontal="16dp"
     tools:context=".ui.fragment.InfoSignUpFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="120dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="141dp"
-        android:layout_marginBottom="36dp"
-        android:transitionName="app_logo"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/textView4_sinfo_sign_up_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="81dp"
+        android:layout_marginTop="8dp"
         android:text="@string/sinfo_sign_up_title"
         android:textColor="#C32349"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="8dp"
+
+        android:transitionName="app_logo"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4_sinfo_sign_up_title"
+        app:srcCompat="@drawable/logo" />
+
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="330dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="8dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView6">
 
@@ -55,7 +54,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="8dp"
             app:boxBackgroundMode="outline"
             app:boxCornerRadiusBottomEnd="24dp"
             app:boxCornerRadiusBottomStart="24dp"
@@ -82,8 +81,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="8dp"
+
             app:boxBackgroundMode="outline"
             app:boxCornerRadiusBottomEnd="24dp"
             app:boxCornerRadiusBottomStart="24dp"
@@ -110,7 +109,6 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             app:boxBackgroundMode="outline"
             app:boxCornerRadiusBottomEnd="24dp"
             app:boxCornerRadiusBottomStart="24dp"
@@ -133,67 +131,61 @@
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
-    <CheckBox
-        android:id="@+id/cbArgreeWithPolicy"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/lnloDongYDieuKhoan"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/info_sign_up_ban_dong_y"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <TextView
-        android:id="@+id/tvPolicy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="31dp"
-        android:text="@string/info_sign_up_policy"
-        android:textColor="#C32349"
-        android:textColorLink="#C32349"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/cbArgreeWithPolicy"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        <CheckBox
+            android:id="@+id/cbArgreeWithPolicy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/info_sign_up_ban_dong_y"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
-    <TextView
-        android:id="@+id/tvLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="6dp"
-        android:text="Đăng nhập"
-        android:textColor="#C32349"
-        android:textColorLink="#C32349"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textView8"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout2" />
+        <TextView
+            android:id="@+id/tvPolicy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/info_sign_up_policy"
+            android:textColor="#C32349"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@id/cbArgreeWithPolicy"
+            app:layout_constraintStart_toEndOf="@id/cbArgreeWithPolicy"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="30dp"
-        android:text="@string/info_sign_up_cua_chung_toi"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/cbArgreeWithPolicy" />
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/info_sign_up_cua_chung_toi"
+            app:layout_constraintTop_toBottomOf="@id/cbArgreeWithPolicy"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frameLayout2"
-        android:layout_width="376dp"
-        android:layout_height="83dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toTopOf="@+id/lnloBanDaCoTK"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cbArgreeWithPolicy">
+        app:layout_constraintVertical_bias="1">
 
         <Button
             android:id="@+id/btnNext"
-            android:layout_width="330dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_selector"
             android:backgroundTint="@null"
@@ -205,10 +197,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.457" />
+
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loading"
             android:layout_width="45dp"
             android:layout_height="45dp"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/btnNext"
             app:layout_constraintEnd_toEndOf="@+id/btnNext"
             app:layout_constraintHorizontal_bias="0.712"
@@ -216,21 +210,39 @@
             app:layout_constraintTop_toTopOf="@+id/btnNext"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
-            app:lottie_rawRes="@raw/loading"
-            android:visibility="invisible"
-            />
+            app:lottie_rawRes="@raw/loading" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/textView8"
+    <LinearLayout
+        android:id="@+id/lnloBanDaCoTK"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="6dp"
-        android:text="Bạn đã có tài khoản"
+        android:layout_marginBottom="4dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout2" />
+        >
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/ban_da_co_tai_khoan"
+            />
+
+
+        <TextView
+            android:id="@+id/tvLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+
+            android:text="@string/login"
+            android:textColor="#C32349"
+            android:textColorLink="#C32349"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

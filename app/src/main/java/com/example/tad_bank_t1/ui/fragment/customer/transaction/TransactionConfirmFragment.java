@@ -17,19 +17,25 @@ import android.widget.Toast;
 
 import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.model.Transaction;
+import com.example.tad_bank_t1.data.model.User;
 import com.example.tad_bank_t1.data.model.enums.TnxStatus;
 import com.example.tad_bank_t1.databinding.FragmentTransactionComfirmBinding;
 import com.example.tad_bank_t1.ui.activity.MainActivity;
 import com.example.tad_bank_t1.ui.base.UiConfig;
+import com.example.tad_bank_t1.ui.form.otp.OTPFormFragment;
+import com.example.tad_bank_t1.ui.form.otp.PINFormFragment;
 import com.example.tad_bank_t1.ui.form.payload.transactions.BaseTransactionPayload;
 import com.example.tad_bank_t1.ui.form.payload.transactions.BillPaymentPayload;
 import com.example.tad_bank_t1.ui.form.payload.transactions.PhoneTopupPayload;
 import com.example.tad_bank_t1.ui.form.payload.transactions.TransferPayload;
+import com.example.tad_bank_t1.ui.viewmodel.OtpCodeViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.SessionViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.TransactionPayloadViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.TransactionViewModel;
 import com.example.tad_bank_t1.util.CurrencyUtil;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import java.util.Objects;
 
 
 public class TransactionConfirmFragment extends Fragment implements UiConfig {
@@ -39,6 +45,7 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
     // View model
     private SessionViewModel sessionViewModel;
     private TransactionViewModel transactionViewModel;
+    private OtpCodeViewModel otpCodeViewModel;
     private TransactionPayloadViewModel transactionPayloadViewModel;
 
     // payload từ fragment trước
@@ -131,6 +138,7 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
 
     private void initAndObserveViewModel(){
         transactionViewModel = new ViewModelProvider(requireActivity()).get(TransactionViewModel.class);
+        otpCodeViewModel = new ViewModelProvider(requireActivity()).get(OtpCodeViewModel.class);
         transactionPayloadViewModel = new ViewModelProvider(requireActivity()).get(TransactionPayloadViewModel.class);
         sessionViewModel = new ViewModelProvider(requireActivity()).get(SessionViewModel.class);
 
@@ -154,14 +162,6 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
                     safeNavigateToResult();
                 } else if (result.getData().getStatus() == TnxStatus.FAILED){ // neu failed thi thong bao loi
                     showError("Lỗi tạo giao dịch", "Giao dịch thất bại");
-                } else if (result.getData().getStatus() == TnxStatus.PENDING){ // neu pending thi mo dialog xac thuc
-                    if (isVerified) {
-                        // cap nhat trang thai giao dich
-                        transactionViewModel.executeTransaction(result.getData(), transactionPayload.getSenderAccount(), sessionViewModel.user.getValue());
-
-                    } else {
-                        Toast.makeText(getContext(), "Chưa xác thực giao dịch", Toast.LENGTH_SHORT).show();
-                    }
                 }
                 return;
             }
@@ -184,19 +184,130 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
 
     private void initEvents(){
         binding.btnConfirmTransfer.setOnClickListener(v -> {
+            openPinDialog();
             // =========
             // Tạo giao dịch pending
             // =========
-            transactionViewModel.createTransaction(transactionPayload.getTransaction());
+            //transactionViewModel.createTransaction(transactionPayload.getTransaction());
 
 
             // =========
             // Mở Dialog xac thuc: OTP, MFA, bio,... nếu thành công mới update status chuyển màn hình
             // =========
+
             // cu cho la da xac thuc giao dich
-            isVerified = true;
+            //isVerified = true;
         });
     }
+
+    private void openPinDialog() {
+        String purpose = "TRANSACTION_" + transactionPayload.getTransaction().getType().name();
+        User user;
+        if (sessionViewModel != null && sessionViewModel.user.getValue() != null){
+            user = sessionViewModel.user.getValue();
+        }
+
+
+        final PINFormFragment[] dialogHolder = new PINFormFragment[1];
+
+        dialogHolder[0] = new PINFormFragment(new PINFormFragment.OnPinSubmitListener() {
+            @Override
+            public void onPinSubmit(String pin) {
+                if (!pin.equals(transactionPayload.getSenderAccount().getPinCode())) {
+                    dialogHolder[0].showPinError("Sai mã PIN!");
+                    return;
+                }
+
+                // tạo giao dịch
+                transactionViewModel.createTransaction(transactionPayload.getTransaction());
+
+                // tạo và gửi OTP qua email
+                otpCodeViewModel.createOtpCode(purpose, Objects.requireNonNull(sessionViewModel.user.getValue()));
+
+                // mở modal OTP
+                openOtpDialog();
+
+                dialogHolder[0].dismiss();    // ✔ GIỜ DÙNG ĐƯỢC
+            }
+
+            @Override
+            public void onPinCancel() {
+                dialogHolder[0].dismiss();        // ✔ DÙNG ĐƯỢC
+            }
+
+            @Override
+            public void onPinInvalid(String message) {
+                dialogHolder[0].showPinError(message);
+            }
+        });
+
+        dialogHolder[0].setCancelable(true);
+        dialogHolder[0].show(getParentFragmentManager(), "PINDialog");
+    }
+
+    private void openOtpDialog() {
+        String purpose = "TRANSACTION_" + transactionPayload.getTransaction().getType().name();
+        String userId;
+        if (sessionViewModel != null && sessionViewModel.user.getValue() != null){
+            userId = sessionViewModel.user.getValue().getUserId();
+        } else {
+            userId = "unknown";
+        }
+
+        final OTPFormFragment[] dialogHolder = new OTPFormFragment[1];
+
+        dialogHolder[0] = new OTPFormFragment(new OTPFormFragment.OnOtpSubmitListener() {
+            @Override
+            public void onOTPSubmit(String otp) {
+                // call verify OTP
+                if (otp.length() < 6) {
+                    dialogHolder[0].showOTPError("OTP không hợp lệ");
+                    return;
+                }
+
+
+                otpCodeViewModel.verifyOtpCode(userId, purpose, otp);
+            }
+
+            @Override
+            public void onOTPCancel() {
+                dialogHolder[0].dismiss();
+            }
+
+            @Override
+            public void onOTPInvalid(String message) {
+                dialogHolder[0].showOTPError(message);
+            }
+        });
+
+        dialogHolder[0].setCancelable(true);
+        dialogHolder[0].show(getParentFragmentManager(), "PINDialog");
+
+        // OBSERVE OTP VERIFY — chỉ observe một lần
+        otpCodeViewModel.getVerifyState().observe(getViewLifecycleOwner(), state -> {
+            if (state == null) return;
+
+            if (state.isLoading()) {
+                ((MainActivity) requireActivity()).showLoadingFeature(true);
+            }
+
+            if (state.getError() != null) {
+                dialogHolder[0].showOTPError(state.getError());
+            }
+
+            if (state.getData() != null && state.getData()) {
+                dialogHolder[0].dismiss();
+
+                // OTP đúng → Execute transaction
+                transactionViewModel.executeTransaction(
+                        transactionPayload.getTransaction(),
+                        transactionPayload.getSenderAccount(),
+                        sessionViewModel.user.getValue()
+                );
+            }
+        });
+    }
+
 
     // chuyen doi khi trang thai giao dich thanh cong
     private void safeNavigateToResult() {

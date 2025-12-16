@@ -67,12 +67,13 @@ public class LoginActivity2 extends AppCompatActivity {
         }
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login2);
+
         tvName = findViewById(R.id.tvName);
         logoLogin2 = findViewById(R.id.logoLogin2);
         etPassword = findViewById(R.id.etPassword);
-        etPassword.setText("Deptraico102!");
+        etPassword.setText("Thuyentad20@");
         etEmailorPhone = findViewById(R.id.edtNumberAccount);
-        etEmailorPhone.setText("0706613468");
+        etEmailorPhone.setText("0373436163");
         tilPassword = findViewById(R.id.textInputLayout);
         tilEmailorPhone = findViewById(R.id.tlUsername);
         btnLogin2 = findViewById(R.id.btnLogin2);

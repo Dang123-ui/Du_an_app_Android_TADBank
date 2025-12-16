@@ -84,7 +84,7 @@
                     android:layout_weight="1" />
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txtReceiverAccNumber"
+                    android:id="@+id/edtReceiverPhoneNumber"
                     style="@style/TextAppearance.Material3.BodySmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

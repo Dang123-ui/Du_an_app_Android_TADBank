@@ -4,24 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".ui.fragment.LoginNowFragment">
 
     <!-- TODO: Update blank fragment layout -->
-
-    <Button
-        android:id="@+id/btnNext"
-        android:layout_width="330dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:background="@drawable/btn_selector"
-        android:backgroundTint="@null"
-        android:enabled="false"
-        android:text="@string/continue_"
-        app:backgroundTint="@null"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
     <TextView
         android:id="@+id/textView19"
@@ -32,6 +18,19 @@
         android:text="của chúng tôi"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tilPassword" />
+
+
+    <ImageView
+        android:id="@+id/imageView26"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="8dp"
+
+        android:transitionName="app_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvName2"
+        app:srcCompat="@drawable/logo" />
 
     <TextView
         android:id="@+id/tvPolicy2"
@@ -50,7 +49,6 @@
         android:id="@+id/cbArgreeWithPolicy2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
         android:layout_marginTop="12dp"
         android:text="Bạn đông ý với"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,9 +57,9 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilPhone"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="330dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="24dp"
         app:boxBackgroundMode="outline"
         app:boxCornerRadiusBottomEnd="24dp"
         app:boxCornerRadiusBottomStart="24dp"
@@ -75,7 +73,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edtPhone"
-            android:layout_width="330dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/ic_phone_cus"
             android:hint="Số điện thoại đã đăng ký"
@@ -87,9 +85,9 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilPassword"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="327dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         app:boxBackgroundMode="outline"
         app:boxCornerRadiusBottomEnd="24dp"
         app:boxCornerRadiusBottomStart="24dp"
@@ -115,29 +113,17 @@
             />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <ImageView
-        android:id="@+id/imageView26"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="116dp"
-        android:transitionName="app_logo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo" />
-
     <TextView
         android:id="@+id/tvName2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="0dp"
         android:gravity="center"
-        android:text="Vui lòng đăng nhập ngay,"
+        android:text="Vui lòng đăng nhập ngay"
         android:textColor="#C32349"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.179"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
     <com.airbnb.lottie.LottieAnimationView
@@ -153,5 +139,22 @@
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/loading"
         android:visibility="invisible"
+        />
+
+
+
+    <Button
+        android:id="@+id/btnNext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:background="@drawable/btn_selector"
+        android:backgroundTint="@null"
+        android:enabled="false"
+        android:text="@string/continue_"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

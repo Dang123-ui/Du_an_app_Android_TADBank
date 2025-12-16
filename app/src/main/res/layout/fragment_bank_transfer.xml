@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:background="#FFF2F6"
 
-        android:padding="20dp">
+        android:padding="8dp">
 
         <FrameLayout
             android:id="@+id/fragment_card_transfer"
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/thong_tin_nguoi_nhan_ck"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
 
             app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +43,7 @@
             android:id="@+id/lnloTransferReceiverBankInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/bg_card_white"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -56,36 +56,30 @@
             app:layout_constraintTop_toBottomOf="@+id/txtTranferInfoReceiverText">
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_gravity="fill_vertical"
-                android:layout_weight="5"
-                android:gravity="fill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
+                    android:layout_marginBottom="4dp"
                     android:layout_height="wrap_content"
                     android:text="@string/ngan_hang_nhan_ck"
-                    android:textSize="16sp"
+                    android:textSize="12sp"
                     android:textStyle="bold"
 
                     />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
 
                 <TextView
                     android:id="@+id/txtReceiverBankName"
-                    style="@style/TextAppearance.Material3.BodySmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:hint="@string/hint_chon_ngan_hang_nhan"
+                    android:text="êssssss"
                     android:maxLines="1"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <View
@@ -95,8 +89,8 @@
 
             <ImageButton
                 android:id="@+id/imbtShowListBank"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_gravity="center_vertical"
 
                 android:background="@android:color/transparent"
@@ -122,25 +116,20 @@
             app:layout_constraintTop_toBottomOf="@+id/lnloTransferReceiverBankInfo">
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_gravity="fill_vertical"
-                android:layout_weight="5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
                     android:text="@string/tai_khoan_nhan_ck"
-                    android:textSize="16sp"
+                    android:textSize="12sp"
                     android:textStyle="bold"
 
                     />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txtReceiverAccNumber"
@@ -166,13 +155,12 @@
             <ImageButton
                 android:id="@+id/imbtShowListBeneficiaryTransfer"
 
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_gravity="center"
                 android:background="@android:color/transparent"
-                android:foregroundGravity="center"
                 android:padding="0dp"
-                android:scaleType="fitCenter"
+                android:scaleType="center"
                 android:src="@drawable/ic_transfer_beneficiary" />
         </LinearLayout>
 
@@ -183,6 +171,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:background="@drawable/bg_card_white"
+
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="10dp"
@@ -195,25 +184,20 @@
             app:layout_constraintTop_toBottomOf="@+id/lnloTransferReceiverAccNumberInfo">
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_gravity="fill_vertical"
-                android:layout_weight="5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
                     android:text="@string/ten_nguoi_nhan_ck"
-                    android:textSize="16sp"
+                    android:textSize="12sp"
                     android:textStyle="bold"
 
                     />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
 
                 <TextView
                     android:id="@+id/txtReceiverName"
@@ -237,7 +221,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/thong_tin_ck_tieu_de"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
 
             app:layout_constraintEnd_toEndOf="parent"
@@ -262,26 +246,20 @@
             app:layout_constraintTop_toBottomOf="@+id/txtTranferInfoTransferText">
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_gravity="fill_vertical"
-                android:layout_weight="5"
-                android:gravity="fill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
                     android:text="@string/so_tien_chuyen_khoan"
-                    android:textSize="16sp"
+                    android:textSize="12sp"
                     android:textStyle="bold"
 
                     />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txtTransferAmount"
@@ -307,7 +285,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/bank_currency_vnd"
                 android:textColor="#E46868"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
         </LinearLayout>
 
@@ -328,25 +306,20 @@
             app:layout_constraintTop_toBottomOf="@+id/lnloTransferAmount">
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_gravity="fill_vertical"
-                android:layout_weight="5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
                     android:text="@string/noi_dung_chuyen_khoan"
-                    android:textSize="16sp"
+                    android:textSize="12sp"
                     android:textStyle="bold"
 
                     />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txtTransferDescription"
@@ -424,9 +397,10 @@
     <!--        MODAL SEARCH-->
     <FrameLayout
         android:id="@+id/fragment_container_search"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="0dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

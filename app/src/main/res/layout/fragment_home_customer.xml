@@ -11,8 +11,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_home_main_cus3">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/lnloHeader"
@@ -169,7 +168,7 @@
                     android:paddingTop="15dp"
                     android:paddingEnd="15dp"
                     android:paddingBottom="10dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
 
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -209,14 +208,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:weightSum="6">
+                        >
 
                         <TextView
                             style="@style/TextAppearance.Material3.BodyLarge.Emphasized"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="3"
 
+                            android:layout_weight="1"
                             android:text="@string/so_tai_khoan"
                             android:textColor="@color/white"
 
@@ -225,23 +224,21 @@
 
                         <TextView
                             android:id="@+id/txtHomeAccNumber"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2"
+                            android:layout_marginEnd="4dp"
+                            android:maxLines="1"
+
                             android:text="T123567"
                             android:textAllCaps="true"
                             android:textColor="@color/white"
 
                             />
 
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_weight="1" />
 
                         <ImageButton
                             android:id="@+id/imbtHomeCopyAcc"
-                            android:layout_width="wrap_content"
+                            android:layout_width="20dp"
                             android:layout_height="wrap_content"
                             android:adjustViewBounds="true"
 
@@ -257,35 +254,32 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:weightSum="6">
+                        >
 
 
                         <TextView
                             style="@style/TextAppearance.Material3.BodyLarge.Emphasized"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="3"
                             android:text="@string/so_du"
+                            android:layout_weight="1"
                             android:textColor="@color/white"
 
                             />
 
                         <TextView
                             android:id="@+id/txtHomeBalance"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginEnd="4dp"
+                            android:maxLines="1"
 
-                            android:layout_weight="2"
                             android:text="100,000 vnđ"
                             android:textAllCaps="true"
                             android:textColor="@color/white"
 
                             />
 
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_weight="1" />
 
                         <ImageButton
                             android:id="@+id/imbtHomeToggleBalance"
@@ -319,6 +313,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="3dp"
+                            android:gravity="center_vertical"
                             android:layout_weight="1"
                             android:clickable="true"
                             android:focusable="true">
@@ -335,10 +330,10 @@
                                 />
 
                             <TextView
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_weight="2"
+                                android:layout_marginStart="5dp"
+                                android:textSize="12sp"
                                 android:text="@string/lich_su_giao_dich" />
                         </LinearLayout>
 
@@ -353,6 +348,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="3dp"
                             android:layout_weight="1"
+                            android:gravity="center_vertical"
                             android:clickable="true"
                             android:focusable="true">
 
@@ -368,10 +364,10 @@
                                 />
 
                             <TextView
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_weight="2"
+                                android:layout_marginStart="5dp"
+                                android:textSize="12sp"
                                 android:text="@string/tai_khoan_cua_ban" />
                         </LinearLayout>
                     </LinearLayout>
@@ -423,7 +419,7 @@
                         android:layout_marginTop="8dp"
                         android:gravity="center"
                         android:text="@string/chuyen_tien"
-                        android:textStyle="bold"
+
                         android:minLines="2"
                         android:ellipsize="middle"
                         android:maxLines="2" />
@@ -459,7 +455,7 @@
                         android:layout_marginTop="8dp"
                         android:gravity="center"
                         android:text="@string/nap_tien_dien_thoai"
-                        android:textStyle="bold"
+
                         android:minLines="2"
                         android:ellipsize="middle"
                         android:maxLines="2" />
@@ -494,7 +490,7 @@
                         android:layout_marginTop="8dp"
                         android:gravity="center"
                         android:text="@string/thanh_toan_hoa_don"
-                        android:textStyle="bold"
+
                         android:minLines="2"
                         android:ellipsize="middle"
                         android:maxLines="2" />
@@ -529,7 +525,7 @@
                         android:layout_marginTop="8dp"
                         android:gravity="center"
                         android:text="@string/lich_su_giao_dich"
-                        android:textStyle="bold"
+
                         android:minLines="2"
                         android:ellipsize="middle"
                         android:maxLines="2" />
@@ -565,7 +561,7 @@
                         android:layout_marginTop="8dp"
                         android:gravity="center"
                         android:text="@string/rut_tien"
-                        android:textStyle="bold"
+
                         android:minLines="2"
                         android:ellipsize="middle"
                         android:maxLines="2" />
@@ -601,7 +597,7 @@
                         android:layout_marginTop="8dp"
                         android:gravity="center"
                         android:text="@string/nap_tien"
-                        android:textStyle="bold"
+
                         android:minLines="2"
                         android:ellipsize="middle"
                         android:maxLines="2" />
@@ -636,7 +632,7 @@
                         android:layout_marginTop="8dp"
                         android:gravity="center"
                         android:text="@string/tim_chi_nhanh"
-                        android:textStyle="bold"
+
                         android:minLines="2"
                         android:ellipsize="middle"
                         android:maxLines="2" />
@@ -671,7 +667,7 @@
                         android:layout_marginTop="8dp"
                         android:gravity="center"
                         android:text="@string/tiet_kiem"
-                        android:textStyle="bold"
+
                         android:minLines="2"
                         android:ellipsize="middle"
                         android:maxLines="2" />
@@ -706,7 +702,7 @@
                         android:layout_marginTop="8dp"
                         android:gravity="center"
                         android:text="@string/the_chap"
-                        android:textStyle="bold"
+
                         android:minLines="2"
                         android:ellipsize="middle"
                         android:maxLines="2" />
@@ -717,11 +713,10 @@
             </GridLayout>
 
             <!-- View de lắp đầy navbar-->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@color/white" />
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="200dp"-->
+<!--                android:background="@color/white" />-->
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

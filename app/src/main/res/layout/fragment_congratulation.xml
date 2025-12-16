@@ -4,26 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".ui.fragment.Congratulation_Fragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <Button
-        android:id="@+id/btnBatDauChup3"
-        android:layout_width="330dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#C32349"
-        android:text="Trang chủ"
-        app:cornerRadius="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView24" />
 
     <TextView
         android:id="@+id/textView24"
-        android:layout_width="261dp"
-        android:layout_height="65dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:gravity="center"
         android:text="Chúc mừng bạn đã đăng ký sử dụng ứng dụng của TADBank trên ứng dụng này thành công."
@@ -37,9 +27,10 @@
 
     <ImageView
         android:id="@+id/imgLogo"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="44dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="16dp"
+
         android:scaleType="fitCenter"
         android:transitionName="app_logo"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,15 +41,29 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/loading"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="16dp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgLogo"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/mobileappshowcase" />
+
+
+    <Button
+        android:id="@+id/btnBatDauChup3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#C32349"
+        android:text="Trang chủ"
+        app:cornerRadius="16dp"
+
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.core.content.FileProvider;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -88,6 +90,17 @@ public class TransactionResultFragment extends Fragment implements UiConfig {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.mainScrollTransactionResult, (v, insets) -> {
+            int topInset = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top;
+
+            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            lp.topMargin = topInset;    // ⭐ auto margin theo status bar
+            v.setLayoutParams(lp);
+
+            return WindowInsetsCompat.CONSUMED;
+//            return insets;
+        });
 
         initAndObserverVM();
 

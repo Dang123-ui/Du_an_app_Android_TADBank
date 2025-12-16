@@ -70,7 +70,7 @@
     <string name="new_customer">I\'m a new customer</string>
     <string name="no_account">You don\'t have an account yet?</string>
     <string name="signup">Sign up</string>
-    <string name="sinfo_sign_up_title">Please enter the information,</string>
+    <string name="sinfo_sign_up_title">Please enter the information</string>
     <string name="info_sign_up_hint_name">Full name</string>
     <string name="info_sign_up_hint_phone_number">Phone number</string>
     <string name="info_sign_up_ban_dong_y">You agree to our</string>
@@ -119,4 +119,6 @@
     <string name="the_chap">Mortgage</string>
     <string name="nap_tien">Deposit</string>
     <string name="rut_tien">Withdraw</string>
+    <string name="ban_da_co_tai_khoan">Do you have account?</string>
+    <string name="xac_thuc">Verify</string>
 </resources>

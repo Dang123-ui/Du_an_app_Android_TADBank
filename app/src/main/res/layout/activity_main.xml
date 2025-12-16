@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
+    android:background="@drawable/bg_home_main_cus3"
 
     tools:context=".ui.activity.MainActivity">
 
@@ -15,7 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/teal_200"
-            android:elevation="4dp"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -24,7 +24,7 @@
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 app:menu="@menu/toolbar_menu"
                 android:background="@color/teal_200"
                 app:navigationIconTint="@color/primaryColor"
@@ -39,46 +39,35 @@
         android:layout_height="0dp"
         android:clipToPadding="false"
         android:paddingBottom="0dp"
+
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appbar"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/cardBottomNav"
         app:layout_constraintVertical_bias="0.0" />
 
 
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardBottomNav"
-        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="12dp"
-        android:layout_marginBottom="12dp"
-        app:cardCornerRadius="40dp"
-        app:cardPreventCornerOverlap="true"
-        app:cardElevation="5dp"
+        app:cardCornerRadius="0dp"
+        app:shapeAppearanceOverlay="@null"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Bottom Navigation -->
-
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_nav"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        app:paddingBottomSystemWindowInsets="false"
-        android:fitsSystemWindows="false"
-
-        android:background="@color/white"
-        app:itemHorizontalTranslationEnabled="false"
-        app:itemIconTint="@color/color_item_bottom_nav"
-        app:itemTextColor="@color/color_item_bottom_nav"
-        app:menu="@menu/bottom_nav_menu"
-        />
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_nav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black"
+            app:itemHorizontalTranslationEnabled="false"
+            app:itemIconTint="@color/color_item_bottom_nav"
+            app:itemTextColor="@color/color_item_bottom_nav"
+            app:menu="@menu/bottom_nav_menu"/>
     </com.google.android.material.card.MaterialCardView>
 
     <!-- Loading animation -->

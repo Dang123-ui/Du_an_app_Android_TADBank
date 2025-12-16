@@ -57,13 +57,46 @@ public class MainActivity extends AppCompatActivity {
             supportPostponeEnterTransition();
         }
 
+
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+//        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
+//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+//            return insets;
+//        });
+//
 //        setContentView(R.layout.activity_main);
 
 //        setupInsetBehavior();
+//
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.mainCustomer, (v, insets) -> {
+            Insets status = insets.getInsets(WindowInsetsCompat.Type.statusBars());
+            Insets nav = insets.getInsets(WindowInsetsCompat.Type.navigationBars());
+
+            // Appbar né status bar
+            binding.appbar.setPadding(
+                    binding.appbar.getPaddingLeft(),
+                    status.top,
+                    binding.appbar.getPaddingRight(),
+                    binding.appbar.getPaddingBottom()
+            );
+
+            // Card bottom nav né navigation bar (giữ margin gốc 12dp)
+            ViewGroup.MarginLayoutParams lp =
+                    (ViewGroup.MarginLayoutParams) binding.cardBottomNav.getLayoutParams();
+            lp.bottomMargin = nav.bottom;
+            binding.cardBottomNav.setLayoutParams(lp);
+
+            return insets;
+        });
+
+
 
         initView();
 
@@ -76,6 +109,10 @@ public class MainActivity extends AppCompatActivity {
         ensureNotiPermission();
     }
 
+    private int dpToPx(int dp) {
+        return Math.round(dp * getResources().getDisplayMetrics().density);
+    }
+
     private void initView() {
         setSupportActionBar(binding.toolbar);
 
@@ -83,17 +120,17 @@ public class MainActivity extends AppCompatActivity {
         binding.toolbar.setNavigationIcon(R.drawable.ic_back_previous_activity2);
 
         // margin status bar
-        ViewCompat.setOnApplyWindowInsetsListener(binding.toolbar, (v, insets) -> {
-            int topInset = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top;
-
-            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
-            lp.topMargin = topInset;    // ⭐ auto margin theo status bar
-            v.setLayoutParams(lp);
-
-            return WindowInsetsCompat.CONSUMED;
-        });
-
-        // bottom nav inset
+//        ViewCompat.setOnApplyWindowInsetsListener(binding.toolbar, (v, insets) -> {
+//            int topInset = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top;
+//
+//            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+//            lp.topMargin = topInset;    // ⭐ auto margin theo status bar
+//            v.setLayoutParams(lp);
+//
+//            return WindowInsetsCompat.CONSUMED;
+//        });
+//
+//        // bottom nav inset
         ViewCompat.setOnApplyWindowInsetsListener(binding.bottomNav, (v, insets) -> {
             int bottom = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom;
 
@@ -239,7 +276,9 @@ public class MainActivity extends AppCompatActivity {
         if (fragment instanceof UiConfig) {
             if (((UiConfig) fragment).showAppBar()) {
                 binding.toolbar.setTitle(((UiConfig) fragment).getAppBarTitle());
-                binding.toolbar.setVisibility(View.VISIBLE);
+                binding.appbar.setVisibility(View.VISIBLE);
+            } else {
+                binding.appbar.setVisibility(View.GONE);  // hide appbar
             }
             binding.bottomNav.setVisibility(((UiConfig) fragment).showBottomNav() ? View.VISIBLE : View.GONE);
         }

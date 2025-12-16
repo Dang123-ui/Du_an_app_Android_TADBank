@@ -38,6 +38,8 @@ public class SearchTransferInfomationFragment extends Fragment {
     private static final String LIST_RESULT_TITLE = "list_result_title";
     private static final String SEARCH_FOR = "search_for";
 
+
+
     private TextView txtSearchTransferInfomationTitle, txtSearchResultListTitle;
     private TextInputEditText edtEnterInfoSearch;
     private ImageButton imbtSearchCancel;
@@ -113,6 +115,20 @@ public class SearchTransferInfomationFragment extends Fragment {
         txtSearchResultListTitle.setText(list_result_title);
 
         recyclerViewSearch = view.findViewById(R.id.rcvSearchResult);
+
+        // Reset search input
+        edtEnterInfoSearch.setText("");
+        lastQuery = "";
+
+        // Reset adapter list
+        if (adapter instanceof BankAdapter) {
+            ((BankAdapter) adapter).setData(Collections.emptyList());
+        }
+
+        // Reset ViewModel state (optional)
+        if (bankViewModel != null) {
+            bankViewModel.clearBankSelected();
+        }
 
 
         if(search_for.equals(Constants.SEARCH_BANK)){

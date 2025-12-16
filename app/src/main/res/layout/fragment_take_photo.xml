@@ -4,43 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".ui.fragment.TakePhotoFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <Button
-        android:id="@+id/btn_XacThuc"
-        android:layout_width="330dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/btn_selector"
-        android:backgroundTint="@null"
-        android:enabled="true"
-        android:text="Xác thực"
-        app:backgroundTint="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout3" />
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/loading2"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_XacThuc"
-        app:layout_constraintEnd_toEndOf="@+id/btn_XacThuc"
-        app:layout_constraintHorizontal_bias="0.708"
-        app:layout_constraintStart_toStartOf="@+id/btn_XacThuc"
-        app:layout_constraintTop_toTopOf="@+id/btn_XacThuc"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/loading" />
 
     <ImageView
         android:id="@+id/imageView11"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="24dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="0dp"
         android:transitionName="app_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,21 +26,24 @@
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:text="Mặt trước căn cước công dân (*)"
         android:textColor="#C32349"
         android:textSize="16sp"
         android:textStyle="bold"
+
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView11" />
 
     <FrameLayout
         android:id="@+id/frameLayout"
-        android:layout_width="352dp"
-        android:layout_height="200dp"
-        android:layout_marginStart="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+
         android:background="@drawable/dashed_box"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView11">
 
@@ -100,7 +78,7 @@
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+
         android:layout_marginTop="20dp"
         android:text="Mặt sau căn cước công dân (*)"
         android:textColor="#C32349"
@@ -111,10 +89,10 @@
 
     <FrameLayout
         android:id="@+id/frameLayout3"
-        android:layout_width="352dp"
-        android:layout_height="200dp"
-        android:layout_marginStart="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
         android:background="@drawable/dashed_box"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13">
 
@@ -144,5 +122,38 @@
             android:background="@drawable/cam_btn_bg"
             android:src="@android:drawable/ic_menu_camera" />
     </FrameLayout>
+
+
+    <Button
+        android:id="@+id/btn_XacThuc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_selector"
+        android:backgroundTint="@null"
+        android:enabled="true"
+        android:text="@string/xac_thuc"
+        app:backgroundTint="@null"
+
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout3" />
+
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loading2"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_XacThuc"
+        app:layout_constraintEnd_toEndOf="@+id/btn_XacThuc"
+        app:layout_constraintHorizontal_bias="0.708"
+        app:layout_constraintStart_toStartOf="@+id/btn_XacThuc"
+        app:layout_constraintTop_toTopOf="@+id/btn_XacThuc"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/loading" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

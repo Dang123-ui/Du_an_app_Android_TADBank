@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginHorizontal="8dp"
+
+    tools:context=".ui.form.otp.PINFormFragment">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="8dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:gravity="center_horizontal">
+
+            <ImageButton
+                android:id="@+id/imbtPINCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:src="@drawable/ic_modal_cancel"
+                android:scaleType="fitCenter"
+                android:background="@android:color/transparent"
+                android:padding="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtTitle"
+                android:text="Xác thực giao dịch"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:paddingBottom="12dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                android:text="Vui lòng nhập mã PIN của bạn"
+                android:textSize="16sp" />
+
+
+            <LinearLayout
+                android:id="@+id/pinContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/et1PINTxn"
+                    style="@style/OtpEditTextStyle"
+                    android:inputType="numberPassword" />
+
+                <EditText
+                    android:id="@+id/et2PINTxn"
+                    style="@style/OtpEditTextStyle"
+                    android:inputType="numberPassword" />
+
+                <EditText
+                    android:id="@+id/et3PINTxn"
+                    style="@style/OtpEditTextStyle"
+                    android:inputType="numberPassword" />
+
+                <EditText
+                    android:id="@+id/et4PINTxn"
+                    style="@style/OtpEditTextStyle"
+                    android:inputType="numberPassword" />
+
+                <EditText
+                    android:id="@+id/et5PINTxn"
+                    style="@style/OtpEditTextStyle"
+                    android:inputType="numberPassword" />
+
+                <EditText
+                    android:id="@+id/et6PINTxn"
+                    style="@style/OtpEditTextStyle"
+                    android:inputType="numberPassword" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtErrorPIN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sai mã PIN"
+                android:textColor="@android:color/holo_red_dark"
+                android:visibility="gone"
+                android:paddingTop="8dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnVerifyPINTransaction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+
+                android:background="@drawable/ripple_button"
+                app:backgroundTint="@null"
+
+                android:text="@string/tiep_tuc"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+
+                app:cornerRadius="30dp"
+                app:elevation="2dp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>

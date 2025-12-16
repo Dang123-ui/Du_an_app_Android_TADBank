@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
+    android:background="@color/primaryBackgroundColor"
+    android:padding="8dp"
     tools:context=".ui.fragment.customer.account.AccountListFragment">
 
     <com.google.android.material.button.MaterialButtonToggleGroup

@@ -6,10 +6,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.tad_bank_t1.data.model.remote.Provider;
-import com.example.tad_bank_t1.data.network.ApiConfig;
-import com.example.tad_bank_t1.data.network.ApiResponse;
-import com.example.tad_bank_t1.data.network.ApiService;
+import com.example.tad_bank_t1.data.remote.config.ApiConfig;
+import com.example.tad_bank_t1.data.remote.dto.ApiResponse;
+import com.example.tad_bank_t1.data.remote.api.ApiService;
 import com.example.tad_bank_t1.data.response.ResultWrapper;
+import com.example.tad_bank_t1.util.ApiUtil;
 
 import java.util.List;
 
@@ -58,12 +59,13 @@ public class ProviderRepository {
         api.checkTopup(phoneNumber).enqueue(new Callback<ApiResponse<Boolean>>() {
             @Override
             public void onResponse(Call<ApiResponse<Boolean>> call, Response<ApiResponse<Boolean>> response) {
-                if (response.isSuccessful()) {
-                    ApiResponse<Boolean> apiResponse = response.body();
-                    live.setValue(ResultWrapper.success(apiResponse.data));
-                } else if (response.code() == 404) {
-                    live.setValue(ResultWrapper.error("Không tìm thấy số điện thoại: " + response.body().message));
+                if (response.isSuccessful() && response.body() != null) {
+                    live.setValue(ResultWrapper.success(response.body().data));
+                    return;
                 }
+
+                String err = ApiUtil.parseErrorMessage(response);
+                live.setValue(ResultWrapper.error(err));
 
                 Log.d("checkTopup", "onResponse: " + response.body());
             }

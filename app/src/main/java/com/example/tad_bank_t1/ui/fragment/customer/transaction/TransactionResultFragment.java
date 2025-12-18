@@ -124,10 +124,18 @@ public class TransactionResultFragment extends Fragment implements UiConfig {
 
         // transfer
         if (txn.getType() == TxnType.TRANSFER_INTERNAL || txn.getType() == TxnType.TRANSFER_EXTERNAL){
+            binding.lnloTransactionResultReceiverName.setVisibility(View.VISIBLE);
+            binding.lnloTransactionResultBankReceiver.setVisibility(View.VISIBLE);
+
             binding.txtTransactionResultTargetAccount.setText(txn.getCounterpartyAccount());
             binding.txtTransactionResultTargetAccountName.setText(txn.getCounterpartyName());
-            binding.txtTransactionResultTargetBank.setText(txn.getCounterpartyBankCode());
+            binding.txtTransactionResultTargetBank.setText(txn.getCounterpartyBankCode() + "\n" + txn.getCounterpartyBankName());
         } else if (txn.getType() == TxnType.MOBILE_TOPUP){
+            // an view
+            binding.lnloTransactionResultReceiverName.setVisibility(View.GONE);
+            binding.lnloTransactionResultBankReceiver.setVisibility(View.GONE);
+
+            binding.txtTransactionResultTargetAccount.setText(txn.getCounterpartyAccount());
 
         } else if (txn.getType() == TxnType.BILL_PAYMENT){
 

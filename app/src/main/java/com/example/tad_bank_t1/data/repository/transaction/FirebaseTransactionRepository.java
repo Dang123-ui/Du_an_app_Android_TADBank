@@ -4,11 +4,13 @@ import com.example.tad_bank_t1.data.adapterPattern.TransactionAdapter;
 import com.example.tad_bank_t1.data.model.Transaction;
 import com.example.tad_bank_t1.data.model.enums.TnxStatus;
 import com.example.tad_bank_t1.data.repository.callbacks.ResultCallback;
+import com.example.tad_bank_t1.util.TransactionUtil;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +62,15 @@ public class FirebaseTransactionRepository implements TransactionRepository {
     @Override
     public void createTransaction(Transaction transaction, ResultCallback<Transaction> callback) {
         // transaction to Map
-        transaction.setStatus(TnxStatus.PENDING);
+        if (transaction.getTransactionId() == null){
+            transaction.setTransactionId(TransactionUtil.generateTransactionId());
+        }
+        if (transaction.getStatus() == null){
+            transaction.setStatus(TnxStatus.PENDING);
+        }
+
+        transaction.setCreatedAt(new Date());
+
         Map<String, Object> txnMap = transaction.toMap();
 
         String id = transaction.getTransactionId();

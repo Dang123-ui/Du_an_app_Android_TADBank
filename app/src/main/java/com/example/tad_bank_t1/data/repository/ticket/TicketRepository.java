@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.tad_bank_t1.data.model.remote.Flight;
 import com.example.tad_bank_t1.data.model.remote.Movie;
-import com.example.tad_bank_t1.data.network.ApiConfig;
-import com.example.tad_bank_t1.data.network.ApiResponse;
-import com.example.tad_bank_t1.data.network.ApiService;
+import com.example.tad_bank_t1.data.remote.config.ApiConfig;
+import com.example.tad_bank_t1.data.remote.dto.ApiResponse;
+import com.example.tad_bank_t1.data.remote.api.ApiService;
 import com.example.tad_bank_t1.data.response.ResultWrapper;
 
 import java.util.List;

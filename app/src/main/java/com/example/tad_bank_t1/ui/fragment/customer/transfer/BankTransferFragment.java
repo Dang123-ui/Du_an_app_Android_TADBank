@@ -36,7 +36,7 @@ import com.example.tad_bank_t1.ui.viewmodel.ExternalAccountViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.SessionViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.TransactionPayloadViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.TransactionViewModel;
-import com.example.tad_bank_t1.util.Constants;
+import com.example.tad_bank_t1.util.TadConstants;
 import com.example.tad_bank_t1.util.FragmentUtil;
 import com.example.tad_bank_t1.util.TransactionUtil;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -126,7 +126,7 @@ public class BankTransferFragment extends Fragment implements UiConfig {
                         "Chọn ngân hàng nhận",
                         "Nhập ngân hàng",
                         "Danh sách ngân hàng",
-                        Constants.SEARCH_BANK
+                        TadConstants.SEARCH_BANK
                 );
                 FragmentUtil.replaceFragment(searchTransferInfomationFragment,
                         getParentFragmentManager(),
@@ -139,7 +139,7 @@ public class BankTransferFragment extends Fragment implements UiConfig {
                     "Chọn danh bạ thụ hưởng",
                     "Nhập người thụ hưởng",
                     "Danh sách thụ hưởng",
-                    Constants.SEARCH_BENEFICIARY_ACCOUNT
+                    TadConstants.SEARCH_BENEFICIARY_ACCOUNT
             );
             FragmentUtil.replaceFragment(searchTransferInfomationFragment,
                     getParentFragmentManager(),
@@ -439,40 +439,6 @@ public class BankTransferFragment extends Fragment implements UiConfig {
         });
 
 
-        // tránsaction với result || chưa cần dùng tới nha
-        transactionViewModel.getResultState().observe(getViewLifecycleOwner(), result -> {
-            if (result == null) {
-                return;
-            }
-
-            if (result.getData() != null){
-//                binding.lottieLoadingWaitingTransfer.setVisibility(View.GONE);
-                binding.btnContinueTransfer.setEnabled(true);
-                binding.btnContinueTransfer.setText(getString(R.string.tiep_tuc));
-                ((MainActivity) requireActivity()).openFeatureFragment(
-                        new TransactionConfirmFragment(),
-                        getString(R.string.xac_nhan_giao_dich)
-                );
-
-                return;
-            }
-            if (result.getError() != null) {
-//                binding.lottieLoadingWaitingTransfer.setVisibility(View.GONE);
-                binding.btnContinueTransfer.setEnabled(true);
-                binding.btnContinueTransfer.setText(getString(R.string.tiep_tuc));
-
-                showError("Lỗi tạo giao dịch", result.getError());
-                return;
-            }
-
-            if (result.isLoading()) {
-                binding.btnContinueTransfer.setEnabled(false);
-                binding.btnContinueTransfer.setText("Đang chuyển hướng...");
-//                binding.lottieLoadingWaitingTransfer.setVisibility(View.VISIBLE);
-            } else {
-//                binding.lottieLoadingWaitingTransfer.setVisibility(View.GONE);
-            }
-        });
     }
 
 
@@ -483,8 +449,18 @@ public class BankTransferFragment extends Fragment implements UiConfig {
             Toast.makeText(getContext(), "Hãy chọn ngân hàng", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        boolean isTadBank = "TAD".equalsIgnoreCase(selectedBank.getBankCode());
+
         if (accNumber.isEmpty()) {
             binding.txtReceiverAccNumber.setError("Nhập số tài khoản");
+            binding.txtReceiverAccNumber.requestFocus();
+            return;
+        }
+
+        // không cho chọn chính mình
+        if (accNumber.equalsIgnoreCase(accountSource.getAccountNumber()) && isTadBank){
+            binding.txtReceiverAccNumber.setError("Không được chọn chính mình");
             binding.txtReceiverAccNumber.requestFocus();
             return;
         }
@@ -500,7 +476,6 @@ public class BankTransferFragment extends Fragment implements UiConfig {
         InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(binding.txtReceiverAccNumber.getWindowToken(), 0);
 
-        boolean isTadBank = "TAD".equalsIgnoreCase(selectedBank.getBankCode());
         externalAccountViewModel.searchAccounts(isTadBank, selectedBank.getBankId(), accNumber);
     }
 

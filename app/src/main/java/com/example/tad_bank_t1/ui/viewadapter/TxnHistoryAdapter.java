@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.model.Transaction;
+import com.example.tad_bank_t1.util.CurrencyUtil;
 import com.example.tad_bank_t1.util.DateTimeUtil;
 import com.example.tad_bank_t1.util.TransactionUtil;
 
@@ -91,7 +92,7 @@ public class TxnHistoryAdapter extends RecyclerView.Adapter<TxnHistoryAdapter.Vi
                         txn.getFeeAmount().toString()
                     );
             boolean isIncoming = TransactionUtil.isIncoming(txn);
-            txtTxnHistoryAmount.setText((isIncoming ?  "+" : "-") + txn.getAmount().toString());
+            txtTxnHistoryAmount.setText((isIncoming ?  "+" : "-") + CurrencyUtil.formatVND(txn.getAmount()));
             if (!isIncoming)
                 txtTxnHistoryAmount.setTextColor(itemView.getResources().getColor(R.color.secondaryColor));
             else

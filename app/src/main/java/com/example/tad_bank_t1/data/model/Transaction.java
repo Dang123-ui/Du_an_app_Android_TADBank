@@ -390,7 +390,7 @@ public class Transaction {
             return this;
         }
 
-        public Builder updateAt(Date updateAt) {
+        public Builder updatedAt(Date updateAt) {
             this.updateAt = updateAt;
             return this;
         }

@@ -1,4 +1,4 @@
-package com.example.tad_bank_t1.data.network;
+package com.example.tad_bank_t1.data.remote.config;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;

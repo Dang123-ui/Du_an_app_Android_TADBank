@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
-    android:background="@drawable/bg_home_main_cus3"
-
+    android:background="@color/primaryBackgroundColor"
     tools:context=".ui.activity.MainActivity">
 
     <!-- Toolbar (AppBar) -->

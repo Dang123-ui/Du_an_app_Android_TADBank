@@ -25,7 +25,7 @@ import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.model.Bank;
 import com.example.tad_bank_t1.ui.viewadapter.BankAdapter;
 import com.example.tad_bank_t1.ui.viewmodel.BankViewModel;
-import com.example.tad_bank_t1.util.Constants;
+import com.example.tad_bank_t1.util.TadConstants;
 import com.example.tad_bank_t1.util.FragmentUtil;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -114,55 +114,58 @@ public class SearchTransferInfomationFragment extends Fragment {
         edtEnterInfoSearch.setHint(hint_search);
         txtSearchResultListTitle.setText(list_result_title);
 
+
+//        // Reset search input
+//        edtEnterInfoSearch.setText("");
+//        lastQuery = "";
+//
+//        // Reset adapter list
+//        if (adapter instanceof BankAdapter) {
+//            ((BankAdapter) adapter).setData(Collections.emptyList());
+//        }
+//
+//        // Reset ViewModel state (optional)
+//        if (bankViewModel != null) {
+//            bankViewModel.clearBankSelected();
+//        }
+
+
         recyclerViewSearch = view.findViewById(R.id.rcvSearchResult);
 
-        // Reset search input
-        edtEnterInfoSearch.setText("");
-        lastQuery = "";
+        if (search_for.equals(TadConstants.SEARCH_BANK)) {
 
-        // Reset adapter list
-        if (adapter instanceof BankAdapter) {
-            ((BankAdapter) adapter).setData(Collections.emptyList());
-        }
-
-        // Reset ViewModel state (optional)
-        if (bankViewModel != null) {
-            bankViewModel.clearBankSelected();
-        }
-
-
-        if(search_for.equals(Constants.SEARCH_BANK)){
-            adapter = new BankAdapter(List.of( ));
-            recyclerViewSearch.setAdapter(adapter);
-            ((BankAdapter) adapter).setOnItemClickListener(new BankAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(Bank bank) {
-                    if (bank != null){
-                        bankViewModel.setSelectedBank(bank);
-                        Log.d("BANK SELECTED", bank.getBankCode());
-                        FragmentUtil.destroyFragment(SearchTransferInfomationFragment.this, getParentFragmentManager());
-                    }
-                }
-            });
-            recyclerViewSearch.setLayoutManager(new LinearLayoutManager(getContext()));
             bankViewModel = new ViewModelProvider(requireActivity()).get(BankViewModel.class);
-            bankViewModel.getBanks().observe(getViewLifecycleOwner(), bank ->{
-                List<Bank> safe = (bank != null) ? bank : Collections.emptyList();
+
+            adapter = new BankAdapter(Collections.emptyList());
+            recyclerViewSearch.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerViewSearch.setAdapter(adapter);
+
+            bankViewModel.getBanks().observe(getViewLifecycleOwner(), banks -> {
+                List<Bank> safe = (banks != null) ? banks : Collections.emptyList();
                 ((BankAdapter) adapter).setData(safe);
             });
 
-//            bankViewModel.searchBanks("");
-        } else if (search_for.equalsIgnoreCase(Constants.SEARCH_ACCOUNT)) {
+            ((BankAdapter) adapter).setOnItemClickListener(bank -> {
+                if (bank != null) {
+                    bankViewModel.setSelectedBank(bank);
+                    FragmentUtil.destroyFragment(this, getParentFragmentManager());
+                }
+            });
+
+            // ✅ reset + show all ngay khi mở
+            resetBankModal();
+        }
+        else if (search_for.equalsIgnoreCase(TadConstants.SEARCH_ACCOUNT)) {
             Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
-        } else if(search_for.equalsIgnoreCase(Constants.SEARCH_BENEFICIARY_ACCOUNT)){
+        } else if(search_for.equalsIgnoreCase(TadConstants.SEARCH_BENEFICIARY_ACCOUNT)){
             Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
-        } else if(search_for.equalsIgnoreCase(Constants.SEARCH_BENEFICIARY_PHONE)){
+        } else if(search_for.equalsIgnoreCase(TadConstants.SEARCH_BENEFICIARY_PHONE)){
             Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
-        } else if(search_for.equalsIgnoreCase(Constants.SEARCH_ELECTRICITY_PROVIDER)){
+        } else if(search_for.equalsIgnoreCase(TadConstants.SEARCH_ELECTRICITY_PROVIDER)){
             Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
-        } else if(search_for.equalsIgnoreCase(Constants.SEARCH_WATER_PROVIDER)){
+        } else if(search_for.equalsIgnoreCase(TadConstants.SEARCH_WATER_PROVIDER)){
             Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
-        } else if(search_for.equalsIgnoreCase(Constants.SEARCH_TUITION_PROVIDER)){
+        } else if(search_for.equalsIgnoreCase(TadConstants.SEARCH_TUITION_PROVIDER)){
             Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
         }
 
@@ -183,7 +186,7 @@ public class SearchTransferInfomationFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 String key = s.toString().trim();
 
-                if(search_for.equals(Constants.SEARCH_BANK)){
+                if(search_for.equals(TadConstants.SEARCH_BANK)){
                     if (key.equals(lastQuery)) return;         // tránh gọi lại cùng chuỗi
                     lastQuery = key;
 
@@ -192,17 +195,17 @@ public class SearchTransferInfomationFragment extends Fragment {
                         bankViewModel.searchCacheBanks(key);
                     };
                     handler.postDelayed(searchJob, 350);
-                } else if (search_for.equalsIgnoreCase(Constants.SEARCH_ACCOUNT)) {
+                } else if (search_for.equalsIgnoreCase(TadConstants.SEARCH_ACCOUNT)) {
                     Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
-                } else if(search_for.equalsIgnoreCase(Constants.SEARCH_BENEFICIARY_ACCOUNT)){
+                } else if(search_for.equalsIgnoreCase(TadConstants.SEARCH_BENEFICIARY_ACCOUNT)){
                     Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
-                } else if(search_for.equalsIgnoreCase(Constants.SEARCH_BENEFICIARY_PHONE)){
+                } else if(search_for.equalsIgnoreCase(TadConstants.SEARCH_BENEFICIARY_PHONE)){
                     Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
-                } else if(search_for.equalsIgnoreCase(Constants.SEARCH_ELECTRICITY_PROVIDER)){
+                } else if(search_for.equalsIgnoreCase(TadConstants.SEARCH_ELECTRICITY_PROVIDER)){
                     Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
-                } else if(search_for.equalsIgnoreCase(Constants.SEARCH_WATER_PROVIDER)){
+                } else if(search_for.equalsIgnoreCase(TadConstants.SEARCH_WATER_PROVIDER)){
                     Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
-                } else if(search_for.equalsIgnoreCase(Constants.SEARCH_TUITION_PROVIDER)){
+                } else if(search_for.equalsIgnoreCase(TadConstants.SEARCH_TUITION_PROVIDER)){
                     Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
                 }
             }
@@ -218,9 +221,48 @@ public class SearchTransferInfomationFragment extends Fragment {
             }
         });
     }
+
+    private void resetBankModal() {
+        // huỷ debounce job cũ
+        handler.removeCallbacksAndMessages(null);
+        searchJob = null;
+
+        // clear input + query state
+        lastQuery = "";
+
+        // clear adapter ngay lập tức để không thấy kết quả cũ
+        if (adapter instanceof BankAdapter) {
+            ((BankAdapter) adapter).setData(Collections.emptyList());
+        }
+
+        // clear text (có thể trigger watcher, nhưng mình sẽ load all ngay)
+        if (edtEnterInfoSearch != null) {
+            edtEnterInfoSearch.setText("");
+            edtEnterInfoSearch.clearFocus(); // optional
+        }
+
+        // load full list
+        if (bankViewModel != null) {
+            bankViewModel.searchCacheBanks(""); // "" => trả về tất cả bank
+        }
+
+        if (recyclerViewSearch != null) recyclerViewSearch.scrollToPosition(0);
+    }
+
+
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         handler.removeCallbacksAndMessages(null);
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (TadConstants.SEARCH_BANK.equals(search_for)) {
+            resetBankModal(); // ✅ mỗi lần modal hiện ra đều full list + sạch state
+        }
+    }
+
 }

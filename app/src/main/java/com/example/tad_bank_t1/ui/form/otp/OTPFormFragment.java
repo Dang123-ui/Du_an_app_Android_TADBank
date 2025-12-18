@@ -1,9 +1,12 @@
 package com.example.tad_bank_t1.ui.form.otp;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -11,8 +14,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.databinding.FragmentOTPFormBinding;
+import com.example.tad_bank_t1.util.TadConstants;
 
 public class OTPFormFragment extends DialogFragment {
     private OnOtpSubmitListener listener;
@@ -22,21 +28,30 @@ public class OTPFormFragment extends DialogFragment {
 
     EditText[] OTPFields;
 
+    private static final long OTP_TIMEOUT = 60_000; // 60s
+    private CountDownTimer countDownTimer;
 
-    public OTPFormFragment() {
-        // Required empty public constructor
-    }
+
+    private boolean verified = false;
+
+    public OTPFormFragment() {}
 
     public interface OnOtpSubmitListener {
         void onOTPSubmit(String otp);
         void onOTPCancel();
         void onOTPInvalid(String message);
+        void onOTPResend();
     }
+
 
     public OTPFormFragment(OnOtpSubmitListener listener) {
         this.listener = listener;
     }
 
+    /** ✅ Gọi trước khi dismiss khi OTP đúng */
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,9 +85,9 @@ public class OTPFormFragment extends DialogFragment {
 
         setUpOTPInput();
 
+        startOtpCountdown();
+
         setUpEvents();
-
-
     }
 
     private void setUpOTPInput(){
@@ -129,7 +144,7 @@ public class OTPFormFragment extends DialogFragment {
             public void onClick(View v) {
                 if (!isOTPValid()){
                     binding.txtErrorOTP.setVisibility(View.VISIBLE);
-                    binding.txtErrorOTP.setText("Vui lòng nhập đủ mã OTP");
+                    binding.txtErrorOTP.setText(R.string.otp_khong_hop_le);
                     return;
                 }
 
@@ -153,10 +168,18 @@ public class OTPFormFragment extends DialogFragment {
             }
         });
 
-        binding.imbtOTPCancel.setOnClickListener(new View.OnClickListener() {
+        binding.imbtOTPCancel.setOnClickListener(v -> {
+            // ✅ user bấm cancel → đóng dialog (onDismiss sẽ tự gọi onOTPCancel nếu chưa verified)
+            dismiss();
+        });
+
+        binding.txtResendOTP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onOTPCancel();
+                if (binding.txtResendOTP.isEnabled()) {
+                    resendOtp();
+                    startOtpCountdown(); // reset lại
+                }
             }
         });
     }
@@ -181,6 +204,69 @@ public class OTPFormFragment extends DialogFragment {
     }
 
 
+    // bắt đầu đếm ngược
+    private void startOtpCountdown() {
+        binding.txtResendOTP.setEnabled(false);
+        binding.txtResendOTP.setTextColor(
+                requireContext().getColor(R.color.bgBlur)
+        );
+
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+
+        countDownTimer = new CountDownTimer(TadConstants.OTP_TTL_MS, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                long seconds = millisUntilFinished / 1000;
+                int minute = (int) (seconds / 60);
+                int secondMod = (int) (seconds % 60);
+
+
+                binding.txtResendOTP.setText(
+                        getString(R.string.gui_lai_otp_count_dowwn, minute, secondMod)
+                );
+            }
+
+            @Override
+            public void onFinish() {
+                binding.txtResendOTP.setEnabled(true);
+                binding.txtResendOTP.setText(R.string.gui_lai_otp);
+                binding.txtResendOTP.setTextColor(
+                        requireContext().getColor(R.color.primaryColor)
+                );
+            }
+        }.start();
+    }
+
+
+    // gửi lại OTP
+    private void resendOtp() {
+        // gọi ViewModel / Repository resend OTP
+        listener.onOTPResend();
+
+        Toast.makeText(requireContext(),
+                "OTP đã được gửi lại",
+                Toast.LENGTH_SHORT).show();
+    }
+
+    // ✅ BẮT BACK / OUTSIDE / X (cancel event)
+    @Override
+    public void onCancel(@NonNull DialogInterface dialog) {
+        super.onCancel(dialog);
+        // onDismiss cũng sẽ chạy, nên chỉ cần để onDismiss xử lý 1 chỗ
+    }
+
+    // ✅ CHỖ DUY NHẤT để quyết định có gọi onOTPCancel hay không
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (!verified && listener != null) {
+            listener.onOTPCancel(); // ✅ mọi kiểu đóng khi chưa verified đều là cancel giao dịch
+        }
+    }
+
+
     @Override
     public void onStart() {
         super.onStart();
@@ -198,5 +284,8 @@ public class OTPFormFragment extends DialogFragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
     }
 }

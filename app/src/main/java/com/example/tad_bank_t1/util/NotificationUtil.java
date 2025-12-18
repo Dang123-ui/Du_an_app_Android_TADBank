@@ -16,7 +16,7 @@ public class NotificationUtil {
 
     // tạo thông báo khi giao dịch thành công, gửi email, thông báo qua app == 3 hàm riêng biệt
     public static Notification createNotificationTxn(User user, Account acc, Transaction transaction){
-        StringBuffer msg = new StringBuffer("Giao dịch thành công. ");
+        StringBuilder msg = new StringBuilder();
         boolean isInComing = TransactionUtil.isIncoming(transaction); // nếu nhận tiền thì +, nếu gửi tiền thì -
 
         msg.append("Số dư TK " + acc.getAccountNumber() + ": "
@@ -27,9 +27,20 @@ public class NotificationUtil {
         msg.append(
                 ". Ref " + transaction.getTransactionReference()
                 + " CT tu " + transaction.getAccountNumber() +  " " + transaction.getAccountName()
-                + " toi " + transaction.getCounterpartyAccount() + " " + transaction.getCounterpartyName()
-                + " tai " + transaction.getCounterpartyBankCode()
+                + " toi " + transaction.getCounterpartyAccount()
         );
+
+        if (transaction.getCounterpartyBankName() != null){
+            msg.append(
+                " " + transaction.getCounterpartyName()
+            );
+        }
+
+        if (transaction.getCounterpartyBankCode() != null){
+            msg.append(
+               " tai " + transaction.getCounterpartyBankCode()
+            );
+        }
 
         Notification noti = new Notification.Builder()
                 .notificationId(generateNotificationId())

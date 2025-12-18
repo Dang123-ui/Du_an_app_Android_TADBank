@@ -4,7 +4,6 @@ import com.example.tad_bank_t1.data.model.OtpCode;
 
 import java.util.Date;
 import java.util.Locale;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class OtpUtil {
@@ -17,7 +16,7 @@ public class OtpUtil {
 
         Date createdAt = new Date();
         otp.setCreatedAt(createdAt);
-        otp.setExpiresAt(new Date(createdAt.getTime() + Constants.OTP_TTL_MS));
+        otp.setExpiresAt(new Date(createdAt.getTime() + TadConstants.OTP_TTL_MS));
         otp.setUsedAt(null);
         return otp;
     }

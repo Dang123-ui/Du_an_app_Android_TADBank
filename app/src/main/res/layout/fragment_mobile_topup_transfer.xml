@@ -6,14 +6,15 @@
     android:id="@+id/main_scroll_transfer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/primaryBackgroundColor"
+    android:padding="16dp"
     tools:context=".ui.fragment.customer.topup.MobileTopupFragment">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFF2F6"
-        android:padding="20dp"
+        android:padding="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/thong_tin_ck_tieu_de"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold"
 
             app:layout_constraintEnd_toEndOf="parent"
@@ -50,12 +51,12 @@
             android:id="@+id/lnloTopupReceiverPhoneInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/bg_card_white"
             android:gravity="center_vertical"
             android:orientation="horizontal"
 
-            android:padding="10dp"
+            android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
 
             app:layout_constraintHorizontal_bias="0"
@@ -64,60 +65,72 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_gravity="fill_vertical"
-                android:layout_weight="5"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="vertical">
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/so_dien_thoai_nhan"
                     android:textSize="12sp"
-                    android:textStyle="bold"
-
-                    />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
+                    android:textStyle="bold" />
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edtReceiverPhoneNumber"
-                    style="@style/TextAppearance.Material3.BodySmall"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     android:background="@null"
-                    android:ellipsize="end"
+                    android:padding="0dp"
+                    android:includeFontPadding="false"
                     android:hint="@string/hint_chon_sdt_nap_tien"
-                    android:inputType="number"
-                    android:maxLines="1"
-                    android:textSize="15sp" />
+                    android:inputType="phone"
+                    android:singleLine="true"/>
             </LinearLayout>
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
 
+<!--            <View-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:layout_weight="1" />-->
+
+<!--            <ImageButton-->
+<!--                android:id="@+id/imbtShowListBeneficiaryTopUp"-->
+<!--                android:layout_width="35dp"-->
+<!--                android:layout_height="35dp"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:background="@android:color/transparent"-->
+<!--                android:foregroundGravity="center"-->
+<!--                android:padding="0dp"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:src="@drawable/ic_transfer_beneficiary" />-->
             <ImageButton
                 android:id="@+id/imbtShowListBeneficiaryTopUp"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
+                android:layout_marginStart="8dp"
                 android:layout_gravity="center"
                 android:background="@android:color/transparent"
-                android:foregroundGravity="center"
-                android:padding="0dp"
-                android:scaleType="centerInside"
+                android:scaleType="centerCrop"
                 android:src="@drawable/ic_transfer_beneficiary" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtErrorPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="8dp"
+            android:text=""
+            android:textColor="@color/primaryColor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lnloTopupReceiverPhoneInfo" />
 
         <GridLayout
             android:id="@+id/grloAmountTopUpList"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="16dp"
 
             android:alignmentMode="alignMargins"
             android:columnCount="2"
@@ -126,7 +139,7 @@
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lnloTopupReceiverPhoneInfo">
+            app:layout_constraintTop_toBottomOf="@+id/txtErrorPhone">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardViewTopUpAmount10"
@@ -277,6 +290,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintVertical_bias="1"
             />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--        MODAL SEARCH-->
@@ -285,6 +299,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="0dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

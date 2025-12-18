@@ -144,7 +144,7 @@ public class FirebaseAccountRepository implements AccountRepository {
                 .get()
                 .addOnSuccessListener(snap -> {
                     if (snap == null || snap.isEmpty()) {
-                        callback.onSucces(null); // không tìm thấy
+                        callback.onError("Không tìm thấy tài khoản"); // không tìm thấy
                         return;
                     }
 

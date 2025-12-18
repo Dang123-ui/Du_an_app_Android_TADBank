@@ -154,7 +154,7 @@ public class HomeCustomerFragment extends Fragment implements UiConfig {
             if (account != null) {
                 binding.txtHomeUsername.setText(account.getAccountName());
                 binding.txtHomeAccNumber.setText(account.getAccountNumber());
-                binding.txtHomeBalance.setText(CurrencyUtil.formatVND(account.getBalance()));
+                binding.txtHomeBalance.setText(CurrencyUtil.formatAmount(account.getBalance()) + account.getCurrency());
             }
         });
 

@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="12dp"
-                android:text="Xác thực giao dịch"
+                android:text="@string/xac_thuc_giao_dich"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="8dp"
-                android:text="Vui lòng nhập mã OTP đã gửi qua email/SMS của bạn"
+                android:text="@string/vui_long_nhap_otp"
                 android:textAlignment="center"
                 android:textSize="16sp" />
 
@@ -98,7 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Sai OTP"
+                android:text=""
                 android:textColor="@color/primaryColor"
                 android:textStyle="italic" />
 
@@ -110,16 +110,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Chưa nhận được OTP?" />
+                    android:text="@string/chua_nhan_otp"
+                    />
 
                 <TextView
+                    android:id="@+id/txtResendOTP"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="Gửi lại mã OTP"
+                    android:text="@string/gui_lai_otp"
                     android:textColor="@color/primaryColor"
                     android:textStyle="bold" />
+
             </LinearLayout>
 
 

@@ -2,7 +2,7 @@ package com.example.tad_bank_t1.data.model.enums;
 
 public enum TxnType {
     // Incoming
-    TRANSFER_RECEIVE,
+    TRANSFER_INTERNAL_INCOMING,
     INTEREST,
     SAVING_DEPOSIT,
     REFUND,

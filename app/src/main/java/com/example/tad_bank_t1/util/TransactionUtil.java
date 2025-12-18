@@ -12,7 +12,7 @@ import java.util.UUID;
 public class TransactionUtil {
     // false nếu là giao dịch gửi tiền, true nếu là giao dịch nhận tiền
     public static boolean isIncoming(Transaction txn){
-        if (txn.getType() == TxnType.TRANSFER_RECEIVE || txn.getType() == TxnType.INTEREST
+        if (txn.getType() == TxnType.TRANSFER_INTERNAL_INCOMING || txn.getType() == TxnType.INTEREST
                 || txn.getType() == TxnType.SAVING_DEPOSIT
                 || txn.getType() == TxnType.REFUND || txn.getType() == TxnType.SALARY)
             return true;

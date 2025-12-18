@@ -1,6 +1,6 @@
 package com.example.tad_bank_t1.util;
 
-public class Constants {
+public class TadConstants {
     // config OTP
     public static final long OTP_TTL_MS = 5 * 60 * 1000;
 
@@ -8,6 +8,12 @@ public class Constants {
     public static final String BILL_ELECTRICITY = "BILL_ELECTRICITY";
     public static final String BILL_WATER = "BILL_WATER";
     public static final String TOPUP = "TOPUP";
+
+
+    // transaction
+    public static final Long LIMIT_NEED_VERIFY_AMOUNT = 5_000_000L;
+    public static final Long LIMIT_TRANSACTION_AMOUNT_ONE_DAY = 50_000_000L;
+    public static final Long FEE_AMOUNT = 0L;
 
 
     // search

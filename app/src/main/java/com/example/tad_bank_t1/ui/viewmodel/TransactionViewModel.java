@@ -13,6 +13,7 @@ import com.example.tad_bank_t1.data.model.Notification;
 import com.example.tad_bank_t1.data.model.Transaction;
 import com.example.tad_bank_t1.data.model.User;
 import com.example.tad_bank_t1.data.model.enums.TnxStatus;
+import com.example.tad_bank_t1.data.model.enums.TxnChannel;
 import com.example.tad_bank_t1.data.model.enums.TxnType;
 import com.example.tad_bank_t1.data.repository.account.FirebaseAccountRepository;
 import com.example.tad_bank_t1.data.repository.callbacks.ResultCallback;
@@ -24,6 +25,7 @@ import com.example.tad_bank_t1.util.NotificationUtil;
 import com.example.tad_bank_t1.util.TransactionUtil;
 import com.example.tad_bank_t1.util.email.SmtpEmailSender;
 
+import java.util.Date;
 import java.util.List;
 
 public class TransactionViewModel extends AndroidViewModel {
@@ -55,7 +57,6 @@ public class TransactionViewModel extends AndroidViewModel {
     private Application app() {
         return getApplication();
     }
-
 
     public String getIdempotencyKey() {
         return idempotencyKey;
@@ -140,6 +141,8 @@ public class TransactionViewModel extends AndroidViewModel {
             _state.postValue(ResultWrapper.error("Số tiền không hợp lệ"));
             return;
         }
+
+        transaction.setCreatedAt(new Date());
 
         // loading
         _state.postValue(ResultWrapper.loading());
@@ -254,8 +257,10 @@ public class TransactionViewModel extends AndroidViewModel {
                     }
 
                     private void afterBalanceDone(Transaction completedTxn) {
+                        // ======================
+                        // gui thong bao cho nguoi chuyen tien
+                        // ======================
                         Notification noti = NotificationUtil.createNotificationTxn(user, sender, transaction);
-
                         notificationRepository.createNotification(noti, new ResultCallback<Notification>() {
                             @Override public void onSucces(Notification n) {
                                 // thông báo trong app
@@ -293,6 +298,102 @@ public class TransactionViewModel extends AndroidViewModel {
                                 });
                             }
                         });
+
+                        // ======================
+                        // tao giao dich nhan tien neu la chuyen noi bo
+                        // ======================
+                        if (completedTxn.getType() == TxnType.TRANSFER_INTERNAL){
+                            // tao giao dich moi
+                            String newRef = TransactionUtil.generateRef();
+                            String newIdemp = TransactionUtil.generateIdempotencyKey(
+                                    transaction.getAmount(),
+                                    transaction.getCounterpartyAccount(),
+                                    transaction.getAccountNumber(),
+                                    TxnType.TRANSFER_INTERNAL_INCOMING
+                            );
+                            String newDesc = "REF " + transaction.getTransactionReference() + ". "
+                                    + transaction.getDescription() + ". "
+                                    + "CT tu " + transaction.getAccountNumber() + " " + transaction.getAccountName()
+                                    + " toi " + transaction.getCounterpartyAccount()
+                                    + " " + transaction.getCounterpartyName()
+                                    + " " + transaction.getCounterpartyBankCode();
+
+                            Transaction transactionReceive = Transaction.builder()
+                                    .transactionId(TransactionUtil.generateTransactionId())
+                                    .accountNumber(transaction.getCounterpartyAccount())
+                                    .accountName(transaction.getCounterpartyAccount())
+                                    .counterpartyAccount(sender.getAccountNumber())
+                                    .counterpartyName(sender.getAccountName())
+                                    .counterpartyBankCode(transaction.getCounterpartyBankCode())
+                                    .counterpartyBankName(transaction.getCounterpartyBankName())
+                                    .counterpartyBankLogo(transaction.getCounterpartyBankLogo())
+                                    .description(newDesc)
+                                    .amount(transaction.getAmount())
+                                    .feeAmount(transaction.getFeeAmount())
+                                    .status(TnxStatus.COMPLETED)
+                                    .type(TxnType.TRANSFER_INTERNAL_INCOMING)
+                                    .channel(TxnChannel.MOBILE_APP)
+                                    .currency("VND")
+                                    .idempotencyKey(newIdemp)
+                                    .transactionReference(newRef)
+                                    .createdAt(new Date())
+                                    .updatedAt(new Date())
+                                    .build();
+
+                            // tao thong bao cho nguoi nhan
+
+                            // tim account
+                            accountRepository.getAccountByAccountNumber(transaction.getCounterpartyAccount(), new ResultCallback<Account>() {
+                                @Override
+                                public void onSucces(Account data) {
+                                    transactionReceive.setAccountId(data.getAccountId());
+                                    User userReceiver = new User();
+                                    userReceiver.setUserId(data.getUserId());
+
+                                    // Tao giao dich database
+                                    repo.createTransaction(transactionReceive, new ResultCallback<Transaction>() {
+                                        @Override
+                                        public void onSucces(Transaction transactionCreated) {
+                                            Log.d(
+                                                    "MIRROR_TXN",
+                                                    "Transaction created: " + transactionCreated.toString()
+                                            );
+
+                                            // Xong thi tao thong bao cho nguoi nhan
+                                            Notification notiReceive = NotificationUtil.createNotificationTxn(userReceiver, data, transactionCreated);
+
+                                            notificationRepository.createNotification(noti, new ResultCallback<Notification>() {
+                                                @Override
+                                                public void onSucces(Notification data) {
+                                                    Log.d("MIRROR_TXN", "Notification created");
+                                                }
+
+                                                @Override
+                                                public void onError(String error) {
+                                                    Log.e("MIRROR_TXN", "Failed: " + error);
+                                                }
+                                            });
+                                        }
+
+                                        @Override
+                                        public void onError(String error) {
+                                            Log.e("MIRROR_TXN", "Failed: " + error);
+                                        }
+                                    });
+
+                                }
+
+                                @Override
+                                public void onError(String error) {
+                                    Log.e("MIRROR_TXN", "Failed: " + error);
+                                }
+                            });
+                        }
+
+
+                        // ======================
+                        // gui thong bao cho nguoi chuyen tien
+                        // ======================
                     }
                 });
             }

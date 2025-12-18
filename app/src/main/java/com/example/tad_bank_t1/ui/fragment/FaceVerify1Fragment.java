@@ -20,6 +20,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
@@ -78,6 +80,34 @@ public class FaceVerify1Fragment extends Fragment {
     private ActivityResultLauncher<String> pickImageLauncher;
     private ActivityResultLauncher<String> cameraPermissionLauncher;
 
+    // ========================
+    // for transaction verification
+    // ========================
+    private static final int MODE_TRANSACTION = 2;
+
+    private FaceVerifyCallback callback;
+
+    public interface FaceVerifyCallback {
+        void onFaceVerified();
+        void onFaceFailed(String reason);
+    }
+
+    public static FaceVerify1Fragment newForTransaction(
+            String uid,
+            FaceVerifyCallback callback
+    ) {
+        FaceVerify1Fragment fragment = new FaceVerify1Fragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_MODE, MODE_TRANSACTION);
+        args.putString(ARG_UID, uid);
+        fragment.setArguments(args);
+        fragment.callback = callback;
+        return fragment;
+    }
+
+
+
+
     public FaceVerify1Fragment() {
     }
 
@@ -132,6 +162,25 @@ public class FaceVerify1Fragment extends Fragment {
         success = view.findViewById(R.id.success);
         registerActivityResultLaunchers();
         setupButtonListeners();
+
+
+        // nếu là mode transaction thì sửa background
+        if (mode == MODE_TRANSACTION) {
+            View root = view.findViewById(R.id.main_face_verify1);
+            root.setBackgroundResource(R.drawable.bg_signin_mini);
+            root.setBackgroundTintList(null); // 🔥 DÒNG QUAN TRỌNG
+
+            ViewCompat.setOnApplyWindowInsetsListener(root, (v, insets) -> {
+                int topInset = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top;
+
+                ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+                lp.topMargin = topInset;    // ⭐ auto margin theo status bar
+                v.setLayoutParams(lp);
+
+                return WindowInsetsCompat.CONSUMED;
+//            return insets;
+            });
+        }
     }
     private void registerActivityResultLaunchers() {
         try {
@@ -297,9 +346,15 @@ public class FaceVerify1Fragment extends Fragment {
 //                    toast("Lỗi nhận diện khuôn mặt: " + e.getMessage());
 //                });
         ensureReferenceLoadedThen(() -> {
-            final String refDataUrl = (mode == MODE_FACE_LOGIN)
-                    ? avatarDataUrl
-                    : (ekyc != null ? ekyc.getFaceImagePath() : null);
+//            final String refDataUrl = (mode == MODE_FACE_LOGIN)
+//                    ? avatarDataUrl
+//                    : (ekyc != null ? ekyc.getFaceImagePath() : null);
+            final String refDataUrl =
+                    (mode == MODE_SIGNUP)
+                            ? (ekyc != null ? ekyc.getFaceImagePath() : null)
+                            : avatarDataUrl; // FACE_LOGIN & TRANSACTION
+
+
             if (refDataUrl == null || !refDataUrl.startsWith("data:image/")) {
                 toast("Thiếu ảnh tham chiếu.");
                 return;
@@ -343,6 +398,22 @@ public class FaceVerify1Fragment extends Fragment {
                                     boolean isMatch = similarity >= 0.60;
 
                                     if (isMatch) {
+                                        if (mode == MODE_TRANSACTION) {
+                                            runOnUiThreadSafe(() -> {
+                                                toast("Xác thực khuôn mặt thành công");
+
+                                                if (callback != null) {
+                                                    callback.onFaceVerified();
+                                                }
+
+                                                // quay lại màn trước
+                                                requireActivity()
+                                                        .getSupportFragmentManager()
+                                                        .popBackStack();
+                                            });
+                                            return;
+                                        }
+
                                         if (mode == MODE_SIGNUP) {
                                             // Hành vi cũ: cập nhật EKYC -> EmailVerify
                                             ekyc.setVerified(true);
@@ -366,7 +437,9 @@ public class FaceVerify1Fragment extends Fragment {
                                                     })
                                                     .addOnFailureListener(e ->
                                                             runOnUiThreadSafe(() -> toast("Cập nhật EKYC thất bại: " + e.getMessage())));
-                                        } else {
+                                        }
+
+                                        if (mode == MODE_FACE_LOGIN) {
                                             // FACE_LOGIN: mở MainActivity với uid
                                             runOnUiThreadSafe(() -> {
                                                 toast("Đăng nhập bằng Face ID thành công!");
@@ -386,8 +459,13 @@ public class FaceVerify1Fragment extends Fragment {
                                                 });
                                             });
                                         }
-                                    } else {
+                                    }
+                                    else {
                                         runOnUiThreadSafe(() -> toast("Khuôn mặt không trùng khớp"));
+
+                                        if (mode == MODE_TRANSACTION && callback != null) {
+                                            callback.onFaceFailed("FACE_NOT_MATCH");
+                                        }
                                     }
                                 } catch (Exception e) {
                                     runOnUiThreadSafe(() -> toast(e.getMessage() != null ? e.getMessage() : "Lỗi xác thực."));

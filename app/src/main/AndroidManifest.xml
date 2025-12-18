@@ -60,7 +60,7 @@
 <!--            android:value="${mapsApiKey}" />-->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="${MAPS_API_KEY}" />
+            android:value="${MAPS_API_KEY_PLUS}" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

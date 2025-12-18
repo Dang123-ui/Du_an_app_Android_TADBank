@@ -77,7 +77,6 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:hint="@string/hint_chon_ngan_hang_nhan"
-                    android:text="êssssss"
                     android:maxLines="1"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -143,7 +142,6 @@
                     android:inputType="number"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:text="1031095555"
                     android:textSize="15sp" />
             </LinearLayout>
 

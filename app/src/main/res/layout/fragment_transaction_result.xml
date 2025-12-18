@@ -28,7 +28,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="8dp"
+            android:paddingHorizontal="12dp"
+            android:paddingTop="8dp"
+            android:background="@color/primaryBackgroundColor"
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -60,6 +62,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
                         android:layout_gravity="center"
 
                         android:text="TAD Bank xin chân thành cảm ơn"
@@ -83,7 +86,7 @@
                     android:layout_marginTop="8dp"
                     android:text="Chuyển khoản thành công"
                     android:textColor="@color/primaryColor"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/txtTransactionResultAmount"
@@ -93,7 +96,7 @@
                     android:layout_marginTop="8dp"
                     android:text="200.000.000 VND"
                     android:textColor="@color/primaryColor"
-                    android:textSize="22sp" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/txtTransactionResultTime"
@@ -125,52 +128,61 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/tai_khoan_nguon"
-                        android:textSize="16dp" />
+                        android:layout_marginEnd="4dp"
+                        android:text="@string/tai_khoan_nguon" 
+                        />
 
-                    <View
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
+<!--                    <View-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="0dp"-->
+<!--                        android:layout_weight="1" />-->
 
                     <TextView
                         android:id="@+id/txtTransactionResultSourceAccount"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="1234"
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:textStyle="bold"
+                        android:text="Vietcombank siêu dài siêu dài" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:background="@drawable/bg_row_border_bottom"
+                    android:layout_gravity="center"
                     android:gravity="center"
                     android:paddingVertical="8dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
                         android:text="@string/tai_khoan_nhan_ck"
-                        android:textSize="16dp" />
+                         />
 
-                    <View
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
+<!--                    <View-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="0dp"-->
+<!--                        android:layout_weight="1" />-->
 
                     <TextView
                         android:id="@+id/txtTransactionResultTargetAccount"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="1234"
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:textStyle="bold"
+                        android:text="Vietcombank siêu dài siêu dài" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/lnloTransactionResultReceiverName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -181,49 +193,57 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
                         android:text="@string/ten_nguoi_nhan_ck"
-                        android:textSize="16dp" />
+                         />
 
-                    <View
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
+<!--                    <View-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="0dp"-->
+<!--                        android:layout_weight="1" />-->
 
                     <TextView
                         android:id="@+id/txtTransactionResultTargetAccountName"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="1234"
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:textStyle="bold"
+                        android:text="Vietcombank siêu dài siêu dài" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/lnloTransactionResultBankReceiver"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@drawable/bg_row_border_bottom"
-                    android:gravity="center"
                     android:paddingVertical="8dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
                         android:text="@string/ngan_hang_nhan_ck"
-                        android:textSize="16dp" />
+                         />
 
-                    <View
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
+<!--                    <View-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="0dp"-->
+<!--                        android:layout_weight="1" />-->
 
                     <TextView
                         android:id="@+id/txtTransactionResultTargetBank"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="1234"
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:textStyle="bold"
+                        android:text="Vietcombank siêu dài siêu dài\nsisdedeudheudheudheudheudhuedheudhedhuedhued" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -231,27 +251,30 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@drawable/bg_row_border_bottom"
-                    android:gravity="center"
                     android:paddingVertical="8dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
                         android:text="@string/noi_dung_chuyen_khoan"
-                        android:textSize="16dp" />
+                         />
 
-                    <View
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
+<!--                    <View-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="0dp"-->
+<!--                        android:layout_weight="1" />-->
 
                     <TextView
                         android:id="@+id/txtTransactionResultContent"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="1234"
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:maxLines="4"
+                        android:ellipsize="end"
+                        android:textStyle="bold"
+                        android:text="Vietcombank siêu dài siêu dài \nhheheee \newwwww" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -265,21 +288,25 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
                         android:text="@string/phi_chuyen_tien"
-                        android:textSize="16dp" />
+                         />
 
-                    <View
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
+<!--                    <View-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="0dp"-->
+<!--                        android:layout_weight="1" />-->
 
                     <TextView
                         android:id="@+id/txtTransactionResultFeeAmount"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="1234"
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:textStyle="bold"
+                        android:text="Vietcombank siêu dài siêu dài" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -293,48 +320,55 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
                         android:text="@string/hinh_thuc_chuyen_tien"
-                        android:textSize="16dp" />
+                         />
 
-                    <View
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
+<!--                    <View-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="0dp"-->
+<!--                        android:layout_weight="1" />-->
 
                     <TextView
                         android:id="@+id/txtTransactionResultType"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="1234"
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:textStyle="bold"
+                        android:text="Vietcombank siêu dài siêu dài" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:gravity="center"
                     android:paddingVertical="8dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
                         android:text="@string/ma_giao_dich"
-                        android:textSize="16dp" />
+                         />
 
-                    <View
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
+<!--                    <View-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="0dp"-->
+<!--                        android:layout_weight="1" />-->
 
                     <TextView
                         android:id="@+id/txtTransactionResultTransactionCode"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="1234"
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:textStyle="bold"
+                        android:text="Vietcombank siêu dài siêu dài \nwww" />
                 </LinearLayout>
 
 

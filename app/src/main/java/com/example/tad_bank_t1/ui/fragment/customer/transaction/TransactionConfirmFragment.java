@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -28,10 +29,12 @@ import com.example.tad_bank_t1.ui.form.payload.transactions.BaseTransactionPaylo
 import com.example.tad_bank_t1.ui.form.payload.transactions.BillPaymentPayload;
 import com.example.tad_bank_t1.ui.form.payload.transactions.PhoneTopupPayload;
 import com.example.tad_bank_t1.ui.form.payload.transactions.TransferPayload;
+import com.example.tad_bank_t1.ui.fragment.FaceVerify1Fragment;
 import com.example.tad_bank_t1.ui.viewmodel.OtpCodeViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.SessionViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.TransactionPayloadViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.TransactionViewModel;
+import com.example.tad_bank_t1.util.TadConstants;
 import com.example.tad_bank_t1.util.CurrencyUtil;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -52,7 +55,8 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
     private BaseTransactionPayload transactionPayload;
 
     // check giao dịch đã xác thực hay chưa
-    private boolean isVerified = false;
+    private boolean otpHandled = false;
+
 
     private boolean hasNavigated = false;
 
@@ -108,6 +112,10 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
     private void initView(View view){
         if (transactionPayload != null) {
             if (transactionPayload instanceof TransferPayload){
+                // hien view can thiet
+                binding.lnloConfirmTrans3TenNguoiNhan.setVisibility(View.VISIBLE);
+                binding.lnloConfirmTrans4NganHangNhanCk.setVisibility(View.VISIBLE);
+
                 Log.d("PAYLOAD : ", ((TransferPayload) transactionPayload).getTransaction().toString());
                 TransferPayload txnPayload = (TransferPayload) transactionPayload;
                 Transaction txn = txnPayload.getTransaction();
@@ -124,6 +132,24 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
                 binding.txtConfirmTransactionAmount.setText(CurrencyUtil.formatVND(txn.getAmount()));
 
             } else if(transactionPayload instanceof PhoneTopupPayload) {
+                // an view khong can thiet
+                binding.lnloConfirmTrans3TenNguoiNhan.setVisibility(View.GONE);
+                binding.lnloConfirmTrans4NganHangNhanCk.setVisibility(View.GONE);
+
+                // =========
+                // lay payload
+                // =========
+                Log.d("PAYLOAD : ", ((PhoneTopupPayload) transactionPayload).getTransaction().toString());
+                PhoneTopupPayload txnPayload = (PhoneTopupPayload) transactionPayload;
+                Transaction txn = txnPayload.getTransaction();
+
+                // bind view chung
+
+                binding.txtConfirmTransactionAccountSource.setText(txn.getAccountNumber());
+                binding.txtConfirmTransactionAccountReceiver.setText(txn.getCounterpartyAccount());
+                binding.txtConfirmTransactionContent.setText(txn.getDescription());
+                binding.txtConfirmTransactionFeeAmount.setText(CurrencyUtil.formatVND(txn.getFeeAmount()));
+                binding.txtConfirmTransactionAmount.setText(CurrencyUtil.formatVND(txn.getAmount()));
 
             } else if (transactionPayload instanceof BillPaymentPayload) {
 
@@ -148,58 +174,42 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
         // observe state transaction view model
         transactionViewModel.getResultState().observe(getViewLifecycleOwner(), result -> {
             if (result == null) {
-                return;
-            }
-            if (result.getData() != null){
-//                binding.lottieLoadingWaitingConfirm.setVisibility(View.GONE);
                 binding.btnConfirmTransfer.setEnabled(true);
-
-                // log transaction
-                Log.d("TAG TRANSACTION", "Transaction created:" + result.getData().toString());
-
-                // nếu đã thành công thì chuyên màn hình
-                if (result.getData().getStatus() == TnxStatus.COMPLETED) {
-                    safeNavigateToResult();
-                } else if (result.getData().getStatus() == TnxStatus.FAILED){ // neu failed thi thong bao loi
-                    showError("Lỗi tạo giao dịch", "Giao dịch thất bại");
-                }
-                return;
-            }
-            if (result.getError() != null) {
-//                binding.lottieLoadingWaitingConfirm.setVisibility(View.GONE);
-                binding.btnConfirmTransfer.setEnabled(true);
-
-                showError("Lỗi tạo giao dịch", result.getError());
+                ((MainActivity) requireActivity()).showLoadingFeature(false);
                 return;
             }
 
             if (result.isLoading()) {
                 binding.btnConfirmTransfer.setEnabled(false);
-
                 ((MainActivity) requireActivity()).showLoadingFeature(true);
-//                binding.lottieLoadingWaitingConfirm.setVisibility(View.VISIBLE);
+                return;
+            }
+
+            // từ đây chắc chắn không loading
+            binding.btnConfirmTransfer.setEnabled(true);
+            ((MainActivity) requireActivity()).showLoadingFeature(false);
+
+            if (result.getError() != null) {
+                showError("Lỗi tạo giao dịch", result.getError());
+                return;
+            }
+
+            if (result.getData() != null) {
+                Log.d("TAG TRANSACTION", "Transaction created:" + result.getData());
+                if (result.getData().getStatus() == TnxStatus.COMPLETED) safeNavigateToResult();
+                else if (result.getData().getStatus() == TnxStatus.FAILED) showError("Lỗi tạo giao dịch", "Giao dịch thất bại");
             }
         });
+
     }
 
     private void initEvents(){
         binding.btnConfirmTransfer.setOnClickListener(v -> {
             openPinDialog();
-            // =========
-            // Tạo giao dịch pending
-            // =========
-            //transactionViewModel.createTransaction(transactionPayload.getTransaction());
-
-
-            // =========
-            // Mở Dialog xac thuc: OTP, MFA, bio,... nếu thành công mới update status chuyển màn hình
-            // =========
-
-            // cu cho la da xac thuc giao dich
-            //isVerified = true;
         });
     }
 
+    // nhap ma PIN de xac thuc chu tai khoan
     private void openPinDialog() {
         String purpose = "TRANSACTION_" + transactionPayload.getTransaction().getType().name();
         User user;
@@ -217,12 +227,12 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
                     dialogHolder[0].showPinError("Sai mã PIN!");
                     return;
                 }
+                // tạo và gửi OTP qua email
+                otpCodeViewModel.createOtpCode(purpose, Objects.requireNonNull(sessionViewModel.user.getValue()));
 
                 // tạo giao dịch
                 transactionViewModel.createTransaction(transactionPayload.getTransaction());
 
-                // tạo và gửi OTP qua email
-                otpCodeViewModel.createOtpCode(purpose, Objects.requireNonNull(sessionViewModel.user.getValue()));
 
                 // mở modal OTP
                 openOtpDialog();
@@ -245,6 +255,8 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
         dialogHolder[0].show(getParentFragmentManager(), "PINDialog");
     }
 
+
+    // mo OTP dialog khi PIN thanh cong
     private void openOtpDialog() {
         String purpose = "TRANSACTION_" + transactionPayload.getTransaction().getType().name();
         String userId;
@@ -265,48 +277,135 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
                     return;
                 }
 
-
                 otpCodeViewModel.verifyOtpCode(userId, purpose, otp);
             }
 
+
             @Override
             public void onOTPCancel() {
-                dialogHolder[0].dismiss();
+                // 1️⃣ tắt loading ngay
+                if (isAdded()) {
+                    ((MainActivity) requireActivity()).showLoadingFeature(false);
+                }
+
+                // 2️⃣ reset verify state để observer không bắn lại
+                otpCodeViewModel.clearVerifyState();
+
+                // 3️⃣ huỷ giao dịch
+                cancelPendingTransactionSafely();
             }
+
 
             @Override
             public void onOTPInvalid(String message) {
                 dialogHolder[0].showOTPError(message);
             }
+
+            @Override
+            public void onOTPResend() {
+                otpCodeViewModel.createOtpCode(purpose, Objects.requireNonNull(sessionViewModel.user.getValue()));
+            }
         });
 
         dialogHolder[0].setCancelable(true);
-        dialogHolder[0].show(getParentFragmentManager(), "PINDialog");
+        dialogHolder[0].show(getParentFragmentManager(), "OTPDialog");
 
-        // OBSERVE OTP VERIFY — chỉ observe một lần
         otpCodeViewModel.getVerifyState().observe(getViewLifecycleOwner(), state -> {
-            if (state == null) return;
+            if (state == null || otpHandled) return;
 
-            if (state.isLoading()) {
-                ((MainActivity) requireActivity()).showLoadingFeature(true);
-            }
+            if (state.isLoading()) return;
 
             if (state.getError() != null) {
                 dialogHolder[0].showOTPError(state.getError());
+                return;
             }
 
-            if (state.getData() != null && state.getData()) {
-                dialogHolder[0].dismiss();
+            if (Boolean.TRUE.equals(state.getData())) {
+                otpHandled = true; // 🔥 chặn xử lý lặp
 
-                // OTP đúng → Execute transaction
-                transactionViewModel.executeTransaction(
-                        transactionPayload.getTransaction(),
-                        transactionPayload.getSenderAccount(),
-                        sessionViewModel.user.getValue()
-                );
+                dialogHolder[0].setVerified(true);
+                dialogHolder[0].dismissAllowingStateLoss();
+
+                handleAfterOtpSuccess();
             }
         });
+
     }
+
+    // dong otp dialog
+    private void closeOtpDialog(){
+        // 🔥 ÉP đóng OTP dialog nếu còn
+        Fragment otpDialog =
+                getParentFragmentManager().findFragmentByTag("OTPDialog");
+        if (otpDialog instanceof DialogFragment) {
+            ((DialogFragment) otpDialog).dismissAllowingStateLoss();
+        }
+    }
+
+    // xu ky sau khi OTP thanh cong
+    private  void handleAfterOtpSuccess(){
+        Transaction txn = transactionPayload.getTransaction();
+
+        if (txn.getAmount() >= TadConstants.LIMIT_NEED_VERIFY_AMOUNT) {
+            // dong otp trươc
+            closeOtpDialog();
+
+            // mở verify
+            FaceVerify1Fragment faceFragment =
+                    FaceVerify1Fragment.newForTransaction(
+                            sessionViewModel.user.getValue().getUserId(),
+                            new FaceVerify1Fragment.FaceVerifyCallback() {
+                                @Override
+                                public void onFaceVerified() {
+                                    // ✅ FACE OK → execute transaction
+                                    transactionViewModel.executeTransaction(
+                                            txn,
+                                            transactionPayload.getSenderAccount(),
+                                            sessionViewModel.user.getValue()
+                                    );
+                                }
+
+                                @Override
+                                public void onFaceFailed(String reason) {
+                                    cancelPendingTransactionSafely();
+                                }
+                            }
+                    );
+
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.main_customer, faceFragment)
+                    .addToBackStack("FACE_VERIFY_TXN")
+                    .commit();
+
+        } else {
+            // ≤ 10tr
+            transactionViewModel.executeTransaction(
+                    txn,
+                    transactionPayload.getSenderAccount(),
+                    sessionViewModel.user.getValue()
+            );
+        }
+    }
+
+
+    // huy giao dich
+    private void cancelPendingTransactionSafely() {
+        otpHandled = false;                 // ✅ reset OTP flow
+
+        if (isAdded()) {
+            ((MainActivity) requireActivity()).showLoadingFeature(false);
+        }
+
+        transactionViewModel.clearResultState();  // ✅
+
+        Transaction txn = transactionPayload.getTransaction();
+        if (txn != null && txn.getTransactionId() != null) {
+            transactionViewModel.updateTransactionStatus(txn.getTransactionId(), TnxStatus.CANCELLED);
+        }
+    }
+
+
 
 
     // chuyen doi khi trang thai giao dich thanh cong
@@ -314,6 +413,12 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
         if (hasNavigated || !isAdded()) return;
 
         hasNavigated = true;
+
+        // dong top
+        closeOtpDialog();
+
+        // clear state
+        otpCodeViewModel.clearVerifyState();
 
         // xóa state transaction VM
         transactionViewModel.clearResultState();
@@ -352,4 +457,23 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
         binding = null;
     }
 
+
+    // util observer
+    private <T> void observeOnce(
+            androidx.lifecycle.LiveData<T> liveData,
+            androidx.lifecycle.LifecycleOwner owner,
+            androidx.lifecycle.Observer<T> observer
+    ) {
+        liveData.observe(owner, new androidx.lifecycle.Observer<T>() {
+            @Override
+            public void onChanged(T t) {
+                liveData.removeObserver(this);
+                observer.onChanged(t);
+            }
+        });
+    }
+
+    private interface FaceVerifyCallback {
+        void onSuccess();
+    }
 }

@@ -46,9 +46,19 @@ public class FirebaseUserRepository implements UserRepository {
 
     @Override
     public Task<Boolean> phoneExists(String phone) {
-        Query q = adapter.query().whereEqualTo("phone", phone).limit(1);
-        return adapter.where(q).continueWith(t -> t.getResult() != null && !t.getResult().isEmpty());
+        String normalized = normalizePhoneForFirebase(phone);
+
+        Query q = adapter.query()
+                .whereEqualTo("phone", normalized)
+                .limit(1);
+
+        return adapter.where(q).continueWith(t -> {
+            if (!t.isSuccessful()) return false; // hoặc throw t.getException();
+
+            return t.getResult() != null && !t.getResult().isEmpty();
+        });
     }
+
 
     @Override
     public Task<Void> lock(String userId) {

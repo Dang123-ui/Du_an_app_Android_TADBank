@@ -16,6 +16,7 @@ import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.model.Account;
 import com.example.tad_bank_t1.ui.base.UiConfig;
 import com.example.tad_bank_t1.ui.viewmodel.SessionViewModel;
+import com.example.tad_bank_t1.util.CurrencyUtil;
 import com.example.tad_bank_t1.util.DateTimeUtil;
 
 import java.util.Date;
@@ -99,7 +100,7 @@ public class AccountDetailFragment extends Fragment implements UiConfig {
 
         txtAccountDetailAccName.setText(account.getAccountName());
         txtAccountDetailAccNumber.setText(account.getAccountNumber());
-        txtAccountDetailCurrentBalance.setText(account.getBalance() + " " + account.getCurrency());
+        txtAccountDetailCurrentBalance.setText(CurrencyUtil.formatAmount(account.getBalance()) + " " + account.getCurrency());
         txtAccountDetailInterestRate.setText(0.0 + "%");
         txtAccountDetailOpenDate.setText(formatDate(account.getCreatedAt()));
 //        txtAccountDetailDateOfLastTxn.setText(account.getDateOfLastTxn());

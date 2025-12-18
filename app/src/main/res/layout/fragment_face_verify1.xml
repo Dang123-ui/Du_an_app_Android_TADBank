@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00000000"
-    android:backgroundTint="#00000000"
     android:padding="16dp"
+    android:id="@+id/main_face_verify1"
     tools:context=".ui.fragment.FaceVerify1Fragment">
 
     <!-- TODO: Update blank fragment layout -->

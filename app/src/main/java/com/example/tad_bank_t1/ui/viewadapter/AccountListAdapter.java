@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.model.Account;
 import com.example.tad_bank_t1.data.model.Transaction;
+import com.example.tad_bank_t1.util.CurrencyUtil;
 
 import java.util.List;
 
@@ -76,7 +77,7 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
         public void bind(Account account){
             txtItemAccountAccName.setText(account.getAccountName());
             txtItemAccountAccNumber.setText(account.getAccountNumber());
-            txtItemAccountBalance.setText(String.valueOf(account.getBalance() + " " + account.getCurrency()));
+            txtItemAccountBalance.setText(CurrencyUtil.formatAmount(account.getBalance()) + " " + account.getCurrency());
 
         }
     }

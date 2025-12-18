@@ -21,10 +21,14 @@ import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.repository.users.FirebaseUserRepository;
 import com.example.tad_bank_t1.data.repository.users.UserRepository;
 import com.example.tad_bank_t1.ui.activity.SignUpActivity;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class InfoSignUpFragment extends Fragment {
     private TextInputLayout tlUsername, tlEmail, tlPhone;
@@ -64,7 +68,7 @@ public class InfoSignUpFragment extends Fragment {
         btnNextToPhoneVerify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!validAll(true) && !cbAgreeWithPolicy.isChecked()){
+                if(!validAll(true) || !cbAgreeWithPolicy.isChecked()){
                     return;
                 }
                 final String email = etEmail.getText().toString().trim();
@@ -73,22 +77,99 @@ public class InfoSignUpFragment extends Fragment {
                 btnNextToPhoneVerify.setEnabled(false);
                 btnNextToPhoneVerify.setText(getString(R.string.info_sign_up_loading));
                 animationView.setVisibility(View.VISIBLE);
+
                 tlPhone.setError(null);
-                userRepository.phoneExists(phone).addOnSuccessListener(exists -> {
-                    if (Boolean.TRUE.equals(exists)) {
-                        tlPhone.setError(getString(R.string.info_sign_up_err_phone_exist));
-                        btnNextToPhoneVerify.setEnabled(true);
-                        btnNextToPhoneVerify.setText(getString(R.string.continue_));
-                        animationView.setVisibility(View.GONE);
-                    } else {
-                        ((SignUpActivity) requireActivity()).navigateTo(PhoneVerifyFragment.newInstance(email, phone, username), true);
-                    }
-                }).addOnFailureListener(e -> {
-                    tlPhone.setError(getString(R.string.info_sign_up_err_general));
-                    btnNextToPhoneVerify.setEnabled(true);
-                    btnNextToPhoneVerify.setText(getString(R.string.continue_));
-                    animationView.setVisibility(View.GONE);
-                });
+                tlEmail.setError(null);
+
+                Task<Boolean> phoneTask = userRepository.phoneExists(phone);
+                Task<Boolean> emailTask = userRepository.emailExists(email);
+
+                Tasks.whenAllSuccess(phoneTask, emailTask)
+                        .addOnSuccessListener(results -> {
+                            boolean phoneExists = Boolean.TRUE.equals((Boolean) results.get(0));
+                            boolean emailExists = Boolean.TRUE.equals((Boolean) results.get(1));
+
+                            boolean hasError = false;
+
+                            if (phoneExists) {
+                                tlPhone.setError(getString(R.string.info_sign_up_err_phone_exist));
+                                hasError = true;
+                            }
+                            if (emailExists) {
+                                tlEmail.setError(getString(R.string.email_da_ton_tai));
+                                hasError = true;
+                            }
+
+                            if (hasError) {
+                                btnNextToPhoneVerify.setEnabled(true);
+                                btnNextToPhoneVerify.setText(getString(R.string.continue_));
+                                animationView.setVisibility(View.GONE);
+                                return;
+                            }
+
+                            // ✅ cả 2 đều không tồn tại -> đi tiếp
+                            ((SignUpActivity) requireActivity())
+                                    .navigateTo(PhoneVerifyFragment.newInstance(email, phone, username), true);
+                        })
+                        .addOnFailureListener(e -> {
+                            tlPhone.setError(getString(R.string.info_sign_up_err_general));
+                            tlEmail.setError(getString(R.string.info_sign_up_err_general));
+
+                            btnNextToPhoneVerify.setEnabled(true);
+                            btnNextToPhoneVerify.setText(getString(R.string.continue_));
+                            animationView.setVisibility(View.GONE);
+                        });
+
+//                tlPhone.setError(null);
+//
+//                AtomicBoolean canNavigate = new AtomicBoolean(true);
+//
+//                userRepository.phoneExists(phone)
+//                .addOnSuccessListener(exists -> {
+//                    if (Boolean.TRUE.equals(exists)) {
+//                        tlPhone.setError(getString(R.string.info_sign_up_err_phone_exist));
+//                        btnNextToPhoneVerify.setEnabled(true);
+//                        btnNextToPhoneVerify.setText(getString(R.string.continue_));
+//                        animationView.setVisibility(View.GONE);
+//
+//                        canNavigate.set(false);
+//                    } else {
+////                        ((SignUpActivity) requireActivity()).navigateTo(PhoneVerifyFragment.newInstance(email, phone, username), true);
+//                    }
+//                }).addOnFailureListener(e -> {
+//                    tlPhone.setError(getString(R.string.info_sign_up_err_general));
+//                    btnNextToPhoneVerify.setEnabled(true);
+//                    btnNextToPhoneVerify.setText(getString(R.string.continue_));
+//                    animationView.setVisibility(View.GONE);
+//
+//                    canNavigate.set(false);
+//                });
+//
+//                // check email
+//                userRepository.emailExists(email)
+//                .addOnSuccessListener(exists -> {
+//                    if (Boolean.TRUE.equals(exists)) {
+//                        tlEmail.setError(getString(R.string.email_da_ton_tai));
+//                        btnNextToPhoneVerify.setEnabled(true);
+//                        btnNextToPhoneVerify.setText(getString(R.string.continue_));
+//                        animationView.setVisibility(View.GONE);
+//
+//                        canNavigate.set(false);
+//                    } else {
+////                        ((SignUpActivity) requireActivity()).navigateTo(PhoneVerifyFragment.newInstance(email, phone, username), true);
+//                    }
+//                })
+//                .addOnFailureListener(e -> {
+//                    tlEmail.setError(getString(R.string.info_sign_up_err_general));
+//                    btnNextToPhoneVerify.setEnabled(true);
+//                    btnNextToPhoneVerify.setText(getString(R.string.continue_));
+//
+//                    canNavigate.set(false);
+//                });
+//
+//                if (!canNavigate.get()) return;
+//
+//                ((SignUpActivity) requireActivity()).navigateTo(PhoneVerifyFragment.newInstance(email, phone, username), true);
             }
         });
         return view;

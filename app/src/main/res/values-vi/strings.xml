@@ -103,4 +103,12 @@
     <string name="rut_tien">Rút tiền</string>
     <string name="ban_da_co_tai_khoan">Bạn đã có tài khoản?</string>
     <string name="xac_thuc">Xác thực</string>
+    <string name="xac_thuc_giao_dich">Xác thực giao dịch</string>
+    <string name="vui_long_nhap_otp">" Vui lòng nhập mã OTP đã gửi qua email hoặc SMS của bạn"</string>
+    <string name="chua_nhan_otp">Chưa nhận được OTP?</string>
+    <string name="gui_lai_otp">Gửi lại mã OTP</string>
+    <string name="otp_khong_hop_le">Mã OTP không hợp lệ. Thử lại!</string>
+    <string name="gui_lai_otp_count_dowwn">Gửi lại mã OTP (%1$02d:%2$02d)</string>
+    <string name="vui_long_nhap_pin">Vui lòng nhập mã PIN của bạn</string>
+    <string name="email_da_ton_tai">Email đã tồn tại</string>
 </resources>

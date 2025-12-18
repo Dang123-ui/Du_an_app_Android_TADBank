@@ -26,7 +26,8 @@
         defaultConfig {
             applicationId = "com.example.tad_bank_t1"
             minSdk = 26
-            targetSdk = 36
+//            targetSdk = 36
+            targetSdk = 34
             versionCode = 1
             versionName = "1.0"
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -125,11 +126,18 @@
 
         // Google Maps and Places SDKs
 
-        implementation(libs.play.services.maps)
-        implementation(libs.play.services.location)
+//        implementation(libs.play.services.maps)
+//        implementation(libs.play.services.location)
+        // FIX 3 → Play Services stable (KHÔNG crash)
+        implementation("com.google.android.gms:play-services-maps:18.2.0")
+        implementation("com.google.android.gms:play-services-location:21.0.1")
     //    implementation("com.google.android.gms:play-services-maps:19.2.0")
     //    implementation("com.google.android.libraries.places:places:5.0.0")
     //    implementation("com.google.android.gms:play-services-location:21.3.0")
+
+        // decode polyline
+        implementation("com.google.maps.android:android-maps-utils:3.8.2")
+
 
         // material design,
     //    implementation ("com.google.android.material:material:1.13.0")

@@ -43,4 +43,12 @@
     <string name="rut_tien">Withdraw</string>
     <string name="ban_da_co_tai_khoan">Do you have account?</string>
     <string name="xac_thuc">Verify</string>
+    <string name="xac_thuc_giao_dich">Transaction verification</string>
+    <string name="vui_long_nhap_otp">Please enter the OTP sent to your email or SMS</string>
+    <string name="chua_nhan_otp">Didn’t receive the OTP?</string>
+    <string name="gui_lai_otp">Resend OTP</string>
+    <string name="otp_khong_hop_le">Invalid OTP code. Try again!</string>
+    <string name="gui_lai_otp_count_dowwn">Resend OTP (%1$02d:%2$02d)</string>
+    <string name="vui_long_nhap_pin">Please enter your PIN</string>
+    <string name="email_da_ton_tai">Email is exist.</string>
 </resources>

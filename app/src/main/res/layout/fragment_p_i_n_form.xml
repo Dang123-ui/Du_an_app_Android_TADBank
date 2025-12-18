@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtTitle"
-                android:text="Xác thực giao dịch"
+                android:text="@string/xac_thuc_giao_dich"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:paddingBottom="12dp" />
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="8dp"
-                android:text="Vui lòng nhập mã PIN của bạn"
+                android:text="@string/vui_long_nhap_pin"
                 android:textSize="16sp" />
 
 
@@ -62,32 +62,32 @@
                 <EditText
                     android:id="@+id/et1PINTxn"
                     style="@style/OtpEditTextStyle"
-                    android:inputType="numberPassword" />
+                    android:inputType="number" />
 
                 <EditText
                     android:id="@+id/et2PINTxn"
                     style="@style/OtpEditTextStyle"
-                    android:inputType="numberPassword" />
+                    android:inputType="number" />
 
                 <EditText
                     android:id="@+id/et3PINTxn"
                     style="@style/OtpEditTextStyle"
-                    android:inputType="numberPassword" />
+                    android:inputType="number" />
 
                 <EditText
                     android:id="@+id/et4PINTxn"
                     style="@style/OtpEditTextStyle"
-                    android:inputType="numberPassword" />
+                    android:inputType="number" />
 
                 <EditText
                     android:id="@+id/et5PINTxn"
                     style="@style/OtpEditTextStyle"
-                    android:inputType="numberPassword" />
+                    android:inputType="number" />
 
                 <EditText
                     android:id="@+id/et6PINTxn"
                     style="@style/OtpEditTextStyle"
-                    android:inputType="numberPassword" />
+                    android:inputType="number" />
 
 
             </LinearLayout>

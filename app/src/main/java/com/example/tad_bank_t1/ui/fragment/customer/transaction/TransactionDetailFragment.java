@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.model.Transaction;
+import com.example.tad_bank_t1.data.model.enums.TxnType;
 import com.example.tad_bank_t1.databinding.FragmentTransactionDetailBinding;
 import com.example.tad_bank_t1.ui.base.UiConfig;
 import com.example.tad_bank_t1.ui.viewmodel.TransactionViewModel;
@@ -73,10 +74,28 @@ public class TransactionDetailFragment extends Fragment implements UiConfig {
                 CurrencyUtil.formatAmount(txn.getAmount()) + " " + txn.getCurrency()
         );
 
-        String content = txn.getDescription() + ". "
-                + "CT tu " + txn.getAccountNumber() + " " + txn.getAccountName()
-                + " toi " + txn.getCounterpartyAccount() + " " + txn.getCounterpartyName() + " "
-                + txn.getCounterpartyBankCode();
+        StringBuilder content = new StringBuilder();
+
+        if (txn.getType() == TxnType.TRANSFER_INTERNAL || txn.getType() == TxnType.TRANSFER_EXTERNAL
+            || txn.getType() == TxnType.MOBILE_TOPUP || txn.getType() == TxnType.BILL_PAYMENT
+        ){
+            content.append(
+                    txn.getDescription() + ". "
+                            + "CT tu " + txn.getAccountNumber() + " " + txn.getAccountName()
+                            + " toi " + txn.getCounterpartyAccount()
+            );
+
+            if (txn.getCounterpartyName() != null) {
+                content.append(" " + txn.getCounterpartyName());
+            }
+            if (txn.getCounterpartyBankCode() != null) {
+                content.append(" " + txn.getCounterpartyBankCode());
+            }
+        } else if (txn.getType() == TxnType.TRANSFER_INTERNAL_INCOMING) {
+            content.append(txn.getDescription());
+        }
+
+
         binding.txtTxnDetailTxnContent.setText(content);
     }
 

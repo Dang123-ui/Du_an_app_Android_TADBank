@@ -27,6 +27,14 @@ public class OtpCodeViewModel extends ViewModel {
     private final MutableLiveData<ResultWrapper<Boolean>> _verifyState = new MutableLiveData<>();
     public LiveData<ResultWrapper<Boolean>> getVerifyState() { return _verifyState; }
 
+    public void clearVerifyState() {
+        _verifyState.setValue(null);
+    }
+
+    public void clearCreateState() {
+        _createState.setValue(null);
+    }
+
     public void createOtpCode(String purpose, User user) {
         _createState.setValue(ResultWrapper.loading());
         OtpCode otpCode = OtpUtil.generateOtp(user.getUserId(), purpose);

@@ -15,7 +15,7 @@ import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.ui.base.UiConfig;
 import com.example.tad_bank_t1.ui.fragment.customer.transfer.SearchTransferInfomationFragment;
 import com.example.tad_bank_t1.ui.fragment.customer.transfer.CardPaymentFragment;
-import com.example.tad_bank_t1.util.Constants;
+import com.example.tad_bank_t1.util.TadConstants;
 import com.example.tad_bank_t1.util.FragmentUtil;
 
 public class ElectricBillPaymentFragment extends Fragment implements UiConfig {
@@ -62,7 +62,7 @@ public class ElectricBillPaymentFragment extends Fragment implements UiConfig {
                     "Chọn nhà cung cấp",
                     "Nhập nhà cung cấp",
                     "Danh sách nhà cung cấp",
-                    Constants.SEARCH_ELECTRICITY_PROVIDER
+                    TadConstants.SEARCH_ELECTRICITY_PROVIDER
             );
             FragmentUtil.replaceFragment(searchTransferInfomationFragment,
                     getParentFragmentManager(),

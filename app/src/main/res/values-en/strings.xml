@@ -57,4 +57,5 @@
     <string name="kenh_giao_dich">Channel</string>
     <string name="loai_giao_dich">Transaction type</string>
     <string name="trang_thai_giao_dich">Status</string>
+    <string name="tao_moi_tai_khoanr">Create new account</string>
 </resources>

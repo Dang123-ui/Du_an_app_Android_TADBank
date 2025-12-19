@@ -21,10 +21,12 @@ import android.widget.Toast;
 
 import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.model.SavingsRatePolicy;
+import com.example.tad_bank_t1.data.model.enums.AccountType;
 import com.example.tad_bank_t1.databinding.FragmentHomeCustomerBinding;
 import com.example.tad_bank_t1.ui.activity.LoginActivity;
 import com.example.tad_bank_t1.ui.activity.MainActivity;
 import com.example.tad_bank_t1.ui.base.UiConfig;
+import com.example.tad_bank_t1.ui.fragment.customer.account.AccountListByTypeFragment;
 import com.example.tad_bank_t1.ui.fragment.customer.account.AccountListFragment;
 import com.example.tad_bank_t1.ui.fragment.customer.ggmap.MapBranchFragment;
 import com.example.tad_bank_t1.ui.fragment.customer.notification.NotiFragment;
@@ -208,7 +210,13 @@ public class HomeCustomerFragment extends Fragment implements UiConfig {
         binding.lnloCardTransactionHistory.setOnClickListener(v -> featureCardOnClick(new TransactionHistoryFragment(), getString(R.string.lich_su_giao_dich)));
         binding.lnloCardBillPayment.setOnClickListener(v -> featureCardOnClick(new BillsPaymentFragment(), getString(R.string.thanh_toan_hoa_don)));
         binding.lnloCardFindBranch.setOnClickListener(v -> featureCardOnClick(new MapBranchFragment(), getString(R.string.tim_kiem_chi_nhanh)));
-        binding.lnloCardSavingAccount.setOnClickListener(v -> featureCardOnClick(SavingAccountDetailFragment.newInstance("demo"), getString(R.string.tai_khoan_tiet_kiem)));
+
+        binding.lnloCardSavingAccount.setOnClickListener(v -> featureCardOnClick(
+                AccountListByTypeFragment.newInstance(sessionViewModel.getUserId().getValue(), AccountType.SAVING), getString(R.string.tai_khoan_tiet_kiem))
+        );
+        binding.lnloCardMortgageAccount.setOnClickListener(v -> featureCardOnClick(
+                AccountListByTypeFragment.newInstance(sessionViewModel.getUserId().getValue(), AccountType.MORTGAGE), getString(R.string.tai_khoan_the_chap))
+        );
     }
 
     public void featureCardOnClick(Fragment fragment, String title) {

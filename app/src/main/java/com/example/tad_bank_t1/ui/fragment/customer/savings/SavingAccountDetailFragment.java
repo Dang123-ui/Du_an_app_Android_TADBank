@@ -120,7 +120,6 @@ public class SavingAccountDetailFragment extends Fragment implements UiConfig, B
 
     @Override
     public void setUpEvents() {
-
     }
 
     @Override

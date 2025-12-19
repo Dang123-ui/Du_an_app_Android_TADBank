@@ -128,11 +128,11 @@ public class AccountViewModel extends ViewModel {
 
         accountRepo.getAccountsByUserIdAndType(userId, accountType)
                 .addOnSuccessListener(list -> {
-                    if (list == null || list.isEmpty()) {
-                        _listState.postValue(ResultWrapper.error("No accounts found"));
-                    } else {
-                        _listState.postValue(ResultWrapper.success(list));
-                    }
+//                    if (list == null || list.isEmpty()) {
+//                        _listState.postValue(ResultWrapper.error("No accounts found"));
+//                    } else {
+//                    }
+                    _listState.postValue(ResultWrapper.success(list));
                 })
                 .addOnFailureListener(e -> {
                     _listState.postValue(ResultWrapper.error(e.getMessage()));

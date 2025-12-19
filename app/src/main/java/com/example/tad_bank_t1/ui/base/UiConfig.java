@@ -5,4 +5,6 @@ public interface UiConfig {
     default String getAppBarTitle() { return ""; }
 
     default boolean showBottomNav() { return false; }
+
+
 }

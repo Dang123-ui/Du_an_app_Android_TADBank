@@ -25,6 +25,15 @@ public interface AccountRepository {
     }
 
 
+    // --------------------------------
+    // start saving and mortgage
+    // --------------------------------
+    Task<List<Account>> getAccountsByUserIdAndType(String userId, String accountType);
+    // --------------------------------
+    // end saving and mortgage
+    // --------------------------------
+
+
 
     // --------------------------------
     // Cap nhat thong tin tai khoan

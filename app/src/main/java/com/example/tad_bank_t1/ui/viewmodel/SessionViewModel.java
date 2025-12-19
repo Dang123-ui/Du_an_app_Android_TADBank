@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.tad_bank_t1.data.model.Account;
 import com.example.tad_bank_t1.data.model.User;
+import com.example.tad_bank_t1.data.model.enums.AccountStatus;
 import com.example.tad_bank_t1.data.repository.account.AccountRepository;
 import com.example.tad_bank_t1.data.repository.account.FirebaseAccountRepository;
 import com.example.tad_bank_t1.data.repository.callbacks.ResultCallback;
@@ -17,6 +18,7 @@ import com.example.tad_bank_t1.data.repository.users.UserRepository;
 import com.example.tad_bank_t1.data.response.ResultWrapper;
 import com.google.firebase.firestore.ListenerRegistration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SessionViewModel extends ViewModel {
@@ -132,13 +134,20 @@ public class SessionViewModel extends ViewModel {
                     accountListener = accountRepo.listenAccountsByUserId(userId, new AccountRepository.OnAccountsChanged() {
                         @Override
                         public void onChanged(List<Account> accounts) {
-                            _accounts.postValue(accounts);
+                            Log.d("SessionViewModel", "Accounts loaded:" + accounts.size());
+                            List<Account> openAccounts = new ArrayList<>();
+
                             for (Account a : accounts) {
                                 if (a.isDefault()) {
                                     _defaultAccount.postValue(a);
                                     Log.d("SessionViewModel", "Account loaded:" + a.getAccountName());
                                 }
+                                if (a.getStatus() == AccountStatus.OPEN){
+                                    openAccounts.add(a);
+                                }
                             }
+                            _accounts.postValue(openAccounts);
+
                             _isLoading.postValue(false);
                         }
 

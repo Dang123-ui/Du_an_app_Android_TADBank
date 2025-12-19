@@ -135,4 +135,97 @@
     <string name="kenh_giao_dich">Channel</string>
     <string name="loai_giao_dich">Transaction type</string>
     <string name="trang_thai_giao_dich">Status</string>
+    <string name="tai_khoan_tiet_kiem">Saving account</string>
+    <string name="tai_khoan_the_chap">Mortgage account</string>
+
+
+
+
+
+    <!--    ================= -->
+    <!--    start saving string -->
+    <!--    ================= -->
+
+    <!-- Detail Screen -->
+    <string name="detail_title">Chi tiết tài khoản tiết kiệm</string>
+
+    <!-- Card Titles -->
+    <string name="card_general_info">Thông tin chung</string>
+    <string name="card_interest_policy">Chính sách lãi suất</string>
+    <string name="card_current_status">Tình trạng hiện tại</string>
+
+    <!-- Labels -->
+    <string name="label_account_number">Số tài khoản:</string>
+    <string name="label_branch">Chi nhánh:</string>
+    <string name="label_start_date">Ngày mở:</string>
+    <string name="label_maturity_date">Ngày đáo hạn:</string>
+    <string name="label_policy_name">Tên chính sách:</string>
+    <string name="label_interest_rate_detail">Lãi suất:</string>
+    <string name="label_term_length">Kỳ hạn:</string>
+    <string name="label_interest_payment">Hình thức nhận lãi:</string>
+    <string name="label_principal">Số dư gốc:</string>
+    <string name="label_profit_month_interest">Tiền lãi tháng:</string>
+    <string name="label_total_maturity">Tổng tiền dự kiến khi đáo hạn</string>
+
+    <!-- Actions -->
+    <string name="action_close_account">Đóng sổ tiết kiệm</string>
+    <string name="action_extend_term">Gia hạn kỳ hạn mới</string>
+
+    <!-- Alert -->
+    <string name="alert_note_title">Lưu ý</string>
+    <string name="alert_note_content">Số tiền lãi là tạm tính và có thể thay đổi theo chính sách của ngân hàng. Đóng sổ trước hạn có thể ảnh hưởng đến lãi suất.</string>
+
+    <!-- Others -->
+    <string name="per_year">/năm</string>
+    <string name="cd_back_button">Back</string>
+
+    <!-- Create Account Screen -->
+    <string name="create_account_title">Mở tài khoản tiết kiệm mới</string>
+
+    <!-- Section Titles -->
+    <string name="section_policy">Chọn chính sách tiết kiệm</string>
+    <string name="section_amount">Số tiền gửi</string>
+    <string name="section_start_date">Ngày bắt đầu</string>
+    <string name="section_capitalization">Hình thức nhận lãi</string>
+    <string name="section_estimation">Lãi suất dự kiến</string>
+
+    <!-- Labels -->
+    <string name="label_select_policy">Chọn chính sách</string>
+    <string name="label_amount_vnd">Số tiền (VNĐ)</string>
+    <string name="label_enter_amount">Nhập số tiền</string>
+    <string name="label_minimum_amount">Số tiền tối thiểu: 1.000.000 ₫</string>
+    <string name="label_select_date">Chọn ngày</string>
+    <string name="label_select_start_date">Chọn ngày bắt đầu</string>
+    <string name="label_estimated_interest_create">Tiền lãi dự kiến:</string>
+    <string name="label_total_receive">Tổng tiền nhận được:</string>
+    <string name="label_note_estimation">* Số liệu chỉ mang tính chất tham khảo</string>
+
+    <!-- Capitalization Methods -->
+    <string name="cap_monthly">Nhận lãi hàng tháng</string>
+    <string name="cap_quarterly">Nhận lãi hàng quý</string>
+    <string name="cap_maturity">Nhận lãi cuối kỳ</string>
+
+    <!-- Policy Info Format -->
+    <string name="policy_info_format">%1$d tháng • %2$.1f%%/năm</string>
+    <string name="policy_detail_format">Kỳ hạn: %1$d tháng • Lãi suất: %2$.1f%%/năm</string>
+
+    <!-- Actions -->
+    <string name="action_confirm_create">Xác nhận mở sổ</string>
+
+    <!-- OTP Dialog -->
+    <string name="otp_title">Xác thực OTP</string>
+    <string name="otp_description">Mã OTP đã được gửi đến số điện thoại của bạn</string>
+    <string name="otp_phone_masked">**** **** 789</string>
+    <string name="otp_resend">Gửi lại mã OTP</string>
+    <string name="otp_confirm">Xác nhận</string>
+    <string name="otp_verifying">Đang xác thực...</string>
+    <string name="otp_error_incomplete">Vui lòng nhập đủ 6 số</string>
+    <string name="otp_resent">Mã OTP đã được gửi lại</string>
+
+    <!-- Validation -->
+    <string name="error_fill_all_fields">Vui lòng điền đầy đủ thông tin</string>
+    <string name="success_account_created">Tài khoản tiết kiệm đã được mở thành công!</string>
+    <string name="label_estimated_interest">Tiền lãi tạm tính:</string>
+
+    <!--    end saving string -->
 </resources>

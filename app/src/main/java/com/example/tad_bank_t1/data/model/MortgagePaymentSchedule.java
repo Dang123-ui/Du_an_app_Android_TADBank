@@ -1,6 +1,6 @@
 package com.example.tad_bank_t1.data.model;
 
-import com.example.tad_bank_t1.data.model.enums.MortgageInstallmentStatus;
+import com.example.tad_bank_t1.data.model.enums.mortgage.MortgageInstallmentStatus;
 
 public class MortgagePaymentSchedule {
     public Long   scheduleId;     // PK

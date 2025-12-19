@@ -1,8 +1,8 @@
 package com.example.tad_bank_t1.data.model;
 
-import com.example.tad_bank_t1.data.model.enums.PaymentProvider;
-import com.example.tad_bank_t1.data.model.enums.PaymentPurpose;
-import com.example.tad_bank_t1.data.model.enums.PaymentStatus;
+import com.example.tad_bank_t1.data.model.enums.paymentProvider.PaymentProvider;
+import com.example.tad_bank_t1.data.model.enums.paymentProvider.PaymentPurpose;
+import com.example.tad_bank_t1.data.model.enums.paymentProvider.PaymentStatus;
 
 import java.util.Date;
 

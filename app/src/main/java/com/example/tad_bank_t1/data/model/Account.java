@@ -29,6 +29,13 @@ public class Account implements Serializable {
     private Date closedAt;
     private Date updatedAt;
 
+
+    // saving
+    public SavingsAccount saving;
+
+    //
+    public MortgageAccount mortgage;
+
     public Account() {}
     public Account(String id,
                    String userId,
@@ -171,6 +178,23 @@ public class Account implements Serializable {
         isDefault = aDefault;
     }
 
+
+    public SavingsAccount getSaving() {
+        return saving;
+    }
+
+    public void setSaving(SavingsAccount saving) {
+        this.saving = saving;
+    }
+
+    public MortgageAccount getMortgage() {
+        return mortgage;
+    }
+
+    public void setMortgage(MortgageAccount mortgage) {
+        this.mortgage = mortgage;
+    }
+
     public Map<String, Object> toMap(){
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
@@ -186,6 +210,15 @@ public class Account implements Serializable {
         map.put("createdAt", createdAt);
         map.put("closedAt", closedAt);
         map.put("updatedAt", updatedAt);
+
+        if (saving != null) {
+            map.put("saving", saving.toMap());
+        }
+
+        if (mortgage != null) {
+            map.put("mortgage", mortgage.toMap());
+        }
+
         return map;
     }
 

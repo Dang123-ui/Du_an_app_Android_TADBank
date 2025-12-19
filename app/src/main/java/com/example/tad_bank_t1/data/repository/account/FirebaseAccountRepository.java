@@ -190,4 +190,33 @@ public class FirebaseAccountRepository implements AccountRepository {
                 });
     }
 
+
+    // --------------------------------
+    // start saving and mortgage
+    // --------------------------------
+    @Override
+    public Task<List<Account>> getAccountsByUserIdAndType(String userId, String accountType) {
+        Query query = adapter.query()
+                .whereEqualTo("userId", userId);
+
+        if (accountType != null){
+            query = query.whereEqualTo("type", accountType);
+        }
+
+        return adapter.where(query).continueWith(task -> {
+            if (!task.isSuccessful() || task.getResult() == null || task.getResult().isEmpty()) {
+                return Collections.emptyList();
+            }
+
+            List<Account> accounts = new ArrayList<>();
+            for (DocumentSnapshot doc : task.getResult().getDocuments()) {
+                Account account = doc.toObject(Account.class);
+                if (account != null) accounts.add(account);
+            }
+            return accounts;
+        });
+    }
+    // --------------------------------
+    // end saving and mortgage
+    // --------------------------------
 }

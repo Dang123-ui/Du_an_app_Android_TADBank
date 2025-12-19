@@ -1,6 +1,8 @@
 package com.example.tad_bank_t1.ui.fragment.customer;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.core.view.ViewCompat;
@@ -15,8 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.tad_bank_t1.R;
+import com.example.tad_bank_t1.data.model.SavingsRatePolicy;
 import com.example.tad_bank_t1.databinding.FragmentHomeCustomerBinding;
 import com.example.tad_bank_t1.ui.activity.LoginActivity;
 import com.example.tad_bank_t1.ui.activity.MainActivity;
@@ -25,6 +29,7 @@ import com.example.tad_bank_t1.ui.fragment.customer.account.AccountListFragment;
 import com.example.tad_bank_t1.ui.fragment.customer.ggmap.MapBranchFragment;
 import com.example.tad_bank_t1.ui.fragment.customer.notification.NotiFragment;
 import com.example.tad_bank_t1.ui.fragment.customer.bills.BillsPaymentFragment;
+import com.example.tad_bank_t1.ui.fragment.customer.savings.SavingAccountDetailFragment;
 import com.example.tad_bank_t1.ui.fragment.customer.transaction.TransactionHistoryFragment;
 import com.example.tad_bank_t1.ui.fragment.customer.transfer.BankTransferFragment;
 import com.example.tad_bank_t1.ui.fragment.customer.topup.MobileTopupFragment;
@@ -34,7 +39,11 @@ import com.example.tad_bank_t1.ui.viewmodel.NotificationViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.SessionViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.TransactionPayloadViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.TransactionViewModel;
+import com.example.tad_bank_t1.ui.viewmodel.account.SavingPolicyViewModel;
 import com.example.tad_bank_t1.util.CurrencyUtil;
+import com.example.tad_bank_t1.util.MockAccountFactory;
+
+import java.util.List;
 
 public class HomeCustomerFragment extends Fragment implements UiConfig {
     // View binding
@@ -112,12 +121,16 @@ public class HomeCustomerFragment extends Fragment implements UiConfig {
         initAndObserveVM();
 
         setUpEvents();
+
+        // mock
+
     }
 
     private void initView(View view){
     }
 
     private void initAndObserveVM(){
+
         // session viewmodel
         sessionViewModel = new ViewModelProvider(requireActivity()).get(SessionViewModel.class);
         notificationViewModel = new ViewModelProvider(requireActivity()).get(NotificationViewModel.class);
@@ -195,6 +208,7 @@ public class HomeCustomerFragment extends Fragment implements UiConfig {
         binding.lnloCardTransactionHistory.setOnClickListener(v -> featureCardOnClick(new TransactionHistoryFragment(), getString(R.string.lich_su_giao_dich)));
         binding.lnloCardBillPayment.setOnClickListener(v -> featureCardOnClick(new BillsPaymentFragment(), getString(R.string.thanh_toan_hoa_don)));
         binding.lnloCardFindBranch.setOnClickListener(v -> featureCardOnClick(new MapBranchFragment(), getString(R.string.tim_kiem_chi_nhanh)));
+        binding.lnloCardSavingAccount.setOnClickListener(v -> featureCardOnClick(SavingAccountDetailFragment.newInstance("demo"), getString(R.string.tai_khoan_tiet_kiem)));
     }
 
     public void featureCardOnClick(Fragment fragment, String title) {
@@ -229,4 +243,7 @@ public class HomeCustomerFragment extends Fragment implements UiConfig {
         binding = null;
         super.onDestroyView();
     }
+
+
+
 }

@@ -1,13 +1,81 @@
 package com.example.tad_bank_t1.data.model;
 
-public class MortgageAccount {
-    public Long   accountId;        // PK == FK -> Accounts.accountId
-    public Double principalAmount;
-    public Double interestRate;
-    public Integer termMonths;
-    public String  startDate;       // yyyy-MM-dd
-    public String  dueDate;         // yyyy-MM-dd
-    public Long    officerId;       // Users.userId (OFFICER)
+import com.example.tad_bank_t1.data.model.enums.mortgage.MortgagePaymentFrequency;
+import com.example.tad_bank_t1.util.MapUtils;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Thông tin riêng của tài khoản vay thế chấp.
+ * Được lưu trong document accounts dưới key: "mortgage".
+ */
+public class MortgageAccount implements Serializable {
+
+    /** Số tiền vay ban đầu (gốc). */
+    private long principalAmount;
+
+    /** Lãi suất năm (%/năm). Ví dụ 9.5 nghĩa là 9.5%/năm. */
+    private double interestRateAnnual;
+
+    /** Thời hạn vay (tháng). Ví dụ 240 tháng = 20 năm. */
+    private int termMonths;
+
+    /** Trả theo tháng hoặc mỗi 2 tuần. */
+    private MortgagePaymentFrequency paymentFrequency;
+
+    /** Ngày bắt đầu khoản vay (giải ngân). */
+    private Date startDate;
+
+    /** Ngày đến hạn kỳ tiếp theo (để UI hiển thị nhanh). */
+    private Date nextDueDate;
+
+    /** UserId của nhân viên ngân hàng phụ trách khoản vay. */
+    private String officerId;
 
     public MortgageAccount() {}
+
+    // ===== getters/setters =====
+    public long getPrincipalAmount() { return principalAmount; }
+    public void setPrincipalAmount(long principalAmount) { this.principalAmount = principalAmount; }
+
+    public double getInterestRateAnnual() { return interestRateAnnual; }
+    public void setInterestRateAnnual(double interestRateAnnual) { this.interestRateAnnual = interestRateAnnual; }
+
+    public int getTermMonths() { return termMonths; }
+    public void setTermMonths(int termMonths) { this.termMonths = termMonths; }
+
+    public MortgagePaymentFrequency getPaymentFrequency() { return paymentFrequency; }
+    public void setPaymentFrequency(MortgagePaymentFrequency paymentFrequency) { this.paymentFrequency = paymentFrequency; }
+
+    public Date getStartDate() { return startDate; }
+    public void setStartDate(Date startDate) { this.startDate = startDate; }
+
+    public Date getNextDueDate() { return nextDueDate; }
+    public void setNextDueDate(Date nextDueDate) { this.nextDueDate = nextDueDate; }
+
+    public String getOfficerId() { return officerId; }
+    public void setOfficerId(String officerId) { this.officerId = officerId; }
+
+    /**
+     * Convert MortgageInfo sang Map để nhét vào Account.toMap().
+     * Chỉ put field không null để tránh ghi đè null.
+     */
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+
+        MapUtils.putIfNotNull(map, "principalAmount", principalAmount);
+        MapUtils.putIfNotNull(map, "interestRateAnnual", interestRateAnnual);
+        MapUtils.putIfNotNull(map, "termMonths", termMonths);
+        MapUtils.putIfNotNull(map, "startDate", startDate);
+        MapUtils.putIfNotNull(map, "nextDueDate", nextDueDate);
+        MapUtils.putIfNotNull(map, "officerId", officerId);
+
+        // enums
+        map.put("paymentFrequency", paymentFrequency != null ? paymentFrequency.name() : null);
+
+        return map;
+    }
 }

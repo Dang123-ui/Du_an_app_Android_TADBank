@@ -9,6 +9,31 @@
     <string name="cai_dat_nav">Setting</string>
     <string name="tai_khoan_nguon">Debit Account</string>
     <string name="noi_dung_chuyen_khoan">Content</string>
+
+    <!-- Savings Feature Strings -->
+    <string name="savings_accounts_title">Tài khoản tiết kiệm</string>
+    <string name="total_savings_balance">Tổng số dư tiết kiệm</string>
+    <string name="active_accounts_section">Tài khoản đang hoạt động</string>
+    <string name="closed_accounts_section">Tài khoản đã đóng</string>
+
+    <string name="label_balance">Số dư:</string>
+    <string name="label_term">Thời hạn:</string>
+    <string name="label_interest_rate">Lãi suất (APR):</string>
+    <string name="label_payment_method">Trả lãi:</string>
+
+    <string name="status_active">Đang hoạt động</string>
+    <string name="status_closed">Đã đóng</string>
+
+    <string name="action_view_details">Xem chi tiết</string>
+
+    <string name="empty_state_title">Chưa có tài khoản tiết kiệm</string>
+    <string name="empty_state_description">Bắt đầu tiết kiệm ngay hôm nay để đạt được mục tiêu tài chính của bạn</string>
+    <string name="empty_state_action">Mở sổ tiết kiệm đầu tiên</string>
+
+    <string name="payment_monthly">Hàng tháng</string>
+    <string name="payment_quarterly">Hàng quý</string>
+    <string name="active_accounts_count">%d tài khoản đang hoạt động</string>
+
     <string name="chuyen_tien">Transfer</string>
     <string name="so_du_de_chuyen_khoan">Balance</string>
     <string name="thong_tin_nguoi_nhan_ck">Beneficiary Information</string>
@@ -162,6 +187,7 @@
     <string name="label_interest_payment">Hình thức nhận lãi:</string>
     <string name="label_principal">Số dư gốc:</string>
     <string name="label_profit_month_interest">Tiền lãi tháng:</string>
+    <string name="label_estimated_interest">Tiền lãi tạm tính:</string>
     <string name="label_total_maturity">Tổng tiền dự kiến khi đáo hạn</string>
 
     <!-- Actions -->

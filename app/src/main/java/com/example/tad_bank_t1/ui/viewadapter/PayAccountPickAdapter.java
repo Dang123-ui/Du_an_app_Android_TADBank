@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.model.Account;
+import com.example.tad_bank_t1.util.CurrencyUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,11 +52,21 @@ public class PayAccountPickAdapter extends RecyclerView.Adapter<PayAccountPickAd
     public void onBindViewHolder(@NonNull VH h, int pos) {
         Account a = data.get(pos);
 
-        h.tvTitle.setText(a.getAccountName() + " • " + a.getAccountNumber());
-        h.tvSub.setText("Số dư: " + a.getBalance()); // format lại theo app bạn
+        if (a == null) return;
 
+
+        // start bind
         boolean isSelected = selectedId != null && selectedId.equals(a.getAccountId());
         h.itemView.setAlpha(isSelected ? 1f : 0.85f);
+
+        h.tvTitle.setText(a.getAccountName() + " • " + a.getAccountNumber());
+        h.tvSub.setText("Số dư: " + CurrencyUtil.formatVND(a.getBalance())); // format lại theo app bạn
+
+        h.tvSub.setTextColor(isSelected
+                ? h.itemView.getContext().getColor(R.color.primaryColor)
+                : h.itemView.getContext().getColor(R.color.white)
+        );
+        // end bind
 
         h.itemView.setOnClickListener(v -> onPick.onPick(a));
     }

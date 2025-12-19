@@ -24,6 +24,7 @@ import com.example.tad_bank_t1.data.model.enums.TxnChannel;
 import com.example.tad_bank_t1.data.model.enums.TxnType;
 import com.example.tad_bank_t1.databinding.FragmentMobileTopupTransferBinding;
 import com.example.tad_bank_t1.ui.activity.MainActivity;
+import com.example.tad_bank_t1.ui.base.BaseCustomFragment;
 import com.example.tad_bank_t1.ui.base.UiConfig;
 import com.example.tad_bank_t1.ui.form.payload.transactions.PhoneTopupPayload;
 import com.example.tad_bank_t1.ui.fragment.customer.transaction.TransactionConfirmFragment;
@@ -38,7 +39,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 
-public class MobileTopupFragment extends Fragment implements UiConfig {
+public class MobileTopupFragment extends Fragment implements UiConfig, BaseCustomFragment {
     // binding
     private FragmentMobileTopupTransferBinding binding;
 
@@ -93,13 +94,17 @@ public class MobileTopupFragment extends Fragment implements UiConfig {
                 R.id.fragment_card_topup,
                 false);
 
-
-        initVM();
-
-        setUpEvents();
+        initFragment();
     }
 
-    private void initVM(){
+
+    @Override
+    public void initView() {
+
+    }
+
+    @Override
+    public void initViewModel() {
         // view model
         providerViewModel = new ViewModelProvider(requireActivity()).get(ProviderViewModel.class);
         sessionViewModel = new ViewModelProvider(requireActivity()).get(SessionViewModel.class);
@@ -117,7 +122,7 @@ public class MobileTopupFragment extends Fragment implements UiConfig {
 
     }
 
-    private void setUpEvents(){
+    public void setUpEvents(){
         // set click
         binding.cardViewTopUpAmount10.setOnClickListener(v -> selectAmount(10_000L, binding.cardViewTopUpAmount10));
         binding.cardViewTopUpAmount20.setOnClickListener(v -> selectAmount(20_000L, binding.cardViewTopUpAmount20));
@@ -151,12 +156,12 @@ public class MobileTopupFragment extends Fragment implements UiConfig {
             public void onClick(View v) {
                 String phoneNumber = binding.edtReceiverPhoneNumber.getText().toString();
                 if (phoneNumber.isEmpty()){
-                    binding.edtReceiverPhoneNumber.setError("Vui lòng nhập số điện thoại");
+                    showError("Vui lòng nhập số điện thoại");
                     return;
                 }
 
                 if (phoneNumber.length() != 10){
-                    binding.edtReceiverPhoneNumber.setError("Số điện thoại không hợp lệ");
+                    showError("Số điện thoại không hợp lệ đủ 10 chữ số");
                     return;
                 }
 
@@ -216,7 +221,7 @@ public class MobileTopupFragment extends Fragment implements UiConfig {
                             String targetAccNumber = binding.edtReceiverPhoneNumber.getText().toString().trim();
 
                             if (targetAccNumber.isEmpty()){
-                                binding.edtReceiverPhoneNumber.setError("Vui lòng nhập số điện thoại");
+                                showError("Vui lòng nhập số điện thoại");
                                 return;
                             }
 
@@ -311,8 +316,12 @@ public class MobileTopupFragment extends Fragment implements UiConfig {
         });
     }
 
+
     private void clearError(){
-        binding.txtErrorPhone.setVisibility(View.GONE);
+        binding.edtReceiverPhoneNumber.setError(null);
+
+        binding.txtErrorPhone.setText("");
+//        binding.txtErrorPhone.setVisibility(View.GONE);
     }
 
     private void selectAmount(Long amount, MaterialCardView selectedCard) {
@@ -392,5 +401,6 @@ public class MobileTopupFragment extends Fragment implements UiConfig {
         binding.btnContinueTopup.setEnabled(true);
         ((MainActivity) requireActivity()).showLoadingFeature(false);
         binding.edtReceiverPhoneNumber.setError(error);
+        showError(requireContext(), "Lỗi", error);
     }
 }

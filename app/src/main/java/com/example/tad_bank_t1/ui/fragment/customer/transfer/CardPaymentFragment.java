@@ -1,115 +1,75 @@
 package com.example.tad_bank_t1.ui.fragment.customer.transfer;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
-import android.os.Handler;
-import android.os.Looper;
-import android.transition.Slide;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.tad_bank_t1.R;
-import com.example.tad_bank_t1.ui.viewmodel.AccountSharedViewModel;
+import com.example.tad_bank_t1.data.model.Account;
+import com.example.tad_bank_t1.ui.fragment.customer.account.ChoosePayAccountBottomSheet;
 import com.example.tad_bank_t1.ui.viewmodel.SessionViewModel;
 import com.example.tad_bank_t1.util.CurrencyUtil;
 
-
 public class CardPaymentFragment extends Fragment {
 
-    private AccountSharedViewModel accountSharedViewModel;
     private SessionViewModel sessionViewModel;
-    private final Handler handler = new Handler(Looper.getMainLooper());
-    private Runnable searchJob;
-    private String lastQuery = "";
-
 
     private TextView txtTransferAccNumber, txtTransferAccBalance;
+    private View cardRoot;
+    private ImageButton btnOpenBottomSheet;
 
     public CardPaymentFragment() {
         // Required empty public constructor
     }
 
-    public static CardPaymentFragment newInstance(String param1, String param2) {
-        CardPaymentFragment fragment = new CardPaymentFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
-
-//
-//
-//        // Transition khi Fragment mới xuất hiện (Enter)
-//        setEnterTransition(new Slide(Gravity.BOTTOM));
-//
-//        // Transition khi Fragment hiện tại biến mất (Exit)
-//        setExitTransition(new Slide(Gravity.TOP));
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_card_payment, container, false);
-
-        return view;
+        return inflater.inflate(R.layout.fragment_card_payment, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // ✅ Share chung session VM với Transfer/Bill + BottomSheet
         sessionViewModel = new ViewModelProvider(requireActivity()).get(SessionViewModel.class);
 
+        // ids theo XML bạn gửi
+        cardRoot = view.findViewById(R.id.cviewTransferCardInfo);
+        btnOpenBottomSheet = view.findViewById(R.id.imbtOpenBottomSheetChoosePay);
         txtTransferAccNumber = view.findViewById(R.id.txtTransferAccNumber);
         txtTransferAccBalance = view.findViewById(R.id.txtTransferAccBalance);
 
-        // Khởi tạo ViewModel
-        accountSharedViewModel = new ViewModelProvider(requireActivity()).get(AccountSharedViewModel.class);
-        accountSharedViewModel.setDebitAccountNumberCurrent(txtTransferAccNumber.getText().toString().trim());
+        // ✅ bấm card hoặc icon đều mở bottomsheet
+        View.OnClickListener openPicker = v ->
+                new ChoosePayAccountBottomSheet().show(getParentFragmentManager(), "ChoosePayAcc");
 
-        sessionViewModel.defaultAccount.observe(getViewLifecycleOwner(), account -> {
-            if (account != null) {
-                txtTransferAccNumber.setText(account.getAccountNumber());
-                txtTransferAccBalance.setText(CurrencyUtil.formatAmount(account.getBalance()) + " " + account.getCurrency());
-            }
-        });
+        if (cardRoot != null) cardRoot.setOnClickListener(openPicker);
+        if (btnOpenBottomSheet != null) btnOpenBottomSheet.setOnClickListener(openPicker);
 
-        sessionViewModel.selectedAccount.observe(getViewLifecycleOwner(), account -> {
-            if (account != null) {
-                txtTransferAccNumber.setText(account.getAccountNumber());
-                txtTransferAccBalance.setText(CurrencyUtil.formatAmount(account.getBalance()) + " " + account.getCurrency());
-            }
-        });
-
+        // ✅ CHỈ observe payAccount (đừng observe defaultAccount nữa để tránh update 2 lần)
+        sessionViewModel.payAccount.observe(getViewLifecycleOwner(), this::bindAccount);
     }
 
+    private void bindAccount(Account account) {
+        if (account == null) {
+            txtTransferAccNumber.setText("—");
+            txtTransferAccBalance.setText("—");
+            return;
+        }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Hide the bottom navigation bar when this fragment starts
-        Log.d("TAG", "CARD TRANSFER onstart");
-
-    //        ((MainActivity) requireActivity()).setBottomNavigationVisibility(View.GONE);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
+        txtTransferAccNumber.setText(account.getAccountNumber());
+        txtTransferAccBalance.setText(
+                CurrencyUtil.formatAmount(account.getBalance()) + " " + account.getCurrency()
+        );
     }
 }

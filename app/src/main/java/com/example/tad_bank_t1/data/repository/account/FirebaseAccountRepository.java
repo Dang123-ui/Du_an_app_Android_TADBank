@@ -4,8 +4,6 @@ import android.app.DownloadManager;
 
 import com.example.tad_bank_t1.data.adapterPattern.account.AccountAdapter;
 import com.example.tad_bank_t1.data.model.Account;
-import com.example.tad_bank_t1.data.model.Transaction;
-import com.example.tad_bank_t1.data.model.enums.TnxStatus;
 import com.example.tad_bank_t1.data.repository.callbacks.ResultCallback;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -128,7 +126,7 @@ public class FirebaseAccountRepository implements AccountRepository {
                 })
                 .addOnSuccessListener(documentSnapshot -> {
                     Account obj = documentSnapshot.toObject(Account.class);
-                    callback.onSucces(obj);
+                    callback.onSuccess(obj);
                 })
                 .addOnFailureListener(e -> {
                     callback.onError(e.getMessage());
@@ -150,7 +148,7 @@ public class FirebaseAccountRepository implements AccountRepository {
 
                     DocumentSnapshot doc = snap.getDocuments().get(0);
                     Account account = doc.toObject(Account.class);
-                    callback.onSucces(account);  // trả về account
+                    callback.onSuccess(account);  // trả về account
                 })
                 .addOnFailureListener(e -> {
                     callback.onError(e.getMessage());
@@ -179,7 +177,7 @@ public class FirebaseAccountRepository implements AccountRepository {
                             .update("balance", newBalance)
                             .addOnSuccessListener(aVoid -> {
                                 // cập nhật thành công
-                                callback.onSucces(null);
+                                callback.onSuccess(null);
                             })
                             .addOnFailureListener(e -> {
                                 // cập nhật thất bại

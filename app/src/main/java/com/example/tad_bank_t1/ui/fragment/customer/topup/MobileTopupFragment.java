@@ -108,7 +108,7 @@ public class MobileTopupFragment extends Fragment implements UiConfig {
 
 
         // observe
-        sessionViewModel.defaultAccount.observe(getViewLifecycleOwner(), account -> {
+        sessionViewModel.payAccount.observe(getViewLifecycleOwner(), account -> {
             if (account != null) {
                 accountSource = account;
             }

@@ -1,11 +1,16 @@
 package com.example.tad_bank_t1.data.repository.transaction;
 
+import android.util.Log;
+
 import com.example.tad_bank_t1.data.adapterPattern.TransactionAdapter;
+import com.example.tad_bank_t1.data.model.Account;
 import com.example.tad_bank_t1.data.model.Transaction;
 import com.example.tad_bank_t1.data.model.enums.TnxStatus;
 import com.example.tad_bank_t1.data.repository.callbacks.ResultCallback;
 import com.example.tad_bank_t1.util.TransactionUtil;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -32,8 +37,9 @@ public class FirebaseTransactionRepository implements TransactionRepository {
     public Task<List<Transaction>> getTransactionsByAccount(String accountId) {
         Query q = adapter.query()
                 .whereEqualTo("accountId", accountId)
+
                 .orderBy("createdAt", Query.Direction.DESCENDING)
-                .limit(20);
+                .limit(100);
 
         return adapter.where(q).continueWith(task -> {
             List<Transaction> result = new ArrayList<>();
@@ -55,6 +61,39 @@ public class FirebaseTransactionRepository implements TransactionRepository {
                         .startAt(keyword).endAt(keyword + "\uf8ff").limit(limit)
         );
     }
+
+
+    // listener TransactionById
+    @Override
+    public ListenerRegistration listenerTransactionById(String transactionId, OnTransactionChanged listener) {
+        Query q = adapter.query()
+                .whereEqualTo("transactionId", transactionId)
+                .limit(1);
+
+        return q.addSnapshotListener((snapshot, e) -> {
+            if (e != null) {
+                if (listener != null) listener.onError(e);
+                return;
+            }
+
+            if (snapshot == null || snapshot.isEmpty()) {
+                if (listener != null) listener.onError(new Exception("Transaction not found: " + transactionId));
+                return;
+            }
+
+            DocumentSnapshot doc = snapshot.getDocuments().get(0);
+            Transaction transaction = doc.toObject(Transaction.class);
+
+            if (transaction == null) {
+                if (listener != null) listener.onError(new Exception("Parse transaction failed"));
+                return;
+            }
+
+            Log.d("FirebaseTransactionRepository", "listenerTransactionById: " + transaction);
+            if (listener != null) listener.onChanged(transaction);
+        });
+    }
+
 
     // --------------------------------
     // Tạo giao dịch với status: PENDING
@@ -85,7 +124,7 @@ public class FirebaseTransactionRepository implements TransactionRepository {
                 })
                 .addOnSuccessListener(doc -> {
                     Transaction saved = doc.toObject(Transaction.class);
-                    callback.onSucces(saved);
+                    callback.onSuccess(saved);
                 })
                 .addOnFailureListener(e -> callback.onError(e.getMessage()));
     }
@@ -105,7 +144,7 @@ public class FirebaseTransactionRepository implements TransactionRepository {
                 })
                 .addOnSuccessListener(documentSnapshot -> {
                     Transaction obj = documentSnapshot.toObject(Transaction.class);
-                    callback.onSucces(obj);
+                    callback.onSuccess(obj);
                 })
                 .addOnFailureListener(e -> {
                     callback.onError(e.getMessage());
@@ -121,7 +160,7 @@ public class FirebaseTransactionRepository implements TransactionRepository {
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     Transaction obj = documentSnapshot.toObject(Transaction.class);
-                    callback.onSucces(obj);
+                    callback.onSuccess(obj);
                 })
                 .addOnFailureListener(e -> {
                     callback.onError(e.getMessage());

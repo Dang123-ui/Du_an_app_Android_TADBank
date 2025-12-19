@@ -138,6 +138,11 @@ public class TransactionResultFragment extends Fragment implements UiConfig {
             binding.txtTransactionResultTargetAccount.setText(txn.getCounterpartyAccount());
 
         } else if (txn.getType() == TxnType.BILL_PAYMENT){
+            // an view
+            binding.lnloTransactionResultReceiverName.setVisibility(View.GONE);
+            binding.lnloTransactionResultBankReceiver.setVisibility(View.GONE);
+
+            binding.txtTransactionResultTargetAccount.setText(txn.getCounterpartyAccount());
 
         } else {
             // unknown

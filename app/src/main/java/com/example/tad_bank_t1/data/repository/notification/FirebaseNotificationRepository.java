@@ -139,7 +139,7 @@ public class FirebaseNotificationRepository implements NotificationRepository {
                 })
                 .addOnSuccessListener(doc -> {
                     Notification saved = doc.toObject(Notification.class);
-                    callback.onSucces(saved);
+                    callback.onSuccess(saved);
                 })
                 .addOnFailureListener(e -> callback.onError(e.getMessage()));
     }

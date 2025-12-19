@@ -3,7 +3,7 @@ package com.example.tad_bank_t1.ui.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.tad_bank_t1.data.model.Bill;
+import com.example.tad_bank_t1.data.model.remote.Bill;
 import com.example.tad_bank_t1.data.repository.bill.BillRepository;
 import com.example.tad_bank_t1.data.response.ResultWrapper;
 

@@ -1,9 +1,11 @@
 package com.example.tad_bank_t1.ui.fragment.customer.transaction;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -17,9 +19,13 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.tad_bank_t1.R;
+import com.example.tad_bank_t1.data.model.Payment;
 import com.example.tad_bank_t1.data.model.Transaction;
 import com.example.tad_bank_t1.data.model.User;
 import com.example.tad_bank_t1.data.model.enums.TnxStatus;
+import com.example.tad_bank_t1.data.model.enums.TxnChannel;
+import com.example.tad_bank_t1.data.remote.dto.CreatePaymentRes;
+import com.example.tad_bank_t1.data.response.ResultWrapper;
 import com.example.tad_bank_t1.databinding.FragmentTransactionComfirmBinding;
 import com.example.tad_bank_t1.ui.activity.MainActivity;
 import com.example.tad_bank_t1.ui.base.UiConfig;
@@ -30,7 +36,10 @@ import com.example.tad_bank_t1.ui.form.payload.transactions.BillPaymentPayload;
 import com.example.tad_bank_t1.ui.form.payload.transactions.PhoneTopupPayload;
 import com.example.tad_bank_t1.ui.form.payload.transactions.TransferPayload;
 import com.example.tad_bank_t1.ui.fragment.FaceVerify1Fragment;
+import com.example.tad_bank_t1.ui.fragment.customer.payment.VnpayWebViewFragment;
 import com.example.tad_bank_t1.ui.viewmodel.OtpCodeViewModel;
+import com.example.tad_bank_t1.ui.viewmodel.PaymentReturnViewModel;
+import com.example.tad_bank_t1.ui.viewmodel.PaymentViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.SessionViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.TransactionPayloadViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.TransactionViewModel;
@@ -48,8 +57,10 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
     // View model
     private SessionViewModel sessionViewModel;
     private TransactionViewModel transactionViewModel;
+    private PaymentViewModel paymentViewModel;
     private OtpCodeViewModel otpCodeViewModel;
     private TransactionPayloadViewModel transactionPayloadViewModel;
+    private PaymentReturnViewModel paymentReturnVM;
 
     // payload từ fragment trước
     private BaseTransactionPayload transactionPayload;
@@ -59,6 +70,8 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
 
 
     private boolean hasNavigated = false;
+    private boolean navigated = false;
+
 
     public TransactionConfirmFragment() {
         // Required empty public constructor
@@ -131,7 +144,8 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
                 binding.txtConfirmTransactionFeeAmount.setText(CurrencyUtil.formatVND(txn.getFeeAmount()));
                 binding.txtConfirmTransactionAmount.setText(CurrencyUtil.formatVND(txn.getAmount()));
 
-            } else if(transactionPayload instanceof PhoneTopupPayload) {
+            }
+            else if(transactionPayload instanceof PhoneTopupPayload) {
                 // an view khong can thiet
                 binding.lnloConfirmTrans3TenNguoiNhan.setVisibility(View.GONE);
                 binding.lnloConfirmTrans4NganHangNhanCk.setVisibility(View.GONE);
@@ -167,37 +181,52 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
         otpCodeViewModel = new ViewModelProvider(requireActivity()).get(OtpCodeViewModel.class);
         transactionPayloadViewModel = new ViewModelProvider(requireActivity()).get(TransactionPayloadViewModel.class);
         sessionViewModel = new ViewModelProvider(requireActivity()).get(SessionViewModel.class);
-
+        paymentViewModel = new ViewModelProvider(requireActivity()).get(PaymentViewModel.class);
+        paymentReturnVM = new ViewModelProvider(requireActivity()).get(PaymentReturnViewModel.class);
 
         transactionPayload = transactionPayloadViewModel.getTxnPayload();
 
-        // observe state transaction view model
-        transactionViewModel.getResultState().observe(getViewLifecycleOwner(), result -> {
-            if (result == null) {
-                binding.btnConfirmTransfer.setEnabled(true);
-                ((MainActivity) requireActivity()).showLoadingFeature(false);
-                return;
-            }
+        transactionViewModel.getResultState().observe(getViewLifecycleOwner(),
+                rs -> handleTxnResult(rs, "Lỗi tạo giao dịch"));
 
-            if (result.isLoading()) {
-                binding.btnConfirmTransfer.setEnabled(false);
+        transactionViewModel.getListenerState().observe(getViewLifecycleOwner(),
+                rs -> handleTxnResult(rs, "Lỗi xác nhận thanh toán (VNPay)"));
+
+        paymentViewModel.getCreateState().observe(getViewLifecycleOwner(), rs -> {
+            if (rs == null) return;
+
+            if (rs.isLoading()) {
                 ((MainActivity) requireActivity()).showLoadingFeature(true);
                 return;
             }
 
-            // từ đây chắc chắn không loading
-            binding.btnConfirmTransfer.setEnabled(true);
             ((MainActivity) requireActivity()).showLoadingFeature(false);
 
-            if (result.getError() != null) {
-                showError("Lỗi tạo giao dịch", result.getError());
+            if (rs.getError() != null) {
+                showError("Lỗi tạo VNPay", rs.getError());
+                cancelPendingTransactionSafely();
                 return;
             }
 
-            if (result.getData() != null) {
-                Log.d("TAG TRANSACTION", "Transaction created:" + result.getData());
-                if (result.getData().getStatus() == TnxStatus.COMPLETED) safeNavigateToResult();
-                else if (result.getData().getStatus() == TnxStatus.FAILED) showError("Lỗi tạo giao dịch", "Giao dịch thất bại");
+            CreatePaymentRes dataCreatePayment = rs.getData();
+            if (dataCreatePayment != null && dataCreatePayment.paymentUrl != null) {
+                if (dataCreatePayment.transactionId != null) transactionViewModel.listenTransactionStatus(dataCreatePayment.transactionId);
+//                openVnpayCustomTab(dataCreatePayment.paymentUrl);
+                openVnpayWebView(dataCreatePayment);
+            }
+        });
+
+        paymentReturnVM.getReturnUri().observe(getViewLifecycleOwner(), uri -> {
+            if (uri == null) return;
+
+            String transactionId = uri.getQueryParameter("transactionId");
+            String code = uri.getQueryParameter("code");
+
+            if ("00".equals(code) && transactionId != null && !transactionId.isEmpty()) {
+                // ✅ backend đã update transaction/payment rồi -> app chỉ listen
+                transactionViewModel.listenTransactionStatus(transactionId);
+            } else {
+                showError("Thanh toán thất bại", "VNPAY code=" + code);
             }
         });
 
@@ -208,6 +237,21 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
             openPinDialog();
         });
     }
+
+    private void openVnpayWebView(CreatePaymentRes createPaymentRes){
+        // ✅ mở WebView Fragment
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_customer,
+                        VnpayWebViewFragment.newInstance(createPaymentRes.paymentUrl, createPaymentRes.transactionId))
+                .addToBackStack("VNPAY_WEBVIEW")
+                .commit();
+    }
+    private void openVnpayCustomTab(String url) {
+        CustomTabsIntent intent = new CustomTabsIntent.Builder().build();
+        intent.launchUrl(requireContext(), Uri.parse(url));
+    }
+
 
     // nhap ma PIN de xac thuc chu tai khoan
     private void openPinDialog() {
@@ -343,30 +387,36 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
     }
 
     // xu ky sau khi OTP thanh cong
-    private  void handleAfterOtpSuccess(){
+    private void handleAfterOtpSuccess() {
         Transaction txn = transactionPayload.getTransaction();
 
+        Runnable afterAllVerified = () -> {
+            // ✅ Nếu là VNPay -> tạo payment + mở cổng
+            if (txn.getChannel() == TxnChannel.VN_PAY) {
+                paymentViewModel.createVnpayPayment(txn, Objects.requireNonNull(sessionViewModel.user.getValue()), null);
+                return;
+            }
+
+            // ✅ Còn lại -> chạy flow cũ (trực tiếp trong app)
+            transactionViewModel.executeTransaction(
+                    txn,
+                    transactionPayload.getSenderAccount(),
+                    sessionViewModel.user.getValue()
+            );
+        };
+
         if (txn.getAmount() >= TadConstants.LIMIT_NEED_VERIFY_AMOUNT) {
-            // dong otp trươc
             closeOtpDialog();
 
-            // mở verify
             FaceVerify1Fragment faceFragment =
                     FaceVerify1Fragment.newForTransaction(
                             sessionViewModel.user.getValue().getUserId(),
                             new FaceVerify1Fragment.FaceVerifyCallback() {
-                                @Override
-                                public void onFaceVerified() {
-                                    // ✅ FACE OK → execute transaction
-                                    transactionViewModel.executeTransaction(
-                                            txn,
-                                            transactionPayload.getSenderAccount(),
-                                            sessionViewModel.user.getValue()
-                                    );
+                                @Override public void onFaceVerified() {
+                                    afterAllVerified.run();
                                 }
 
-                                @Override
-                                public void onFaceFailed(String reason) {
+                                @Override public void onFaceFailed(String reason) {
                                     cancelPendingTransactionSafely();
                                 }
                             }
@@ -377,14 +427,8 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
                     .replace(R.id.main_customer, faceFragment)
                     .addToBackStack("FACE_VERIFY_TXN")
                     .commit();
-
         } else {
-            // ≤ 10tr
-            transactionViewModel.executeTransaction(
-                    txn,
-                    transactionPayload.getSenderAccount(),
-                    sessionViewModel.user.getValue()
-            );
+            afterAllVerified.run();
         }
     }
 
@@ -407,6 +451,42 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
 
 
 
+    private void handleTxnResult(ResultWrapper<Transaction> result, String contextMsg) {
+        if (result == null) return;
+
+        if (result.isLoading()) {
+            binding.btnConfirmTransfer.setEnabled(false);
+            ((MainActivity) requireActivity()).showLoadingFeature(true);
+            return;
+        }
+
+        binding.btnConfirmTransfer.setEnabled(true);
+        ((MainActivity) requireActivity()).showLoadingFeature(false);
+
+        if (result.getError() != null) {
+            showError(contextMsg, result.getError());
+            return;
+        }
+
+        Transaction txn = result.getData();
+        if (txn == null) return;
+
+        if (txn.getStatus() == TnxStatus.COMPLETED && !navigated) {
+            if (txn.getChannel() == TxnChannel.VN_PAY){
+                // ✅ chạy side-effects (KHÔNG executeTransaction)
+                transactionViewModel.runPostSuccessActionsOnce(
+                        txn,
+                        transactionPayload.getSenderAccount(),
+                        sessionViewModel.user.getValue()
+                );
+            }
+            navigated = true;
+            safeNavigateToResult();
+        } else if (txn.getStatus() == TnxStatus.FAILED) {
+            showError(contextMsg, "Giao dịch thất bại");
+        }
+    }
+
 
     // chuyen doi khi trang thai giao dich thanh cong
     private void safeNavigateToResult() {
@@ -419,6 +499,10 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
 
         // clear state
         otpCodeViewModel.clearVerifyState();
+
+        // reset send mail va noti app khi vn pay
+        transactionViewModel.resetPostSuccessFlag();
+
 
         // xóa state transaction VM
         transactionViewModel.clearResultState();
@@ -455,6 +539,7 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+        transactionViewModel.stopListenTransactionStatus();
     }
 
 

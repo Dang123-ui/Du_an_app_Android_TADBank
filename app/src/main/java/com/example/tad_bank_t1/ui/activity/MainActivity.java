@@ -1,6 +1,7 @@
 package com.example.tad_bank_t1.ui.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -27,6 +28,7 @@ import com.example.tad_bank_t1.ui.base.UiConfig;
 import com.example.tad_bank_t1.ui.fragment.customer.transfer.BankTransferFragment;
 import com.example.tad_bank_t1.ui.fragment.customer.HomeCustomerFragment;
 import com.example.tad_bank_t1.ui.fragment.customer.setting.SettingFragment;
+import com.example.tad_bank_t1.ui.viewmodel.PaymentReturnViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.SessionViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
 
     private SessionViewModel sessionViewModel;
+    private PaymentReturnViewModel paymentReturnVM;
 
     public static final String EXTRA_USERID = "extra_userid";
 
@@ -57,8 +60,6 @@ public class MainActivity extends AppCompatActivity {
             supportPostponeEnterTransition();
         }
 
-
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
@@ -71,8 +72,25 @@ public class MainActivity extends AppCompatActivity {
 //
 //        setContentView(R.layout.activity_main);
 
-//        setupInsetBehavior();
-//
+        initView();
+
+        initAndObserverViewModel();
+
+        initEvents();
+
+
+        // permission
+        ensureNotiPermission();
+
+        // intent payment
+        handleDeepLink(getIntent());
+    }
+
+    private int dpToPx(int dp) {
+        return Math.round(dp * getResources().getDisplayMetrics().density);
+    }
+
+    private  void setUpToolbarAndBottom(){
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.mainCustomer, (v, insets) -> {
@@ -95,26 +113,6 @@ public class MainActivity extends AppCompatActivity {
 
             return insets;
         });
-
-
-
-        initView();
-
-        initAndObserverViewModel();
-
-        initEvents();
-
-
-        // permission
-        ensureNotiPermission();
-    }
-
-    private int dpToPx(int dp) {
-        return Math.round(dp * getResources().getDisplayMetrics().density);
-    }
-
-    private void initView() {
-        setSupportActionBar(binding.toolbar);
 
         // back icon
         binding.toolbar.setNavigationIcon(R.drawable.ic_back_previous_activity2);
@@ -145,6 +143,11 @@ public class MainActivity extends AppCompatActivity {
             return WindowInsetsCompat.CONSUMED;
         });
 
+    }
+    private void initView() {
+        setSupportActionBar(binding.toolbar);
+
+        setUpToolbarAndBottom();
 
         // home is Ui default
         replaceFragment(new HomeCustomerFragment(), false);
@@ -153,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
     private void initAndObserverViewModel() {
         // load user account bang session viewmodel
         sessionViewModel = new ViewModelProvider(this).get(SessionViewModel.class);
+        paymentReturnVM = new ViewModelProvider(this).get(PaymentReturnViewModel.class);
 
         Intent intent = getIntent();
         String userId = null;
@@ -244,6 +248,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    // =============================
+    // ==== start control fragment
+    // =============================
+
     // open fragment
     public void openFeatureFragment(Fragment fragment, String title) {
         replaceFragment(fragment, true);
@@ -284,28 +293,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // ✅ Hàm show/hide loading
-    private void showLoading(boolean show) {
-        if (show) {
-            binding.lottieLoadingWaitingRedirect.setVisibility(View.VISIBLE);
-//            binding.toolbar.setVisibility(View.GONE);
-//            binding.bottomNav.setVisibility(View.GONE);
-            binding.mainCustomer.setEnabled(false);
-        } else {
-            binding.lottieLoadingWaitingRedirect.setVisibility(View.GONE);
-//            binding.toolbar.setVisibility(View.GONE);
-//            binding.bottomNav.setVisibility(View.VISIBLE);
-            binding.mainCustomer.setEnabled(true);
-        }
-    }
 
-    // hàm show/hide loading features
-    public void showLoadingFeature(boolean show) {
-        binding.lottieLoadingWaitingRedirect.setEnabled(!show);
-        binding.lottieLoadingWaitingRedirect.setVisibility(show ? View.VISIBLE : View.GONE);
-        binding.loadingMainIcon.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
-
+    // animate toolbar
     private void animateToolbar(Fragment fragment) {
         if (!(fragment instanceof UiConfig)) return;
 
@@ -338,10 +327,62 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // =============================
+    // ==== END control fragment
+    // =============================
+
+
+    // =============================
+    // ==== start control loading
+    // =============================
+    // ✅ Hàm show/hide loading
+    private void showLoading(boolean show) {
+        if (show) {
+            binding.lottieLoadingWaitingRedirect.setVisibility(View.VISIBLE);
+//            binding.toolbar.setVisibility(View.GONE);
+//            binding.bottomNav.setVisibility(View.GONE);
+            binding.mainCustomer.setEnabled(false);
+        } else {
+            binding.lottieLoadingWaitingRedirect.setVisibility(View.GONE);
+//            binding.toolbar.setVisibility(View.GONE);
+//            binding.bottomNav.setVisibility(View.VISIBLE);
+            binding.mainCustomer.setEnabled(true);
+        }
+    }
+
+    // hàm show/hide loading features
+    public void showLoadingFeature(boolean show) {
+        binding.lottieLoadingWaitingRedirect.setEnabled(!show);
+        binding.lottieLoadingWaitingRedirect.setVisibility(show ? View.VISIBLE : View.GONE);
+        binding.loadingMainIcon.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    // =============================
+    // ==== END control loading
+    // =============================
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         binding = null;
     }
 
+    // intent web payment
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        handleDeepLink(intent);
+    }
+
+    private void handleDeepLink(Intent intent) {
+        Uri data = intent.getData();
+        if (data == null) return;
+
+        if ("tadbank".equals(data.getScheme()) && "vnpay_return".equals(data.getHost())) {
+            paymentReturnVM.publish(data);
+        }
+    }
+
+    // end intent web payment
 }

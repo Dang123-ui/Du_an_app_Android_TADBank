@@ -62,32 +62,32 @@
                 <EditText
                     android:id="@+id/et1PINTxn"
                     style="@style/OtpEditTextStyle"
-                    android:inputType="number" />
+                    android:inputType="numberPassword" />
 
                 <EditText
                     android:id="@+id/et2PINTxn"
                     style="@style/OtpEditTextStyle"
-                    android:inputType="number" />
+                    android:inputType="numberPassword" />
 
                 <EditText
                     android:id="@+id/et3PINTxn"
                     style="@style/OtpEditTextStyle"
-                    android:inputType="number" />
+                    android:inputType="numberPassword" />
 
                 <EditText
                     android:id="@+id/et4PINTxn"
                     style="@style/OtpEditTextStyle"
-                    android:inputType="number" />
+                    android:inputType="numberPassword" />
 
                 <EditText
                     android:id="@+id/et5PINTxn"
                     style="@style/OtpEditTextStyle"
-                    android:inputType="number" />
+                    android:inputType="numberPassword" />
 
                 <EditText
                     android:id="@+id/et6PINTxn"
                     style="@style/OtpEditTextStyle"
-                    android:inputType="number" />
+                    android:inputType="numberPassword" />
 
 
             </LinearLayout>

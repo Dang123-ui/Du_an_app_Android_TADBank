@@ -3,6 +3,7 @@ package com.example.tad_bank_t1.ui.viewmodel;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -45,6 +46,38 @@ public class SessionViewModel extends ViewModel {
 
     private ListenerRegistration accountListener;
 
+    // thanh toan chon account
+    private final MediatorLiveData<Account> _payAccount = new MediatorLiveData<>();
+    public LiveData<Account> payAccount = _payAccount;
+
+    public SessionViewModel() {
+        // chọn theo selected -> default
+        _payAccount.addSource(_selectedAccount, acc -> recomputePayAccount());
+        _payAccount.addSource(_defaultAccount, acc -> recomputePayAccount());
+        _payAccount.addSource(_accounts, list -> recomputePayAccount());
+    }
+
+    private void recomputePayAccount() {
+        Account sel = _selectedAccount.getValue();
+        if (sel != null) {
+            _payAccount.postValue(sel);
+            return;
+        }
+
+        Account def = _defaultAccount.getValue();
+        if (def != null) {
+            _payAccount.postValue(def);
+            return;
+        }
+
+        List<Account> list = _accounts.getValue();
+        if (list != null && !list.isEmpty()) {
+            _payAccount.postValue(list.get(0));
+        } else {
+            _payAccount.postValue(null);
+        }
+    }
+
 
     public void setUserId(String id) {
         userId.setValue(id);
@@ -85,6 +118,8 @@ public class SessionViewModel extends ViewModel {
                 });
     }
 
+
+    // lang nghe realtime tai khoan
     public void observeUserAndAccountsRealtime(String userId) {
         _isLoading.postValue(true);
         userRepo.getById(userId)

@@ -3,7 +3,7 @@ package com.example.tad_bank_t1.data.repository.bill;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.tad_bank_t1.data.model.Bill;
+import com.example.tad_bank_t1.data.model.remote.Bill;
 import com.example.tad_bank_t1.data.remote.config.ApiConfig;
 import com.example.tad_bank_t1.data.remote.dto.ApiResponse;
 import com.example.tad_bank_t1.data.remote.api.ApiService;
@@ -38,7 +38,7 @@ public class BillRepository {
                         live.setValue(ResultWrapper.error(apiResponse.message));
                     }
                 } else {
-                    live.setValue(ResultWrapper.error("Server error"));
+                    live.setValue(ResultWrapper.error("Server error with code " + response.code() + " " + response.message()));
                 }
             }
 

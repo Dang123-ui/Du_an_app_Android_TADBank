@@ -17,8 +17,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Transaction code"
-            android:textSize="16dp" />
+            android:text="@string/ma_giao_dich"
+            android:textSize="12dp" />
 
         <View
             android:layout_width="wrap_content"
@@ -29,9 +29,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAlignment="textEnd"
-            android:textSize="16dp"
+            android:textSize="12sp"
+            android:textStyle="bold"
             android:text="12345"
-            style="@style/TextAppearance.AppCompat.Title"
+
             />
     </LinearLayout>
     <View
@@ -44,14 +45,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Transaction date"
-            android:textSize="16dp" />
+            android:text="@string/ngay_giao_dich"
+            android:textSize="12sp" />
 
         <View
             android:layout_width="wrap_content"
@@ -62,9 +62,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAlignment="textEnd"
-            android:textSize="16dp"
+            android:textStyle="bold"
+            android:textSize="12sp"
             android:text="12345"
-            style="@style/TextAppearance.AppCompat.Title"
             />
     </LinearLayout>
     <View
@@ -77,14 +77,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Transaction amount"
-            android:textSize="16dp" />
+            android:text="@string/so_tien_chuyen_khoan"
+            android:textSize="12sp" />
 
         <View
             android:layout_width="wrap_content"
@@ -95,9 +94,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAlignment="textEnd"
-            android:textSize="16dp"
+            android:textStyle="bold"
+            android:textSize="12sp"
             android:text="12345"
-            style="@style/TextAppearance.AppCompat.Title"
             />
     </LinearLayout>
     <View
@@ -110,30 +109,122 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Transaction content"
-            android:textSize="16dp" />
+            android:text="@string/noi_dung_chuyen_khoan"
+            android:textSize="12sp" />
 
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
         <TextView
             android:id="@+id/txtTxnDetailTxnContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxWidth="150dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
             android:textAlignment="textEnd"
-            android:textSize="16dp"
+            android:textSize="12sp"
             android:text="1234sdddddddddddddddddddddddddddddđ5"
+            android:textStyle="bold"
             android:minLines="1"
 
-            style="@style/TextAppearance.AppCompat.Title"
+            />
+    </LinearLayout>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_marginVertical="8dp"
+        android:background="@color/bgBlur"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loai_giao_dich"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/txtTxnDetailTxnType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:textAlignment="textEnd"
+            android:textSize="12sp"
+            android:text="loai giao dịch là giao dịch ghhhhhhhhhhhhhhhhhhhhhửi tiền jhhjuhluh uh uhu ug gg u  ug gjhjhjhjhj"
+            android:textStyle="bold"
+            android:minLines="1"
+
+            />
+    </LinearLayout>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_marginVertical="8dp"
+        android:background="@color/bgBlur"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/kenh_giao_dich"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/txtTxnDetailTxnChannel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textAlignment="textEnd"
+            android:textSize="12sp"
+            android:text="kênh gưi tiên"
+            android:textStyle="bold"
+            android:minLines="1"
+
+            />
+    </LinearLayout>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_marginVertical="8dp"
+        android:background="@color/bgBlur"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/trang_thai_giao_dich"
+            android:layout_weight="1"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/txtTxnDetailTxnStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textAlignment="textEnd"
+            android:textSize="12sp"
+            android:text="kênh gưi tiên"
+            android:textStyle="bold"
+            android:minLines="1"
+
             />
     </LinearLayout>
     <View

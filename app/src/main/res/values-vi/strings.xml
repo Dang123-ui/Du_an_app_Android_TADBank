@@ -111,4 +111,10 @@
     <string name="gui_lai_otp_count_dowwn">Gửi lại mã OTP (%1$02d:%2$02d)</string>
     <string name="vui_long_nhap_pin">Vui lòng nhập mã PIN của bạn</string>
     <string name="email_da_ton_tai">Email đã tồn tại</string>
+    <string name="danh_sach_ncc">Danh sách nhà cung cấp</string>
+    <string name="hint_chon_nha_cung_cap">Vui lòng chọn nhà cung cấp</string>
+    <string name="ngay_giao_dich">Ngày giao dịch</string>
+    <string name="kenh_giao_dich">Kênh giao dịch</string>
+    <string name="loai_giao_dich">Loại giao dịch</string>
+    <string name="trang_thai_giao_dich">Trạng thái</string>
 </resources>

@@ -5,7 +5,20 @@ public class Bill {
     public String providerId;
     public Customer customer;
     public String period;
-    public long amountDue;
+    public long amount;
     public String dueDate;
     public String status;
+
+    @Override
+    public String toString() {
+        return "Bill{" +
+                "billId='" + billId + '\'' +
+                ", providerId='" + providerId + '\'' +
+                ", customer=" + customer +
+                ", period='" + period + '\'' +
+                ", amount=" + amount +
+                ", dueDate='" + dueDate + '\'' +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }

@@ -12,7 +12,6 @@ import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.transition.Slide;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +22,12 @@ import android.widget.Toast;
 
 import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.model.Bank;
+import com.example.tad_bank_t1.databinding.FragmentSearchTransferInfomationBinding;
+import com.example.tad_bank_t1.ui.base.BaseCustomFragment;
 import com.example.tad_bank_t1.ui.viewadapter.BankAdapter;
+import com.example.tad_bank_t1.ui.viewadapter.ProviderAdapter;
 import com.example.tad_bank_t1.ui.viewmodel.BankViewModel;
+import com.example.tad_bank_t1.ui.viewmodel.ProviderViewModel;
 import com.example.tad_bank_t1.util.TadConstants;
 import com.example.tad_bank_t1.util.FragmentUtil;
 import com.google.android.material.textfield.TextInputEditText;
@@ -32,23 +35,30 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.Collections;
 import java.util.List;
 
-public class SearchTransferInfomationFragment extends Fragment {
+public class SearchTransferInfomationFragment extends Fragment implements BaseCustomFragment {
     private static final String TITLE = "title_search";
     private static final String HINT_SEARCH = "hint_search";
     private static final String LIST_RESULT_TITLE = "list_result_title";
     private static final String SEARCH_FOR = "search_for";
 
+    // view binding
+    private FragmentSearchTransferInfomationBinding binding;
 
 
-    private TextView txtSearchTransferInfomationTitle, txtSearchResultListTitle;
-    private TextInputEditText edtEnterInfoSearch;
-    private ImageButton imbtSearchCancel;
-    private ImageButton imbtSearchTransfer;
     private String title_search, hint_search, list_result_title, search_for;
+
+
+
     // view model
+
+    // -- bank ----
     private BankViewModel bankViewModel;
-    private RecyclerView recyclerViewSearch;
     private RecyclerView.Adapter adapter;
+
+    // -- bill ----
+    private ProviderViewModel providerViewModel;
+    private RecyclerView.Adapter adapterBill;
+
 
     private final Handler handler = new Handler(Looper.getMainLooper());
     private Runnable searchJob;
@@ -95,24 +105,14 @@ public class SearchTransferInfomationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_search_transfer_infomation, container, false);
-
+        binding = FragmentSearchTransferInfomationBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        txtSearchTransferInfomationTitle = view.findViewById(R.id.txtSearchTransferInfomationTitle);
-        edtEnterInfoSearch = view.findViewById(R.id.edtEnterInfoSearch);
-        txtSearchResultListTitle = view.findViewById(R.id.txtSearchResultListTitle);
-        imbtSearchCancel = view.findViewById(R.id.imbtSearchCancel);
-        imbtSearchTransfer = view.findViewById(R.id.imbtSearchTransfer);
-
-        txtSearchTransferInfomationTitle.setText(title_search);
-        edtEnterInfoSearch.setHint(hint_search);
-        txtSearchResultListTitle.setText(list_result_title);
 
 
 //        // Reset search input
@@ -129,16 +129,106 @@ public class SearchTransferInfomationFragment extends Fragment {
 //            bankViewModel.clearBankSelected();
 //        }
 
+        initFragment();
+    }
 
-        recyclerViewSearch = view.findViewById(R.id.rcvSearchResult);
+    // provide reset
+    private boolean isProviderSearch(String searchFor) {
+        return TadConstants.SEARCH_ELECTRICITY_PROVIDER.equalsIgnoreCase(searchFor)
+                || TadConstants.SEARCH_WATER_PROVIDER.equalsIgnoreCase(searchFor)
+                || TadConstants.SEARCH_TUITION_PROVIDER.equalsIgnoreCase(searchFor);
+    }
+
+    private String mapProviderType(String searchFor) {
+        if (TadConstants.SEARCH_ELECTRICITY_PROVIDER.equalsIgnoreCase(searchFor)) return TadConstants.BILL_ELECTRICITY;
+        if (TadConstants.SEARCH_WATER_PROVIDER.equalsIgnoreCase(searchFor)) return TadConstants.BILL_WATER;
+//        if (TadConstants.SEARCH_TUITION_PROVIDER.equalsIgnoreCase(searchFor)) return TadConstants.TU;
+        return "other";
+    }
+
+    private void resetProviderModal() {
+        handler.removeCallbacksAndMessages(null);
+        searchJob = null;
+        lastQuery = "";
+
+        if (adapter instanceof ProviderAdapter) {
+            ((ProviderAdapter) adapter).setData(Collections.emptyList());
+        }
+
+        binding.edtEnterInfoSearch.setText("");
+        binding.edtEnterInfoSearch.clearFocus();
+
+        if (providerViewModel != null) {
+            providerViewModel.searchCacheProviders(""); // show all cache
+        }
+
+        binding.rcvSearchResult.scrollToPosition(0);
+    }
+
+
+    // bank reset
+    private void resetBankModal() {
+        // huỷ debounce job cũ
+        handler.removeCallbacksAndMessages(null);
+        searchJob = null;
+
+        // clear input + query state
+        lastQuery = "";
+
+        // clear adapter ngay lập tức để không thấy kết quả cũ
+        if (adapter instanceof BankAdapter) {
+            ((BankAdapter) adapter).setData(Collections.emptyList());
+        }
+
+        // clear text (có thể trigger watcher, nhưng mình sẽ load all ngay)
+
+        binding.edtEnterInfoSearch.setText("");
+        binding.edtEnterInfoSearch.clearFocus(); // optional
+
+        // load full list
+        if (bankViewModel != null) {
+            bankViewModel.searchCacheBanks(""); // "" => trả về tất cả bank
+        }
+
+        binding.rcvSearchResult.scrollToPosition(0);
+    }
+
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        handler.removeCallbacksAndMessages(null);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (TadConstants.SEARCH_BANK.equals(search_for)) {
+            resetBankModal();
+        } else if (isProviderSearch(search_for)) {
+            resetProviderModal();
+        }
+    }
+
+    @Override
+    public void initView() {
+        binding.txtSearchTransferInfomationTitle.setText(title_search);
+        binding.edtEnterInfoSearch.setHint(hint_search);
+        binding.txtSearchResultListTitle.setText(list_result_title);
+
+    }
+
+    @Override
+    public void initViewModel() {
 
         if (search_for.equals(TadConstants.SEARCH_BANK)) {
 
             bankViewModel = new ViewModelProvider(requireActivity()).get(BankViewModel.class);
 
             adapter = new BankAdapter(Collections.emptyList());
-            recyclerViewSearch.setLayoutManager(new LinearLayoutManager(getContext()));
-            recyclerViewSearch.setAdapter(adapter);
+            binding.rcvSearchResult.setLayoutManager(new LinearLayoutManager(getContext()));
+            binding.rcvSearchResult.setAdapter(adapter);
 
             bankViewModel.getBanks().observe(getViewLifecycleOwner(), banks -> {
                 List<Bank> safe = (banks != null) ? banks : Collections.emptyList();
@@ -154,34 +244,68 @@ public class SearchTransferInfomationFragment extends Fragment {
 
             // ✅ reset + show all ngay khi mở
             resetBankModal();
-        }
-        else if (search_for.equalsIgnoreCase(TadConstants.SEARCH_ACCOUNT)) {
-            Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
-        } else if(search_for.equalsIgnoreCase(TadConstants.SEARCH_BENEFICIARY_ACCOUNT)){
-            Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
-        } else if(search_for.equalsIgnoreCase(TadConstants.SEARCH_BENEFICIARY_PHONE)){
-            Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
-        } else if(search_for.equalsIgnoreCase(TadConstants.SEARCH_ELECTRICITY_PROVIDER)){
-            Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
-        } else if(search_for.equalsIgnoreCase(TadConstants.SEARCH_WATER_PROVIDER)){
-            Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
-        } else if(search_for.equalsIgnoreCase(TadConstants.SEARCH_TUITION_PROVIDER)){
-            Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
+        } else if (search_for.equalsIgnoreCase(TadConstants.SEARCH_ELECTRICITY_PROVIDER)
+                || search_for.equalsIgnoreCase(TadConstants.SEARCH_WATER_PROVIDER)
+                || search_for.equalsIgnoreCase(TadConstants.SEARCH_TUITION_PROVIDER)) {
+            providerViewModel = new ViewModelProvider(requireActivity()).get(ProviderViewModel.class);
+
+            adapter = new ProviderAdapter(Collections.emptyList());
+            binding.rcvSearchResult.setLayoutManager(new LinearLayoutManager(getContext()));
+            binding.rcvSearchResult.setAdapter(adapter);
+
+            String type = mapProviderType(search_for);   // bạn tự map type gọi API
+            providerViewModel.loadProviders(type);
+
+            providerViewModel.getProvidersState().observe(getViewLifecycleOwner(), rs -> {
+                if (rs == null) {
+                    ((ProviderAdapter) adapter).setData(Collections.emptyList());
+                    return;
+                }
+
+                if (rs.isLoading()){
+                    ((ProviderAdapter) adapter).setData(Collections.emptyList());
+                    return;
+                }
+
+                if (rs.getError() != null) {
+                    ((ProviderAdapter) adapter).setData(Collections.emptyList());
+                    Toast.makeText(getContext(), rs.getError(), Toast.LENGTH_SHORT).show();
+                    showError(getContext(), "Lỗi", rs.getError());
+                    return;
+                }
+
+                if (rs.getData() != null) {
+                    ((ProviderAdapter) adapter).setData(rs.getData());
+                    Toast.makeText(getContext(), "Success: " + rs.getData().size(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            });
+
+            ((ProviderAdapter) adapter).setOnItemClickListener(provider -> {
+                providerViewModel.setSelectedProvider(provider);
+                FragmentUtil.destroyFragment(this, getParentFragmentManager());
+            });
+
+            resetProviderModal();
         }
 
-        imbtSearchCancel.setOnClickListener(new View.OnClickListener() {
+    }
+
+    @Override
+    public void setUpEvents() {
+        binding.imbtSearchCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentUtil.destroyFragment(SearchTransferInfomationFragment.this, getParentFragmentManager());
             }
         });
 
-        imbtSearchTransfer.setOnClickListener(v -> {
+        binding.imbtSearchTransfer.setOnClickListener(v -> {
             Toast.makeText(getContext(), "Search for ...", Toast.LENGTH_LONG).show();
         });
 
 
-        edtEnterInfoSearch.addTextChangedListener(new TextWatcher() {
+        binding.edtEnterInfoSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
                 String key = s.toString().trim();
@@ -201,8 +325,13 @@ public class SearchTransferInfomationFragment extends Fragment {
                     Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
                 } else if(search_for.equalsIgnoreCase(TadConstants.SEARCH_BENEFICIARY_PHONE)){
                     Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
-                } else if(search_for.equalsIgnoreCase(TadConstants.SEARCH_ELECTRICITY_PROVIDER)){
-                    Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
+                } else if (isProviderSearch(search_for)) {
+                    if (key.equals(lastQuery)) return;
+                    lastQuery = key;
+
+                    handler.removeCallbacks(searchJob);
+                    searchJob = () -> providerViewModel.searchCacheProviders(key);
+                    handler.postDelayed(searchJob, 350);
                 } else if(search_for.equalsIgnoreCase(TadConstants.SEARCH_WATER_PROVIDER)){
                     Toast.makeText(getContext(), search_for, Toast.LENGTH_SHORT).show();
                 } else if(search_for.equalsIgnoreCase(TadConstants.SEARCH_TUITION_PROVIDER)){
@@ -221,48 +350,4 @@ public class SearchTransferInfomationFragment extends Fragment {
             }
         });
     }
-
-    private void resetBankModal() {
-        // huỷ debounce job cũ
-        handler.removeCallbacksAndMessages(null);
-        searchJob = null;
-
-        // clear input + query state
-        lastQuery = "";
-
-        // clear adapter ngay lập tức để không thấy kết quả cũ
-        if (adapter instanceof BankAdapter) {
-            ((BankAdapter) adapter).setData(Collections.emptyList());
-        }
-
-        // clear text (có thể trigger watcher, nhưng mình sẽ load all ngay)
-        if (edtEnterInfoSearch != null) {
-            edtEnterInfoSearch.setText("");
-            edtEnterInfoSearch.clearFocus(); // optional
-        }
-
-        // load full list
-        if (bankViewModel != null) {
-            bankViewModel.searchCacheBanks(""); // "" => trả về tất cả bank
-        }
-
-        if (recyclerViewSearch != null) recyclerViewSearch.scrollToPosition(0);
-    }
-
-
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        handler.removeCallbacksAndMessages(null);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (TadConstants.SEARCH_BANK.equals(search_for)) {
-            resetBankModal(); // ✅ mỗi lần modal hiện ra đều full list + sạch state
-        }
-    }
-
 }

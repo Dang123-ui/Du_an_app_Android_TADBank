@@ -1,8 +1,15 @@
 package com.example.tad_bank_t1.util;
 
+import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+
+import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.model.Transaction;
+import com.example.tad_bank_t1.data.model.enums.TnxStatus;
 import com.example.tad_bank_t1.data.model.enums.TxnType;
 
 import java.time.LocalDateTime;
@@ -17,6 +24,49 @@ public class TransactionUtil {
                 || txn.getType() == TxnType.REFUND || txn.getType() == TxnType.SALARY)
             return true;
         return false;
+    }
+
+    @ColorInt
+    public static int getColorTransactionStatus(@NonNull Context context, TnxStatus status) {
+
+        int colorRes;
+        switch (status) {
+            case COMPLETED:
+                colorRes = R.color.tnx_completed;
+                break;
+            case FAILED:
+                colorRes = R.color.tnx_failed;
+                break;
+            case CANCELLED:
+                colorRes = R.color.tnx_cancelled;
+                break;
+            case REQUIRES_2FA:
+                colorRes = R.color.tnx_requires_2fa;
+                break;
+            case PENDING:
+            default:
+                colorRes = R.color.tnx_pending;
+                break;
+        }
+
+        return ContextCompat.getColor(context, colorRes);
+    }
+
+    @ColorInt
+    public static int text(Context c, TnxStatus status) {
+        // đa số nền đậm => chữ trắng dễ đọc
+        return ContextCompat.getColor(c, android.R.color.white);
+    }
+
+    public static String label(TnxStatus status) {
+        switch (status) {
+            case COMPLETED:    return "THÀNH CÔNG";
+            case FAILED:       return "THẤT BẠI";
+            case CANCELLED:    return "ĐÃ HUỶ";
+            case REQUIRES_2FA: return "XÁC THỰC";
+            case PENDING:
+            default:           return "ĐANG CHỜ";
+        }
     }
 
     public static String generateIdWithTime(){

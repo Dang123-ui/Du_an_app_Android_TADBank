@@ -14,6 +14,7 @@ import com.example.tad_bank_t1.data.model.Transaction;
 import com.example.tad_bank_t1.util.CurrencyUtil;
 import com.example.tad_bank_t1.util.DateTimeUtil;
 import com.example.tad_bank_t1.util.TransactionUtil;
+import com.google.android.material.chip.Chip;
 
 import org.w3c.dom.Text;
 
@@ -72,6 +73,7 @@ public class TxnHistoryAdapter extends RecyclerView.Adapter<TxnHistoryAdapter.Vi
     public static class ViewHolder extends RecyclerView.ViewHolder{
         private TextView txtTxnHistoryDate, txtTxnHistoryContent, txtTxnHistoryAmount;
         private ImageButton imbtOpenTxnDetail;
+        private Chip chipTxnStatus;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -80,6 +82,7 @@ public class TxnHistoryAdapter extends RecyclerView.Adapter<TxnHistoryAdapter.Vi
             txtTxnHistoryContent = itemView.findViewById(R.id.txtTxnHistoryContent);
             txtTxnHistoryDate = itemView.findViewById(R.id.txtTxnHistoryDate);
             imbtOpenTxnDetail = itemView.findViewById(R.id.imbtOpenTxnDetail);
+            chipTxnStatus = itemView.findViewById(R.id.chipTxnStatus);
         }
 
         public void bind(Transaction txn){
@@ -97,6 +100,16 @@ public class TxnHistoryAdapter extends RecyclerView.Adapter<TxnHistoryAdapter.Vi
                 txtTxnHistoryAmount.setTextColor(itemView.getResources().getColor(R.color.secondaryColor));
             else
                 txtTxnHistoryAmount.setTextColor(itemView.getResources().getColor(R.color.green));
+
+            chipTxnStatus.setText(TransactionUtil.label(txn.getStatus()));
+            chipTxnStatus.setChipBackgroundColor(
+                    android.content.res.ColorStateList.valueOf(
+                            TransactionUtil.getColorTransactionStatus(itemView.getContext(), txn.getStatus())
+                    )
+            );
+            chipTxnStatus.setTextColor(
+                    TransactionUtil.text(itemView.getContext(), txn.getStatus())
+            );
         }
     }
 }

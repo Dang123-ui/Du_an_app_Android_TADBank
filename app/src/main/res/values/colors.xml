@@ -31,4 +31,13 @@
     <color name="topup_amount_stroke_default">#E46868</color>
     <color name="topup_amount_stroke_selected">#D84343</color>
 
+
+<!--    STATUS-->
+    <color name="tnx_pending">#FFB300</color>      <!-- vàng -->
+    <color name="tnx_requires_2fa">#7C4DFF</color> <!-- tím -->
+    <color name="tnx_completed">#2E7D32</color>    <!-- xanh -->
+    <color name="tnx_failed">#C62828</color>       <!-- đỏ -->
+    <color name="tnx_cancelled">#C62828</color>    <!-- xám -->
+    <color name="tnx_unknown">#455A64</color>      <!-- xanh xám -->
+
 </resources>

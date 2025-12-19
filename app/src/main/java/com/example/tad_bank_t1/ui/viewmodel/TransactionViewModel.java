@@ -3,6 +3,7 @@ package com.example.tad_bank_t1.ui.viewmodel;
 import android.app.Application;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -20,10 +21,12 @@ import com.example.tad_bank_t1.data.repository.callbacks.ResultCallback;
 import com.example.tad_bank_t1.data.repository.email.EmailRepository;
 import com.example.tad_bank_t1.data.repository.notification.FirebaseNotificationRepository;
 import com.example.tad_bank_t1.data.repository.transaction.FirebaseTransactionRepository;
+import com.example.tad_bank_t1.data.repository.transaction.TransactionRepository;
 import com.example.tad_bank_t1.data.response.ResultWrapper;
 import com.example.tad_bank_t1.util.NotificationUtil;
 import com.example.tad_bank_t1.util.TransactionUtil;
 import com.example.tad_bank_t1.util.email.SmtpEmailSender;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.Date;
 import java.util.List;
@@ -49,6 +52,10 @@ public class TransactionViewModel extends AndroidViewModel {
 
     // state idempotency key
     private String idempotencyKey = null;
+
+    // listener transaction
+    private ListenerRegistration transactionListener;
+    private MutableLiveData<ResultWrapper<Transaction>> _listenerState = new MutableLiveData<>();
 
     public TransactionViewModel(Application application) {
         super(application);
@@ -148,7 +155,7 @@ public class TransactionViewModel extends AndroidViewModel {
         _state.postValue(ResultWrapper.loading());
         repo.createTransaction(transaction, new ResultCallback<Transaction>() {
             @Override
-            public void onSucces(Transaction data) {
+            public void onSuccess(Transaction data) {
                 if (data == null) {
                     _state.postValue(ResultWrapper.error("Tạo Transaction bị lỗi"));
                 } else {
@@ -172,7 +179,7 @@ public class TransactionViewModel extends AndroidViewModel {
         // lay tu repository
         repo.getTransactionById(transactionId, new ResultCallback<Transaction>() {
             @Override
-            public void onSucces(Transaction data) {
+            public void onSuccess(Transaction data) {
                 if (data == null) {
                     _state.postValue(ResultWrapper.error("Transaction not found"));
                 } else {
@@ -201,7 +208,7 @@ public class TransactionViewModel extends AndroidViewModel {
         // update tu repository
         repo.updateTransactionStatus(transactionId, newStatus, new ResultCallback<Transaction>() {
             @Override
-            public void onSucces(Transaction data) {
+            public void onSuccess(Transaction data) {
                 if (data == null) {
                     _state.postValue(ResultWrapper.error("Transaction not found"));
                 } else {
@@ -227,20 +234,20 @@ public class TransactionViewModel extends AndroidViewModel {
 
         repo.updateTransactionStatus(transaction.getTransactionId(), TnxStatus.COMPLETED, new ResultCallback<Transaction>() {
             @Override
-            public void onSucces(Transaction data) {
+            public void onSuccess(Transaction data) {
                 if (data == null) { _state.postValue(ResultWrapper.error("Transaction not found")); return; }
 
                 boolean isComing = TransactionUtil.isIncoming(transaction);
                 long finalAmount = isComing ? transaction.getAmount() : -transaction.getAmount();
 
                 accountRepository.updateBalanceAccount(transaction.getAccountNumber(), finalAmount, new ResultCallback<Void>() {
-                    @Override public void onSucces(Void ignored) {
+                    @Override public void onSuccess(Void ignored) {
                         sender.setBalance(sender.getBalance() + finalAmount);
 
                         // nếu nội bộ thì cộng người nhận
                         if (transaction.getType() == TxnType.TRANSFER_INTERNAL) {
                             accountRepository.updateBalanceAccount(transaction.getCounterpartyAccount(), transaction.getAmount(), new ResultCallback<Void>() {
-                                @Override public void onSucces(Void ignored2) {
+                                @Override public void onSuccess(Void ignored2) {
                                     afterBalanceDone(data);
                                 }
                                 @Override public void onError(String error) {
@@ -262,7 +269,7 @@ public class TransactionViewModel extends AndroidViewModel {
                         // ======================
                         Notification noti = NotificationUtil.createNotificationTxn(user, sender, transaction);
                         notificationRepository.createNotification(noti, new ResultCallback<Notification>() {
-                            @Override public void onSucces(Notification n) {
+                            @Override public void onSuccess(Notification n) {
                                 // thông báo trong app
                                 Log.d("TRANSACTION NOTI", noti.toString());
                                 AppNotificationHelper.showTransactionNoti(app(), noti);
@@ -345,7 +352,7 @@ public class TransactionViewModel extends AndroidViewModel {
                             // tim account
                             accountRepository.getAccountByAccountNumber(transaction.getCounterpartyAccount(), new ResultCallback<Account>() {
                                 @Override
-                                public void onSucces(Account data) {
+                                public void onSuccess(Account data) {
                                     transactionReceive.setAccountId(data.getAccountId());
                                     User userReceiver = new User();
                                     userReceiver.setUserId(data.getUserId());
@@ -353,7 +360,7 @@ public class TransactionViewModel extends AndroidViewModel {
                                     // Tao giao dich database
                                     repo.createTransaction(transactionReceive, new ResultCallback<Transaction>() {
                                         @Override
-                                        public void onSucces(Transaction transactionCreated) {
+                                        public void onSuccess(Transaction transactionCreated) {
                                             Log.d(
                                                     "MIRROR_TXN",
                                                     "Transaction created: " + transactionCreated.toString()
@@ -364,7 +371,7 @@ public class TransactionViewModel extends AndroidViewModel {
 
                                             notificationRepository.createNotification(noti, new ResultCallback<Notification>() {
                                                 @Override
-                                                public void onSucces(Notification data) {
+                                                public void onSuccess(Notification data) {
                                                     Log.d("MIRROR_TXN", "Notification created");
                                                 }
 
@@ -390,10 +397,6 @@ public class TransactionViewModel extends AndroidViewModel {
                             });
                         }
 
-
-                        // ======================
-                        // gui thong bao cho nguoi chuyen tien
-                        // ======================
                     }
                 });
             }
@@ -406,4 +409,77 @@ public class TransactionViewModel extends AndroidViewModel {
     }
 
 
+    // ============
+    // listener transaction
+    // =============
+    // ==========================
+    // ✅ LISTEN TRANSACTION STATUS (VNPAY / async update)
+    // ==========================
+    public void listenTransactionStatus(@NonNull String transactionId) {
+        stopListenTransactionStatus(); // tránh listen chồng
+
+        // set loading state (tuỳ ResultWrapper của bạn)
+        _listenerState.setValue(ResultWrapper.loading());
+
+        transactionListener = repo.listenerTransactionById(transactionId, new TransactionRepository.OnTransactionChanged() {
+            @Override
+            public void onChanged(Transaction transaction) {
+                _listenerState.setValue(ResultWrapper.success(transaction));
+            }
+
+            @Override
+            public void onError(Exception e) {
+                _listenerState.setValue(ResultWrapper.error(e.getMessage()));
+            }
+        });
+    }
+
+    private boolean postVnpayDone = false;
+
+    public void runPostSuccessActionsOnce(Transaction txn, Account sender, User user) {
+        if (postVnpayDone) return;
+        postVnpayDone = true;
+
+        // tạo notification (local + firestore)
+        Notification noti = NotificationUtil.createNotificationTxn(user, sender, txn);
+        notificationRepository.createNotification(noti, new ResultCallback<Notification>() {
+            @Override public void onSuccess(Notification n) {
+                AppNotificationHelper.showTransactionNoti(app(), noti);
+            }
+            @Override public void onError(String error) {
+                // vẫn show local notification
+                AppNotificationHelper.showTransactionNoti(app(), noti);
+            }
+        });
+
+        // gửi email receipt (nếu bạn đang dùng SMTP từ app)
+        emailRepository.sendTxnReceipt(user, sender, txn, new SmtpEmailSender.Callback() {
+            @Override public void onSuccess() { /* ok */ }
+            @Override public void onError(String error) {
+                Log.e("Email", "Send email failed: " + error);
+            }
+        });
+    }
+
+    public void resetPostSuccessFlag() {
+        postVnpayDone = false;
+    }
+
+
+    public LiveData<ResultWrapper<Transaction>> getListenerState() {
+        return _listenerState;
+    }
+
+    public void stopListenTransactionStatus() {
+        if (transactionListener != null) {
+            transactionListener.remove();
+            transactionListener = null;
+        }
+    }
+
+    @Override
+    protected void onCleared() {
+        stopListenTransactionStatus();
+        super.onCleared();
+    }
 }

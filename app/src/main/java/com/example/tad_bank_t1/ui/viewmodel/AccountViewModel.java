@@ -33,7 +33,7 @@ public class AccountViewModel extends ViewModel {
         // update tu repository
         accountRepo.updateAccount(account, new ResultCallback<Account>() {
             @Override
-            public void onSucces(Account data) {
+            public void onSuccess(Account data) {
                 if (data == null) {
                     _state.postValue(ResultWrapper.error("Account not found"));
                 } else {
@@ -51,7 +51,7 @@ public class AccountViewModel extends ViewModel {
     public void getAccountByAccountNumber(String accountNumber) {
         accountRepo.getAccountByAccountNumber(accountNumber, new ResultCallback<Account>() {
             @Override
-            public void onSucces(Account data) {
+            public void onSuccess(Account data) {
                 if (data == null) {
                     _state.postValue(ResultWrapper.error("Account not found"));
                 } else {

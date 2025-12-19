@@ -42,6 +42,10 @@ public class NotificationUtil {
             );
         }
 
+        msg.append(
+                ". Chuyển khoản qua " + transaction.getChannel().toString()
+        );
+
         Notification noti = new Notification.Builder()
                 .notificationId(generateNotificationId())
                 .userId(user.getUserId())

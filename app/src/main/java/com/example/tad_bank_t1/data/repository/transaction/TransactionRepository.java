@@ -5,6 +5,7 @@ import com.example.tad_bank_t1.data.model.Transaction;
 import com.example.tad_bank_t1.data.model.enums.TnxStatus;
 import com.example.tad_bank_t1.data.repository.callbacks.ResultCallback;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
@@ -16,6 +17,8 @@ public interface TransactionRepository {
     Task<Transaction> getById(String txnId);
     Task<List<Transaction>> getTransactionsByAccount(String accountId);
     Task<QuerySnapshot> searchByKeyword(String keyword, int limit);
+
+    ListenerRegistration listenerTransactionById(String transactionId, OnTransactionChanged listener);
 
     // --------------------------------
     // Tạo giao dịch với status: PENDING
@@ -32,4 +35,8 @@ public interface TransactionRepository {
     // --------------------------------
     public void getTransactionById(String transactionId, ResultCallback<Transaction> callback);
 
+    interface OnTransactionChanged {
+        void onChanged(Transaction transaction);
+        void onError(Exception e);
+    }
 }

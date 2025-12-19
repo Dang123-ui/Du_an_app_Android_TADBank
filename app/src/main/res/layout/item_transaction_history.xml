@@ -33,6 +33,24 @@
                 android:text="12/10/2025"
                 android:textColor="@color/primaryColor"
                 android:textSize="12sp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipTxnStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="PENDING"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                app:chipMinHeight="16dp"
+                app:chipCornerRadius="12dp"
+                app:chipIconVisible="false"
+                app:closeIconVisible="false"
+                app:checkedIconVisible="false"
+                app:chipStrokeWidth="0dp"
+                />
+
             <View
                 android:layout_width="0dp"
                 android:layout_height="1dp"

@@ -1,12 +1,14 @@
 package com.example.tad_bank_t1.data.remote.config;
 
+import com.example.tad_bank_t1.BuildConfig;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiConfig {
-    private static final String BASE_URL = "http://10.0.2.2:8001/api/";
+    private static final String BASE_URL = BuildConfig.BACKEND_URL;
 
     private static Retrofit retrofit = null;
 

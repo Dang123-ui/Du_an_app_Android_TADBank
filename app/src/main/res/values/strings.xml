@@ -129,4 +129,10 @@
     <string name="gui_lai_otp_count_dowwn">Resend OTP (%1$02d:%2$02d)</string>
     <string name="vui_long_nhap_pin">Please enter your PIN</string>
     <string name="email_da_ton_tai">Email is exist.</string>
+    <string name="danh_sach_ncc">Bill provider list</string>
+    <string name="hint_chon_nha_cung_cap">Please choose provider</string>
+    <string name="ngay_giao_dich">Transaction date</string>
+    <string name="kenh_giao_dich">Channel</string>
+    <string name="loai_giao_dich">Transaction type</string>
+    <string name="trang_thai_giao_dich">Status</string>
 </resources>

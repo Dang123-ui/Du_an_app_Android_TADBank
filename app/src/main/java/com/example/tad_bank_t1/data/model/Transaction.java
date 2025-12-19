@@ -10,29 +10,39 @@ import java.util.Map;
 
 public class Transaction {
     private String transactionId;      // PK
+    private String parentId;               // refund
+
     private String accountId;          // FK -> Accounts.accountId
     private String accountNumber;
     private String accountName;
+
     private TxnType type;
     private TnxStatus status;
     private TxnChannel channel;
+
     private Long amount;
+    private Long feeAmount;
     private String currency;           // default VND
     private String description;
     // giữ chính tả "chanel" theo sơ đồ
-    private String parentId;               // refund
+
     private String counterpartyAccount;
     private String counterpartyName;
     private String counterpartyBankCode;
     private String counterpartyBankName;
     private String counterpartyBankLogo;
+
     private String branchId;               // nếu rút tại CN/ATM
-    private Long feeAmount;
+
+    private String orderId;
     private String billId;                 // link Bill
     private String paymentId;              // link Payment
+
     private String scheduleId;             // link MortgagePaymentSchedule
+
     private boolean otpRequired;
     private Date otpVerifiedAt;
+
     private String idempotencyKey;
     private String transactionReference;
     private Date createdAt, updatedAt;
@@ -71,7 +81,7 @@ public class Transaction {
         this.counterpartyBankLogo = builder.counterpartyBankLogo;
 
         this.billId = builder.billId;
-
+        this.orderId = builder.orderId;
         this.paymentId = builder.paymentId;
 
         this.scheduleId = builder.scheduleId;
@@ -278,6 +288,14 @@ public class Transaction {
         this.paymentId = paymentId;
     }
 
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
     public void setScheduleId(String scheduleId) {
         this.scheduleId = scheduleId;
     }
@@ -326,7 +344,8 @@ public class Transaction {
         private String counterpartyBankCode, counterpartyBankName, counterpartyBankLogo;
         private String branchId;
         private Long feeAmount;
-        private String billId;
+        private String billId, orderId;
+
         private String paymentId;
         private String scheduleId;
         private boolean otpRequired;
@@ -441,6 +460,11 @@ public class Transaction {
             return this;
         }
 
+        public Builder orderId(String orderId) {
+            this.orderId = orderId;
+            return this;
+        }
+
         public Builder paymentId(String paymentId) {
             this.paymentId = paymentId;
             return this;
@@ -504,6 +528,7 @@ public class Transaction {
         result.put("branchId", branchId);
         result.put("feeAmount", feeAmount);
         result.put("billId", billId);
+        result.put("orderId", orderId);
         result.put("paymentId", paymentId);
         result.put("scheduleId", scheduleId);
         result.put("otpRequired", otpRequired);

@@ -19,6 +19,7 @@ import com.example.tad_bank_t1.ui.base.UiConfig;
 import com.example.tad_bank_t1.ui.viewmodel.TransactionViewModel;
 import com.example.tad_bank_t1.util.CurrencyUtil;
 import com.example.tad_bank_t1.util.DateTimeUtil;
+import com.example.tad_bank_t1.util.TransactionUtil;
 
 public class TransactionDetailFragment extends Fragment implements UiConfig {
     private TransactionViewModel transactionViewModel;
@@ -95,11 +96,18 @@ public class TransactionDetailFragment extends Fragment implements UiConfig {
             content.append(txn.getDescription());
         }
 
+        content.append(
+                ". Chuyển khoản qua " + txn.getChannel().toString()
+        );
 
         binding.txtTxnDetailTxnContent.setText(content);
+        binding.txtTxnDetailTxnType.setText(txn.getType().toString());
+        binding.txtTxnDetailTxnChannel.setText(txn.getChannel().toString());
+        binding.txtTxnDetailTxnStatus.setText(txn.getStatus().toString());
+        binding.txtTxnDetailTxnStatus.setTextColor(TransactionUtil.getColorTransactionStatus(requireContext(), txn.getStatus()));
     }
 
-    // destroyview
+    // destroy view
     @Override
     public void onDestroyView() {
         transactionViewModel.selectTransaction(null);

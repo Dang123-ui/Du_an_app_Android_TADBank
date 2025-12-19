@@ -106,7 +106,7 @@ public class NotificationViewModel extends ViewModel {
 
         notificationRepository.createNotification(notification, new ResultCallback<Notification>() {
             @Override
-            public void onSucces(Notification data) {
+            public void onSuccess(Notification data) {
                 if (data == null) {
                     _resultState.postValue(ResultWrapper.error("Tạo Notification bị lỗi"));
                 } else {

@@ -26,7 +26,7 @@ public class SavingsAccount implements Serializable {
     public SavingCapitalization capitalization; //
     public InterestPaymentMethod interestPaymentMethod;  // cách trả lãi AT_MATURITY,   // trả lãi cuối kỳTO_CHECKING,   // trả lãi về tài khoản thanh toán REINVEST       // lãi nhập gốc
 
-    public String payoutAccountId;  // account được nhận khi rút
+    public String payoutAccountId;  // account được nhận khi rút và nạp sổ
 
     public SavingsAccount() {
         super();

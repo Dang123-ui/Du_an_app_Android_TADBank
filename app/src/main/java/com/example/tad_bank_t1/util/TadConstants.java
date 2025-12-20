@@ -1,6 +1,9 @@
 package com.example.tad_bank_t1.util;
 
 public class TadConstants {
+    // config rate khi đóng sổ trước hạn
+    public static final double RATE_WHEN_CLOSE_SAVING_BEFORE_MATURITY = 0.05;
+
     // config OTP
     public static final long OTP_TTL_MS = 5 * 60 * 1000;
 

@@ -23,6 +23,7 @@ public class TransferInternalEmailTemplate implements TransactionEmailTemplate {
                         TransactionEmailHtml.row("Từ tài khoản", TransactionEmailHtml.maskLast4(txn.getAccountNumber()) + " • " + TransactionEmailHtml.safe(txn.getAccountName())) +
                         TransactionEmailHtml.row("Đến tài khoản", TransactionEmailHtml.maskLast4(txn.getCounterpartyAccount()) + " • " + TransactionEmailHtml.safe(txn.getCounterpartyName())) +
                         TransactionEmailHtml.row("Kênh", String.valueOf(txn.getChannel())) +
+                        TransactionEmailHtml.row("Loại giao dịch", String.valueOf(txn.getType())) +
                         TransactionEmailHtml.row("Nội dung", String.valueOf(txn.getDescription())) +
                         TransactionEmailHtml.row("Reference", String.valueOf(txn.getTransactionReference()));
 

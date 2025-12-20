@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.example.tad_bank_t1.R;
+import com.example.tad_bank_t1.data.model.Bank;
 import com.example.tad_bank_t1.data.model.Transaction;
 import com.example.tad_bank_t1.data.model.enums.TnxStatus;
 import com.example.tad_bank_t1.data.model.enums.TxnType;
@@ -17,10 +18,49 @@ import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class TransactionUtil {
+    // kiem tra loại giao dịch nội bô hay không
+    /** Chuyen tien nôij bộ như: internal, saving, loan */
+    public static boolean isInternal(TxnType type){
+        if (type == TxnType.TRANSFER_INTERNAL
+                || type == TxnType.SAVING_DEPOSIT
+                || type == TxnType.LOAN_PAYMENT
+                || type == TxnType.SAVING_WITHDRAW
+                || type == TxnType.SAVING_INTEREST
+        )
+            return true;
+
+        return false;
+    }
+
+    // kiêm tra là giao dịch giua ngân hang hay không\
+    /** Chuyen tien bank như: internal, saving, loan */
+    public static boolean isBankTransfer(TxnType type){
+        if (type == TxnType.TRANSFER_INTERNAL
+                || type == TxnType.TRANSFER_EXTERNAL
+                || type == TxnType.TRANSFER_INTERNAL_INCOMING
+                || type == TxnType.SAVING_DEPOSIT
+                || type == TxnType.SAVING_WITHDRAW
+                || type == TxnType.SAVING_INTEREST
+                || type == TxnType.LOAN_PAYMENT
+        )
+            return true;
+        return false;
+    }
+    // return bank TAD
+    public static Bank getTADBank() {
+        Bank bank = new Bank();
+        bank.setBankId("tad");
+        bank.setBankCode("TAD");
+        bank.setBankLongName("Ngân hàng TAD Bank");
+        bank.setBankImageUrl("https://res.cloudinary.com/dubcqjth3/image/upload/v1765113796/ic_launcher_foreground_dwlhlw.webp");
+        bank.setBankName("TAD Bank");
+        return bank;
+    }
     // false nếu là giao dịch gửi tiền, true nếu là giao dịch nhận tiền
     public static boolean isIncoming(Transaction txn){
-        if (txn.getType() == TxnType.TRANSFER_INTERNAL_INCOMING || txn.getType() == TxnType.INTEREST
-                || txn.getType() == TxnType.SAVING_DEPOSIT
+        if (txn.getType() == TxnType.TRANSFER_INTERNAL_INCOMING
+                || txn.getType() == TxnType.SAVING_INTEREST
+//                || txn.getType() == TxnType.SAVING_WITHDRAW
                 || txn.getType() == TxnType.REFUND || txn.getType() == TxnType.SALARY)
             return true;
         return false;

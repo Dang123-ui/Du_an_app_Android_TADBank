@@ -51,6 +51,12 @@ import java.util.Objects;
 
 
 public class TransactionConfirmFragment extends Fragment implements UiConfig {
+    public interface TransactionConfirmCallback{
+        void onTransactionSuccess();
+        void onTransactionFailed();
+    }
+    private TransactionConfirmCallback callback;
+
     // View binding
     private FragmentTransactionComfirmBinding binding;
 
@@ -77,6 +83,9 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
         // Required empty public constructor
     }
 
+    public TransactionConfirmFragment (TransactionConfirmCallback callback){
+        this.callback = callback;
+    }
 
     @Override
     public String getAppBarTitle() {
@@ -480,10 +489,17 @@ public class TransactionConfirmFragment extends Fragment implements UiConfig {
                         sessionViewModel.user.getValue()
                 );
             }
+            // than cong gọi cal back
+            if (callback != null) {
+                callback.onTransactionSuccess();
+            }
             navigated = true;
             safeNavigateToResult();
         } else if (txn.getStatus() == TnxStatus.FAILED) {
             showError(contextMsg, "Giao dịch thất bại");
+            if (callback != null) {
+                callback.onTransactionFailed();
+            }
         }
     }
 

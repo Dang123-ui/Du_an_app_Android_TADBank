@@ -10,6 +10,7 @@ import com.example.tad_bank_t1.data.repository.account.FirebaseAccountRepository
 import com.example.tad_bank_t1.data.repository.callbacks.ResultCallback;
 import com.example.tad_bank_t1.data.response.ResultWrapper;
 
+import java.util.Date;
 import java.util.List;
 
 /** Quản lý account trong ViewModel CRUD Account */
@@ -21,12 +22,13 @@ public class AccountViewModel extends ViewModel {
 
     private MutableLiveData<ResultWrapper<Account>> _createState = new MutableLiveData<>();
     private MutableLiveData<ResultWrapper<List<Account>>> _listState = new MutableLiveData<>();
-
+    private MutableLiveData<ResultWrapper<Account>> _updateState = new MutableLiveData<>();
     private MutableLiveData<ResultWrapper<Account>> _accountState = new MutableLiveData<>();
 
     public void resetState(){
         _state.postValue(null);
         _createState.postValue(null);
+        _updateState.postValue(null);
         _listState.postValue(null);
         _accountState.postValue(null);
     }
@@ -35,6 +37,10 @@ public class AccountViewModel extends ViewModel {
     public LiveData<ResultWrapper<Account>> getAccountState() {
         return _accountState;
     }
+    public LiveData<ResultWrapper<Account>> getUpdateState() {
+        return _updateState;
+    }
+
     public LiveData<ResultWrapper<List<Account>>> getListState() {
         return _listState;
     }
@@ -52,26 +58,26 @@ public class AccountViewModel extends ViewModel {
     // update Account
     public void updateAccount(Account account) {
         if (account == null) {
-            _state.postValue(ResultWrapper.error("Account is null"));
+            _updateState.postValue(ResultWrapper.error("Account is null"));
             return;
         }
 
-        _state.postValue(ResultWrapper.loading());
+        _updateState.postValue(ResultWrapper.loading());
 
         // update tu repository
         accountRepo.updateAccount(account, new ResultCallback<Account>() {
             @Override
             public void onSuccess(Account data) {
                 if (data == null) {
-                    _state.postValue(ResultWrapper.error("Account not found"));
+                    _updateState.postValue(ResultWrapper.error("Account not found"));
                 } else {
-                    _state.postValue(ResultWrapper.success(data));
+                    _updateState.postValue(ResultWrapper.success(data));
                 }
             }
 
             @Override
             public void onError(String error) {
-                _state.postValue(ResultWrapper.error(error));
+                _updateState.postValue(ResultWrapper.error(error));
             }
         });
     }

@@ -1,12 +1,10 @@
 package com.example.tad_bank_t1.ui.fragment.customer.account;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.transition.Slide;
 import android.view.Gravity;
@@ -16,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.model.Account;
+import com.example.tad_bank_t1.data.model.enums.AccountStatus;
 import com.example.tad_bank_t1.data.model.enums.AccountType;
 import com.example.tad_bank_t1.databinding.FragmentAccountListByTypeBinding;
 import com.example.tad_bank_t1.ui.activity.MainActivity;
@@ -25,9 +24,9 @@ import com.example.tad_bank_t1.ui.fragment.customer.savings.SavingAccountCreateF
 import com.example.tad_bank_t1.ui.fragment.customer.savings.SavingAccountDetailFragment;
 import com.example.tad_bank_t1.ui.fragment.customer.transaction.TransactionHistoryFragment;
 import com.example.tad_bank_t1.ui.viewadapter.AccountListAdapter;
-import com.example.tad_bank_t1.ui.viewmodel.SessionViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.TransactionViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.account.AccountViewModel;
+import com.example.tad_bank_t1.util.CurrencyUtil;
 
 import java.util.List;
 import java.util.Objects;
@@ -99,18 +98,25 @@ public class AccountListByTypeFragment extends Fragment implements UiConfig, Bas
             return;
         }
 
+        // xoas no data
         binding.txtAccListByTypeEmpty.setVisibility(View.GONE);
         binding.rvAccListByType.setVisibility(View.VISIBLE);
 
+        // bind data
         accountListAdapter.setData(accounts);
         binding.rvAccListByType.setAdapter(accountListAdapter);
         binding.rvAccListByType.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // bind card
+        binding.tvAccListByTypeTotalBalance.setText(CurrencyUtil.formatVND(getTotalBalance(accounts)));
+        String showAccOpen = getString(R.string.co_count_tai_khoan_open, countAccountIsOpen(accounts));
+        binding.txtAccListByTypeCountAccount.setText(showAccOpen);
     }
 
     @Override
     public void initView() {
         if (Objects.equals(accountType, AccountType.MORTGAGE.name())){
-            showError(requireContext(), "Lỗi", "Chức năng này chưa được hỗ trợ MORTGAE");
+            showError(requireContext(), "Lỗi", "Chức năng này chưa được hỗ trợ MORTGAGE");
 //                    ((MainActivity) requireActivity())
 //                            .openFeatureFragment(SavingAccountDetailFragment.newInstance(account.getAccountId()), getString(R.string.tai_khoan_tiet_kiem)));
         }
@@ -132,7 +138,7 @@ public class AccountListByTypeFragment extends Fragment implements UiConfig, Bas
                 }
 
                 if (Objects.equals(accountType, AccountType.MORTGAGE.name())){
-                    showError(requireContext(), "Lỗi", "Chức năng này chưa được hỗ trợ MORTGAE");
+                    showError(requireContext(), "Lỗi", "Chức năng này chưa được hỗ trợ MORTGAGE");
 //                    ((MainActivity) requireActivity())
 //                            .openFeatureFragment(SavingAccountDetailFragment.newInstance(account.getAccountId()), getString(R.string.tai_khoan_tiet_kiem)));
                 }
@@ -179,7 +185,7 @@ public class AccountListByTypeFragment extends Fragment implements UiConfig, Bas
 
                 } else if (Objects.equals(accountType, AccountType.SAVING.name())){
                     ((MainActivity) requireActivity())
-                            .openFeatureFragment(SavingAccountCreateFragment.newInstance(userId, accountType), getString(R.string.tao_moi_tai_khoanr));
+                            .openFeatureFragment(SavingAccountCreateFragment.newInstance(userId, accountType), getString(R.string.tao_moi_tai_khoan));
                 }
             }
         });
@@ -207,5 +213,15 @@ public class AccountListByTypeFragment extends Fragment implements UiConfig, Bas
     public void onStop(){
         super.onStop();
         accountViewModel.resetState();
+    }
+
+    // tính tông tiền từ acccounts
+    public long getTotalBalance(List<Account> accounts){
+        return accounts.stream().mapToLong(Account::getBalance).sum();
+    }
+
+    // dem so account dang OPEN
+    public int countAccountIsOpen(List<Account> accounts){
+        return (int) accounts.stream().filter(account -> account.getStatus() == AccountStatus.OPEN).count();
     }
 }

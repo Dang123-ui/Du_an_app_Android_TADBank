@@ -33,6 +33,7 @@ import com.example.tad_bank_t1.ui.viewmodel.TransactionPayloadViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.TransactionViewModel;
 import com.example.tad_bank_t1.util.CurrencyUtil;
 import com.example.tad_bank_t1.util.DateTimeUtil;
+import com.example.tad_bank_t1.util.TransactionUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -123,7 +124,7 @@ public class TransactionResultFragment extends Fragment implements UiConfig {
         binding.txtTransactionResultSourceAccount.setText(txn.getAccountNumber());
 
         // transfer
-        if (txn.getType() == TxnType.TRANSFER_INTERNAL || txn.getType() == TxnType.TRANSFER_EXTERNAL){
+        if (TransactionUtil.isBankTransfer(txn.getType())){
             binding.lnloTransactionResultReceiverName.setVisibility(View.VISIBLE);
             binding.lnloTransactionResultBankReceiver.setVisibility(View.VISIBLE);
 

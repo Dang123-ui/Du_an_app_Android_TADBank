@@ -240,20 +240,27 @@ public class TransactionViewModel extends AndroidViewModel {
                 boolean isComing = TransactionUtil.isIncoming(transaction);
                 long finalAmount = isComing ? transaction.getAmount() : -transaction.getAmount();
 
-                accountRepository.updateBalanceAccount(transaction.getAccountNumber(), finalAmount, new ResultCallback<Void>() {
-                    @Override public void onSuccess(Void ignored) {
-                        sender.setBalance(sender.getBalance() + finalAmount);
 
-                        // nếu nội bộ thì cộng người nhận
-                        if (transaction.getType() == TxnType.TRANSFER_INTERNAL) {
-                            accountRepository.updateBalanceAccount(transaction.getCounterpartyAccount(), transaction.getAmount(), new ResultCallback<Void>() {
-                                @Override public void onSuccess(Void ignored2) {
+                // rut tien tu saving account thi reser về 0
+                if (transaction.getType() == TxnType.SAVING_WITHDRAW){
+                    finalAmount = -sender.getBalance();
+                }
+
+                accountRepository.updateBalanceAccount(transaction.getAccountNumber(), finalAmount, new ResultCallback<Account>() {
+                    @Override public void onSuccess(Account accountUpdated) {
+                        sender.setBalance(accountUpdated.getBalance());
+
+                        // nếu nội bộ thì cộng người nhận: INTERNAL || SAVING_DEPOSIT
+                        if (TransactionUtil.isInternal(data.getType())) {
+                            accountRepository.updateBalanceAccount(transaction.getCounterpartyAccount(), transaction.getAmount(), new ResultCallback<Account>() {
+                                @Override public void onSuccess(Account receiverUpdate) {
                                     afterBalanceDone(data);
                                 }
                                 @Override public void onError(String error) {
                                     _state.postValue(ResultWrapper.error("Update receiver balance failed: " + error));
                                 }
                             });
+
                         } else {
                             afterBalanceDone(data);
                         }
@@ -309,7 +316,7 @@ public class TransactionViewModel extends AndroidViewModel {
                         // ======================
                         // tao giao dich nhan tien neu la chuyen noi bo
                         // ======================
-                        if (completedTxn.getType() == TxnType.TRANSFER_INTERNAL){
+                        if (TransactionUtil.isInternal(completedTxn.getType())){
                             // tao giao dich moi
                             String newRef = TransactionUtil.generateRef();
                             String newIdemp = TransactionUtil.generateIdempotencyKey(
@@ -325,10 +332,11 @@ public class TransactionViewModel extends AndroidViewModel {
                                     + " " + transaction.getCounterpartyName()
                                     + " " + transaction.getCounterpartyBankCode();
 
+
                             Transaction transactionReceive = Transaction.builder()
                                     .transactionId(TransactionUtil.generateTransactionId())
                                     .accountNumber(transaction.getCounterpartyAccount())
-                                    .accountName(transaction.getCounterpartyAccount())
+                                    .accountName(transaction.getCounterpartyName())
                                     .counterpartyAccount(sender.getAccountNumber())
                                     .counterpartyName(sender.getAccountName())
                                     .counterpartyBankCode(transaction.getCounterpartyBankCode())
@@ -369,7 +377,7 @@ public class TransactionViewModel extends AndroidViewModel {
                                             // Xong thi tao thong bao cho nguoi nhan
                                             Notification notiReceive = NotificationUtil.createNotificationTxn(userReceiver, data, transactionCreated);
 
-                                            notificationRepository.createNotification(noti, new ResultCallback<Notification>() {
+                                            notificationRepository.createNotification(notiReceive, new ResultCallback<Notification>() {
                                                 @Override
                                                 public void onSuccess(Notification data) {
                                                     Log.d("MIRROR_TXN", "Notification created");

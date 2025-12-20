@@ -54,7 +54,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="8dp"
-                            android:text="@string/trang_thai_giao_dich"
+                            android:text="@string/thong_tin_chung"
                             android:textSize="16sp"
                             android:textColor="@color/text_primary"
                             android:fontFamily="sans-serif-medium" />
@@ -237,9 +237,9 @@
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:src="@drawable/ic_home_bottom_home"
+                            android:src="@drawable/ic_percent"
                             android:contentDescription="@null"
-                            app:tint="@color/orange_100" />
+                            app:tint="@color/orange_600" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -313,7 +313,7 @@
                             <ImageView
                                 android:layout_width="16dp"
                                 android:layout_height="16dp"
-                                android:src="@drawable/ic_home_bottom_home"
+                                android:src="@drawable/ic_trending_up"
                                 android:contentDescription="@null"
                                 app:tint="@color/orange_600" />
 
@@ -433,7 +433,7 @@
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:src="@drawable/ic_home_bottom_home"
+                            android:src="@drawable/ic_coins"
                             android:contentDescription="@null"
                             app:tint="@color/orange_600" />
 
@@ -546,13 +546,13 @@
                                         android:layout_height="wrap_content"
                                         android:text="@string/label_total_maturity"
                                         android:textSize="12sp"
-                                        android:textColor="@color/orange_600" />
+                                        android:textColor="@color/primaryColor" />
 
                                     <TextView
                                         android:id="@+id/txtSavingDetailTotalMaturity"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:textSize="24sp"
+                                        android:textSize="20sp"
                                         android:textColor="@color/black"
                                         android:fontFamily="sans-serif-medium"
                                         tools:text="159.750.000 ₫" />
@@ -562,13 +562,13 @@
                                 <FrameLayout
                                     android:layout_width="48dp"
                                     android:layout_height="48dp"
-                                    android:background="@drawable/bg_card_white">
+                                    android:background="@drawable/ripple_button">
 
                                     <ImageView
                                         android:layout_width="24dp"
                                         android:layout_height="24dp"
                                         android:layout_gravity="center"
-                                        android:src="@drawable/ic_home_bottom_home"
+                                        android:src="@drawable/ic_trending_up"
                                         android:contentDescription="@null"
                                         app:tint="@color/white" />
 
@@ -627,6 +627,32 @@
                 </LinearLayout>
 
             </LinearLayout>
+
+<!--            button đóng số tiết kiệm-->
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCloseSavingAcc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+
+                android:background="@drawable/ripple_button"
+                android:text="@string/action_close_account"
+
+                app:icon="@drawable/ic_modal_cancel"
+                app:iconGravity="textStart"
+                app:iconPadding="10dp"
+                app:iconSize="20dp"
+                app:iconTint="@color/white"
+
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:backgroundTint="@null"
+
+                app:cornerRadius="30dp"
+                app:elevation="8dp"
+                />
 
         </LinearLayout>
 

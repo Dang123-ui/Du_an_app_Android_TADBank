@@ -43,7 +43,7 @@ public interface AccountRepository {
     // --------------------------------
     // Cap nhat thong tin balance cho account number
     // --------------------------------
-    void updateBalanceAccount(String accountNumber, Long amount, ResultCallback<Void> callback);
+    void updateBalanceAccount(String accountNumber, Long amount, ResultCallback<Account> callback);
 
     // --------------------------------
     // Lay account by account number

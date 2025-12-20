@@ -8,6 +8,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -15,7 +16,7 @@ public class DateTimeUtil {
     public static final ZoneId LOCAL_ZONE_ID = ZoneId.of("Asia/Ho_Chi_Minh");
 
     // nhan vào giờ UTC +7 trả ra format dd-mm-YYYY hh:mm:ss
-    public static String formatDateToVNTime(Date date){
+    public static String formatDateToVNTime(Date date) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
         // Format the Date object into a String
@@ -82,4 +83,36 @@ public class DateTimeUtil {
 
         return localDateTime.format(formatter);
     }
+
+
+    /**
+     * Trả về true nếu selectedDate (theo ngày) < hôm nay (theo ngày).
+     */
+    public static boolean isBeforeToday(Date selectedDate) {
+        if (selectedDate == null) return true;
+
+        Calendar selectedCal = Calendar.getInstance();
+        selectedCal.setTime(selectedDate);
+        normalizeToStartOfDay(selectedCal);
+
+        Calendar todayCal = Calendar.getInstance();
+        normalizeToStartOfDay(todayCal);
+
+        return selectedCal.before(todayCal);
+    }
+
+    /**
+     * Trả về true nếu selectedDate (theo ngày) >= hôm nay (theo ngày).
+     */
+    public static boolean isTodayOrAfter(Date selectedDate) {
+        return !isBeforeToday(selectedDate);
+    }
+
+    private static void normalizeToStartOfDay(Calendar calendar) {
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+    }
+
 }

@@ -12,13 +12,12 @@ public class TransactionEmailTemplateFactory {
 
         switch (type){
             case TRANSFER_INTERNAL:
+            case SAVING_DEPOSIT:
                 return new TransferInternalEmailTemplate();
             case TRANSFER_EXTERNAL:
                 return new TransferExternalEmailTemplate();
             case MOBILE_TOPUP:
                 return new MobileTopupEmailTemplate();
-//            case WITHDRAWAL:
-//                return new WithdrawalEmailTemplate();
             default:
                 return new DefaultEmailTemplate();
         }

@@ -20,8 +20,6 @@ public enum TxnType {
     // Other
     LOAN_PAYMENT,
     FEE,
-    TRANSFER_INTERNAL_INCOMING,
     TRANSFER_INTERNAL_OUTGOING,
-    SAVING_WITHDRAW,
 
 }

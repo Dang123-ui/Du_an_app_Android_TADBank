@@ -4,11 +4,8 @@ import android.app.DownloadManager;
 
 import com.example.tad_bank_t1.data.adapterPattern.account.AccountAdapter;
 import com.example.tad_bank_t1.data.model.Account;
-<<<<<<< HEAD
 import com.example.tad_bank_t1.data.repository.callbacks.ResultCallback;
-=======
 import com.example.tad_bank_t1.data.model.enums.AccountStatus;
->>>>>>> officer_1
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentReference;
@@ -23,11 +20,8 @@ import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.Collections;
-<<<<<<< HEAD
 import java.util.Date;
-=======
 import java.util.HashMap;
->>>>>>> officer_1
 import java.util.List;
 import java.util.Map;
 import java.util.Set;

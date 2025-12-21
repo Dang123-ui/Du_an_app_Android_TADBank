@@ -227,22 +227,6 @@ public class Account implements Serializable {
         return map;
     }
 
-    public SavingsAccount getSaving() {
-        return saving;
-    }
-
-    public void setSaving(SavingsAccount saving) {
-        this.saving = saving;
-    }
-
-    public MortgageAccount getMortgage() {
-        return mortgage;
-    }
-
-    public void setMortgage(MortgageAccount mortgage) {
-        this.mortgage = mortgage;
-    }
-
     private static void putIfNotNull(Map<String, Object> map, String key, Object value) {
         if (value != null)
             map.put(key, value);

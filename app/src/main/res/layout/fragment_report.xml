@@ -73,10 +73,10 @@
                     <com.google.android.material.textfield.MaterialAutoCompleteTextView
                         android:id="@+id/actCheckingAccount"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:importantForAutofill="no"
+                        android:layout_height="match_parent"
                         android:inputType="none"
                         android:textColor="#1c1b1f"
+                        android:padding="3dp"
                         tools:text="****1234 - Main Checking" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -96,13 +96,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:hint="Từ ngày"
-                    app:startIconDrawable="@drawable/ic_calendar"
-                    app:endIconMode="custom"
-                    app:endIconDrawable="@drawable/ic_chevron_down"
                     app:endIconContentDescription="Chọn ngày"
+                    app:endIconMode="custom"
                     app:layout_constraintEnd_toStartOf="@id/guidelineMid"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tilAccount">
+                    app:layout_constraintTop_toBottomOf="@id/tilAccount"
+                    app:startIconDrawable="@drawable/ic_calendar_cus"
+                    app:startIconTint="@null">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edtFromDate"
@@ -125,9 +125,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:hint="Đến ngày"
-                    app:startIconDrawable="@drawable/ic_calendar"
+                    app:startIconDrawable="@drawable/ic_calendar_cus"
+                    app:startIconTint="@null"
                     app:endIconMode="custom"
-                    app:endIconDrawable="@drawable/ic_chevron_down"
                     app:endIconContentDescription="Chọn ngày"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/guidelineMid"
@@ -231,26 +231,30 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnExportExcel"
-                    style="@style/Widget.Material3.Button.FilledButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
+                    android:background="@null"
                     android:text="Xuất Excel (.xlsx)"
+                    app:backgroundTint="#E65F5F"
                     app:icon="@drawable/ic_excel"
                     app:iconPadding="8dp"
+                    app:iconTint="@null"
                     app:layout_constraintEnd_toStartOf="@id/guidelineMid2"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvActionsTitle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnExportPdf"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="Xuất PDF"
+                    android:background="@null"
+                    android:text="Xuất Pdf (.pdf)"
+                    app:backgroundTint="#E65F5F"
                     app:icon="@drawable/ic_pdf"
                     app:iconPadding="8dp"
+                    app:iconTint="@null"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/guidelineMid2"
                     app:layout_constraintTop_toBottomOf="@id/tvActionsTitle" />
@@ -259,7 +263,7 @@
                     android:id="@+id/progressExport"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
+                    android:layout_marginTop="12dp"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

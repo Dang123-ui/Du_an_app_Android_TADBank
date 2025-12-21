@@ -1,12 +1,24 @@
 package com.example.tad_bank_t1.util.report;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.pdf.PdfDocument;
 
 import com.example.tad_bank_t1.data.model.Transaction;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class StatementExportUtil {
@@ -90,10 +102,10 @@ public class StatementExportUtil {
                             : ""
             );
             r.createCell(1).setCellValue(safe(t.getTransactionId()));
-            r.createCell(2).setCellValue(safe(t.getType()));
+            r.createCell(2).setCellValue(safe(t.getType().name()));
             r.createCell(3).setCellValue(safe(t.getDescription()));
             r.createCell(4).setCellValue(t.getAmount());
-            r.createCell(5).setCellValue(t.getBalanceAfter());
+//            r.createCell(5).setCellValue(t.getBalanceAfter());
         }
 
         // Auto size
@@ -179,10 +191,10 @@ public class StatementExportUtil {
                     40, y, paint
             );
             canvas.drawText(safe(t.getTransactionId()), 90, y, paint);
-            canvas.drawText(safe(t.getType()), 160, y, paint);
+            canvas.drawText(safe(t.getType().name()), 160, y, paint);
             canvas.drawText(shortText(safe(t.getDescription()), 30), 220, y, paint);
             canvas.drawText(String.valueOf(t.getAmount()), 420, y, paint);
-            canvas.drawText(String.valueOf(t.getBalanceAfter()), 500, y, paint);
+//            canvas.drawText(String.valueOf(t.getBalanceAfter()), 500, y, paint);
             y += 14;
         }
 

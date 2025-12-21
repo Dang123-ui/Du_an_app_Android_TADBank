@@ -88,6 +88,7 @@
         buildFeatures {
             viewBinding = true
             buildConfig = true
+            dataBinding = true      // bật thêm cái này
             mlModelBinding = true
         }
 
@@ -146,7 +147,7 @@
         implementation("org.maplibre.gl:android-sdk:11.13.5")
 
         // material design,
-    //    implementation ("com.google.android.material:material:1.13.0")
+        implementation ("com.google.android.material:material:1.13.0")
 
         // ExoPlayer and Media3
         implementation ("androidx.media3:media3-exoplayer:1.8.0")
@@ -173,13 +174,14 @@
 
         // HAI DANG NEW
         implementation(project(":transitionbutton"))
+        implementation (project(":boommenu"))
         implementation("com.github.fazla-cloud:meow-bottom-nav:v1.0.0")
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.2.0")
         implementation("com.github.PhilJay:MPAndroidChart:3.1.0")
-        implementation (project(":boommenu"))
-        implementation("com.squareup.retrofit2:retrofit:3.0.0")
-        implementation("com.squareup.retrofit2:converter-gson:3.0.0")
-        implementation("com.squareup.okhttp3:logging-interceptor:5.3.2")
+        implementation("org.apache.poi:poi-ooxml:5.5.1")
+//        implementation("com.squareup.retrofit2:retrofit:3.0.0")
+//        implementation("com.squareup.retrofit2:converter-gson:3.0.0")
+//        implementation("com.squareup.okhttp3:logging-interceptor:5.3.2")
         
         implementation(libs.appcompat)
         implementation(libs.material)

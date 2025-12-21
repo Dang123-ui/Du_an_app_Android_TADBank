@@ -85,8 +85,8 @@ public final class MockAccountFactory {
         policy.setStatus(SavingPolicyStatus.ACTIVE); // nếu enum bạn khác thì đổi lại
         policy.setCreatedAt(now);
         policy.setUpdatedAt(now);
-        policy.setCreatedBy("seed");
-        policy.setUpdateBy("seed");
+//        policy.setCreatedBy("seed");
+//        policy.setUpdateBy("seed");
         return policy;
     }
 

@@ -14,6 +14,7 @@ import java.util.Map;
  */
 public class MortgageAccount implements Serializable {
 
+    // public class MortgageAccount {
     /** Số tiền vay ban đầu (gốc). */
     private long principalAmount;
 
@@ -52,37 +53,87 @@ public class MortgageAccount implements Serializable {
     /** Ngày trả kỳ gần nhất. */
     private Date lastPaymentDate;
 
-//    /** Số ngày gia hạn trước khi tính OVERDUE (tuỳ chọn). */
-//    private int graceDays;
-//
-//    /** Phí trễ hạn cố định mỗi kỳ nếu OVERDUE (tuỳ chọn). */
-//    private long lateFeeAmount;
+    // /** Số ngày gia hạn trước khi tính OVERDUE (tuỳ chọn). */
+    // private int graceDays;
+    //
+    // /** Phí trễ hạn cố định mỗi kỳ nếu OVERDUE (tuỳ chọn). */
+    // private long lateFeeAmount;
 
     // getters/setters...
+    // /** Thời hạn vay (tháng). Ví dụ 240 tháng = 20 năm. */
+    // private int termMonths;
 
-    public MortgageAccount() {}
+    // /** Trả theo tháng hoặc mỗi 2 tuần. */
+    // private MortgagePaymentFrequency paymentFrequency;
+
+    // /** Ngày bắt đầu khoản vay (giải ngân). */
+    // private Date startDate;
+
+    // /** Ngày đến hạn kỳ tiếp theo (để UI hiển thị nhanh). */
+    // private Date nextDueDate;
+
+    // /** UserId của nhân viên ngân hàng phụ trách khoản vay. */
+    // private String officerId;
+
+    public MortgageAccount() {
+    }
 
     // ===== getters/setters =====
-    public long getPrincipalAmount() { return principalAmount; }
-    public void setPrincipalAmount(long principalAmount) { this.principalAmount = principalAmount; }
+    public long getPrincipalAmount() {
+        return principalAmount;
+    }
 
-    public double getInterestRateAnnual() { return interestRateAnnual; }
-    public void setInterestRateAnnual(double interestRateAnnual) { this.interestRateAnnual = interestRateAnnual; }
+    public void setPrincipalAmount(long principalAmount) {
+        this.principalAmount = principalAmount;
+    }
 
-    public int getTermMonths() { return termMonths; }
-    public void setTermMonths(int termMonths) { this.termMonths = termMonths; }
+    public double getInterestRateAnnual() {
+        return interestRateAnnual;
+    }
 
-    public MortgagePaymentFrequency getPaymentFrequency() { return paymentFrequency; }
-    public void setPaymentFrequency(MortgagePaymentFrequency paymentFrequency) { this.paymentFrequency = paymentFrequency; }
+    public void setInterestRateAnnual(double interestRateAnnual) {
+        this.interestRateAnnual = interestRateAnnual;
+    }
 
-    public Date getStartDate() { return startDate; }
-    public void setStartDate(Date startDate) { this.startDate = startDate; }
+    public int getTermMonths() {
+        return termMonths;
+    }
 
-    public Date getNextDueDate() { return nextDueDate; }
-    public void setNextDueDate(Date nextDueDate) { this.nextDueDate = nextDueDate; }
+    public void setTermMonths(int termMonths) {
+        this.termMonths = termMonths;
+    }
 
-    public String getOfficerId() { return officerId; }
-    public void setOfficerId(String officerId) { this.officerId = officerId; }
+    public MortgagePaymentFrequency getPaymentFrequency() {
+        return paymentFrequency;
+    }
+
+    public void setPaymentFrequency(MortgagePaymentFrequency paymentFrequency) {
+        this.paymentFrequency = paymentFrequency;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getNextDueDate() {
+        return nextDueDate;
+    }
+
+    public void setNextDueDate(Date nextDueDate) {
+        this.nextDueDate = nextDueDate;
+    }
+
+    public String getOfficerId() {
+        return officerId;
+    }
+
+    public void setOfficerId(String officerId) {
+        this.officerId = officerId;
+    }
 
     public int getTotalPeriods() {
         return totalPeriods;
@@ -144,7 +195,8 @@ public class MortgageAccount implements Serializable {
             map.put("paymentFrequency", paymentFrequency.name());
         }
 
-        // ===== Optional fields (nếu class em đã bổ sung thì giữ, chưa có thì xoá) =====
+        // ===== Optional fields (nếu class em đã bổ sung thì giữ, chưa có thì xoá)
+        // =====
         MapUtils.putIfNotNull(map, "totalPeriods", totalPeriods);
         MapUtils.putIfNotNull(map, "amountDuePerPeriod", amountDuePerPeriod);
         MapUtils.putIfNotNull(map, "paidPeriods", paidPeriods);

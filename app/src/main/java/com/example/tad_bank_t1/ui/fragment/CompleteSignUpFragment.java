@@ -23,7 +23,6 @@ import com.example.tad_bank_t1.data.repository.users.FirebaseUserRepository;
 import com.example.tad_bank_t1.ui.activity.SignUpActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;

@@ -55,11 +55,6 @@ public class SignUpActivity extends AppCompatActivity {
     public static final int FLOW_SIGN_UP = 0;
     public static final int FLOW_FORGOT_PASSWORD = 1;
     public static final int FLOW_FACE_LOGIN = 2;
-    public static Intent intentForSignUp(Context ctx) {
-        return new Intent(ctx, SignUpActivity.class)
-                .putExtra(EXTRA_FLOW, FLOW_SIGN_UP);
-    }
-
     public static Intent intentForForgotPassword(Context ctx, String uid) {
         return new Intent(ctx, SignUpActivity.class)
                 .putExtra(EXTRA_FLOW, FLOW_FORGOT_PASSWORD)

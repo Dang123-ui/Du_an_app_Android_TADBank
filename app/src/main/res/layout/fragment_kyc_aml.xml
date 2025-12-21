@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.fragment.officer.KycAmlFragment"
+    android:fillViewport="true">
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:padding="16dp">-->
+
+<!--        <androidx.cardview.widget.CardView-->
+<!--            android:id="@+id/card_kyc_summary"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:cardCornerRadius="12dp"-->
+<!--            app:cardElevation="2dp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent">-->
+
+<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:padding="12dp">-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_kyc_header"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Tổng quan KYC"-->
+<!--                    android:textSize="16sp"-->
+<!--                    android:textStyle="bold"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent" />-->
+<!--                &lt;!&ndash; List basic KYC data fields &ndash;&gt;-->
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_doc_type_label"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="8dp"-->
+<!--                    android:text="Loại giấy tờ:"-->
+<!--                    android:textStyle="bold"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/tv_kyc_header" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_doc_type"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="5dp"-->
+<!--                    android:layout_marginTop="8dp"-->
+<!--                    android:text="CCCD"-->
+<!--                    app:layout_constraintStart_toEndOf="@id/tv_doc_type_label"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/tv_kyc_header" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_risk_score_label"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="8dp"-->
+<!--                    android:text="Mức rủi ro:"-->
+<!--                    android:textStyle="bold"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/tv_doc_type_label" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_risk_score"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="5dp"-->
+<!--                    android:layout_marginTop="8dp"-->
+<!--                    android:text="Thấp"-->
+<!--                    app:layout_constraintStart_toEndOf="@id/tv_risk_score_label"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/tv_doc_type" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_kyc_status_label"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="8dp"-->
+<!--                    android:text="Trạng thái KYC:"-->
+<!--                    android:textStyle="bold"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/tv_risk_score_label" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_kyc_status"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="5dp"-->
+<!--                    android:layout_marginTop="8dp"-->
+<!--                    android:text="Đã xác thực"-->
+<!--                    app:layout_constraintStart_toEndOf="@+id/tv_kyc_status_label"-->
+<!--                    app:layout_constraintStart_toEnd_of="@id/tv_kyc_status_label"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/tv_risk_score" />-->
+
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/layout_kyc_actions"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="12dp"-->
+<!--                    android:orientation="vertical"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/tv_kyc_status_label">-->
+
+<!--                    <Button-->
+<!--                        android:id="@+id/btn_request_additional_docs"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="Yêu cầu bổ sung giấy tờ"-->
+<!--                        android:background="@drawable/bg_card_gradient_red"-->
+<!--                        app:backgroundTint="@null"-->
+<!--                        />-->
+
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="8dp"-->
+<!--                        android:orientation="horizontal">-->
+
+<!--                        <Button-->
+<!--                            android:id="@+id/btn_approve_kyc"-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_weight="1"-->
+<!--                            android:text="Phê duyệt"-->
+<!--                            android:background="@drawable/bg_card_gradient_red"-->
+<!--                            app:backgroundTint="@null"-->
+<!--                            />-->
+
+<!--                        <Button-->
+<!--                            android:id="@+id/btn_reject_kyc"-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginStart="8dp"-->
+<!--                            android:layout_weight="1"-->
+<!--                            android:text="Từ chối"-->
+<!--                            android:background="@drawable/bg_card_gradient_red"-->
+<!--                            app:backgroundTint="@null"-->
+<!--                            />-->
+<!--                    </LinearLayout>-->
+
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="8dp"-->
+<!--                        android:orientation="horizontal">-->
+
+<!--                        <Button-->
+<!--                            android:id="@+id/btn_upgrade_kyc"-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_weight="1"-->
+<!--                            android:text="Nâng cấp"-->
+<!--                            android:background="@drawable/bg_card_gradient_red"-->
+<!--                            app:backgroundTint="@null"-->
+<!--                            />-->
+
+<!--                        <Button-->
+<!--                            android:id="@+id/btn_downgrade_kyc"-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginStart="8dp"-->
+<!--                            android:layout_weight="1"-->
+<!--                            android:text="Giáng cấp"-->
+<!--                            android:background="@drawable/bg_card_gradient_red"-->
+<!--                            app:backgroundTint="@null"-->
+<!--                            />-->
+<!--                    </LinearLayout>-->
+<!--                </LinearLayout>-->
+<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--        </androidx.cardview.widget.CardView>-->
+
+
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+</ScrollView>

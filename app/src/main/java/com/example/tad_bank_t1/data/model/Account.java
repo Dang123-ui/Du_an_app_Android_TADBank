@@ -1,5 +1,7 @@
 package com.example.tad_bank_t1.data.model;
 
+import androidx.annotation.NonNull;
+
 import com.example.tad_bank_t1.data.model.enums.AccountStatus;
 import com.example.tad_bank_t1.data.model.enums.AccountType;
 import com.google.firebase.firestore.DocumentId;
@@ -23,12 +25,11 @@ public class Account implements Serializable {
     public String branchId;
     public AccountType type;
     public String currency;
-    public  long balance;
+    public long balance;
     public AccountStatus status;
     public Date createdAt;
     private Date closedAt;
     private Date updatedAt;
-
 
     // saving
     public SavingsAccount saving;
@@ -36,21 +37,23 @@ public class Account implements Serializable {
     //
     public MortgageAccount mortgage;
 
-    public Account() {}
+    public Account() {
+    }
+
     public Account(String id,
-                   String userId,
-                   String pinCode,
-                   boolean isDefault,
-                   String accountName,
-                   String accountNumber,
-                   String branchId,
-                   AccountType type,
-                   String currency,
-                   Long balance,
-                   AccountStatus status,
-                   Date createdAt,
-                   Date closedAt,
-                   Date updatedAt) {
+            String userId,
+            String pinCode,
+            boolean isDefault,
+            String accountName,
+            String accountNumber,
+            String branchId,
+            AccountType type,
+            String currency,
+            Long balance,
+            AccountStatus status,
+            Date createdAt,
+            Date closedAt,
+            Date updatedAt) {
         this.accountId = id;
         this.userId = userId;
         this.pinCode = pinCode;
@@ -66,10 +69,12 @@ public class Account implements Serializable {
         this.closedAt = closedAt;
         this.updatedAt = updatedAt;
     }
+
     @Exclude
     public String getAccountId() {
         return accountId;
     }
+
     public void setAccountId(String accountId) {
         this.accountId = accountId;
     }
@@ -178,7 +183,6 @@ public class Account implements Serializable {
         isDefault = aDefault;
     }
 
-
     public SavingsAccount getSaving() {
         return saving;
     }
@@ -195,7 +199,7 @@ public class Account implements Serializable {
         this.mortgage = mortgage;
     }
 
-    public Map<String, Object> toMap(){
+    public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
         map.put("pinCode", pinCode);
@@ -217,11 +221,34 @@ public class Account implements Serializable {
 
         if (mortgage != null) {
             map.put("mortgage", mortgage.toMap());
+            // map.put("mortgage", mortgage.toMap());
         }
 
         return map;
     }
 
+    public SavingsAccount getSaving() {
+        return saving;
+    }
+
+    public void setSaving(SavingsAccount saving) {
+        this.saving = saving;
+    }
+
+    public MortgageAccount getMortgage() {
+        return mortgage;
+    }
+
+    public void setMortgage(MortgageAccount mortgage) {
+        this.mortgage = mortgage;
+    }
+
+    private static void putIfNotNull(Map<String, Object> map, String key, Object value) {
+        if (value != null)
+            map.put(key, value);
+    }
+
+    @NonNull
     @Override
     public String toString() {
         return "Account{" +

@@ -34,6 +34,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
 
         android:allowBackup="true"
+        android:usesCleartextTraffic="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -54,6 +55,21 @@
 <!--        <activity-->
 <!--            android:name=".BrowseErrorActivity"-->
 <!--            android:exported="false" />-->
+        <activity
+            android:name=".ui.activity.OfficerMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.DetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PlaybackActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BrowseErrorActivity"
+            android:exported="false" />
 
 <!--        <meta-data-->
 <!--            android:name="com.google.android.geo.API_KEY"-->

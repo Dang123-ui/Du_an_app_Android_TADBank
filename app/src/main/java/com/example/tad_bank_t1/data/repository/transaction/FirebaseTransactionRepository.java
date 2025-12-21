@@ -47,7 +47,8 @@ public class FirebaseTransactionRepository implements TransactionRepository {
                 // Lấy từng DocumentSnapshot trong QuerySnapshot
                 for (var doc : task.getResult().getDocuments()) {
                     Transaction obj = doc.toObject(Transaction.class);
-                    if (obj != null) result.add(obj);
+                    if (obj != null)
+                        result.add(obj);
                 }
             }
             return result;
@@ -58,10 +59,8 @@ public class FirebaseTransactionRepository implements TransactionRepository {
     public Task<QuerySnapshot> searchByKeyword(String keyword, int limit) {
         return adapter.where(
                 adapter.query().orderBy("fullName")
-                        .startAt(keyword).endAt(keyword + "\uf8ff").limit(limit)
-        );
+                        .startAt(keyword).endAt(keyword + "\uf8ff").limit(limit));
     }
-
 
     // listener TransactionById
     @Override
@@ -72,12 +71,14 @@ public class FirebaseTransactionRepository implements TransactionRepository {
 
         return q.addSnapshotListener((snapshot, e) -> {
             if (e != null) {
-                if (listener != null) listener.onError(e);
+                if (listener != null)
+                    listener.onError(e);
                 return;
             }
 
             if (snapshot == null || snapshot.isEmpty()) {
-                if (listener != null) listener.onError(new Exception("Transaction not found: " + transactionId));
+                if (listener != null)
+                    listener.onError(new Exception("Transaction not found: " + transactionId));
                 return;
             }
 
@@ -85,15 +86,16 @@ public class FirebaseTransactionRepository implements TransactionRepository {
             Transaction transaction = doc.toObject(Transaction.class);
 
             if (transaction == null) {
-                if (listener != null) listener.onError(new Exception("Parse transaction failed"));
+                if (listener != null)
+                    listener.onError(new Exception("Parse transaction failed"));
                 return;
             }
 
             Log.d("FirebaseTransactionRepository", "listenerTransactionById: " + transaction);
-            if (listener != null) listener.onChanged(transaction);
+            if (listener != null)
+                listener.onChanged(transaction);
         });
     }
-
 
     // --------------------------------
     // Tạo giao dịch với status: PENDING
@@ -101,10 +103,10 @@ public class FirebaseTransactionRepository implements TransactionRepository {
     @Override
     public void createTransaction(Transaction transaction, ResultCallback<Transaction> callback) {
         // transaction to Map
-        if (transaction.getTransactionId() == null){
+        if (transaction.getTransactionId() == null) {
             transaction.setTransactionId(TransactionUtil.generateTransactionId());
         }
-        if (transaction.getStatus() == null){
+        if (transaction.getStatus() == null) {
             transaction.setStatus(TnxStatus.PENDING);
         }
 
@@ -119,7 +121,8 @@ public class FirebaseTransactionRepository implements TransactionRepository {
                 .document(id)
                 .set(txnMap)
                 .continueWithTask(task -> {
-                    if (!task.isSuccessful()) throw task.getException();
+                    if (!task.isSuccessful())
+                        throw task.getException();
                     return adapter.col().document(id).get();
                 })
                 .addOnSuccessListener(doc -> {
@@ -132,14 +135,16 @@ public class FirebaseTransactionRepository implements TransactionRepository {
     // --------------------------------
     // Cap nhat trang thai mot cho giao dich
     // --------------------------------
-    public void updateTransactionStatus(String transactionId, TnxStatus newStatus, ResultCallback<Transaction> callback) {
+    public void updateTransactionStatus(String transactionId, TnxStatus newStatus,
+            ResultCallback<Transaction> callback) {
         Map<String, Object> updateData = new HashMap<>();
         updateData.put("status", newStatus);
         adapter.col()
                 .document(transactionId)
                 .update(updateData)
                 .continueWithTask(task -> {
-                    if (!task.isSuccessful()) throw task.getException();
+                    if (!task.isSuccessful())
+                        throw task.getException();
                     return adapter.col().document(transactionId).get();
                 })
                 .addOnSuccessListener(documentSnapshot -> {
@@ -167,4 +172,22 @@ public class FirebaseTransactionRepository implements TransactionRepository {
                 });
     }
 
+    @Override
+    public void getTransactionsInRange(Date start, Date end, TransactionListCallback callback) {
+        adapter.query()
+                .whereGreaterThanOrEqualTo("createdAt", start)
+                .whereLessThanOrEqualTo("createdAt", end)
+                .get().addOnSuccessListener(snap -> {
+                    List<Transaction> list = new ArrayList<>();
+                    for (DocumentSnapshot doc : snap.getDocuments()) {
+                        Transaction tx = doc.toObject(Transaction.class);
+                        if (tx != null) {
+                            // Nếu cần PK:
+                            // tx.setTransactionId(doc.getId());
+                            list.add(tx);
+                        }
+                    }
+                    callback.onSuccess(list);
+                }).addOnFailureListener(callback::onFailure);
+    }
 }

@@ -29,6 +29,11 @@ import com.example.tad_bank_t1.ui.fragment.customer.transfer.BankTransferFragmen
 import com.example.tad_bank_t1.ui.fragment.customer.HomeCustomerFragment;
 import com.example.tad_bank_t1.ui.fragment.customer.setting.SettingFragment;
 import com.example.tad_bank_t1.ui.viewmodel.PaymentReturnViewModel;
+import com.example.tad_bank_t1.data.model.Account;
+import com.example.tad_bank_t1.data.model.User;
+import com.example.tad_bank_t1.data.model.enums.UserStatusOnlOff;
+import com.example.tad_bank_t1.data.repository.users.FirebaseUserRepository;
+import com.example.tad_bank_t1.data.repository.users.UserRepository; 
 import com.example.tad_bank_t1.ui.viewmodel.SessionViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -46,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQ_NOTI = 1001;
 
 
+    private String currentUserId;
+    private final UserRepository userRepo = new FirebaseUserRepository();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -165,14 +172,14 @@ public class MainActivity extends AppCompatActivity {
         paymentReturnVM = new ViewModelProvider(this).get(PaymentReturnViewModel.class);
 
         Intent intent = getIntent();
-        String userId = null;
+        currentUserId = null;
         if (intent != null) {
-            userId = intent.getStringExtra(EXTRA_USERID);
+            currentUserId = intent.getStringExtra(EXTRA_USERID);
         }
-        if (userId != null) {
-            sessionViewModel.setUserId(userId);
+        if (currentUserId != null) {
+            sessionViewModel.setUserId(currentUserId);
 //            sessionViewModel.loadCurrentUserAndAccounts(userId);
-            sessionViewModel.observeUserAndAccountsRealtime(userId);
+            sessionViewModel.observeUserAndAccountsRealtime(currentUserId);
             sessionViewModel.isLoading.observe(this, isLoading -> {
                 if (isLoading) {
                     showLoading(true);
@@ -225,6 +232,22 @@ public class MainActivity extends AppCompatActivity {
 
         // Nút back trên toolbar
         binding.toolbar.setNavigationOnClickListener(v -> onBackPressed());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(currentUserId != null){
+            userRepo.updateStatusOnlOff(currentUserId, UserStatusOnlOff.ONLINE);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (currentUserId != null) {
+            userRepo.updateStatusOnlOff(currentUserId, UserStatusOnlOff.OFFLINE);
+        }
     }
 
     @Override
@@ -391,4 +414,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // end intent web payment
+}
+
 }

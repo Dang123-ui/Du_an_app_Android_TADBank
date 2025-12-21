@@ -9,13 +9,17 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 public interface TransactionRepository {
     Task<Void> upsert(Transaction transaction);
+
     Task<Transaction> getById(String txnId);
+
     Task<List<Transaction>> getTransactionsByAccount(String accountId);
+
     Task<QuerySnapshot> searchByKeyword(String keyword, int limit);
 
     ListenerRegistration listenerTransactionById(String transactionId, OnTransactionChanged listener);
@@ -28,7 +32,8 @@ public interface TransactionRepository {
     // --------------------------------
     // Cap nhat trang thai mot cho giao dich
     // --------------------------------
-    public void updateTransactionStatus(String transactionId, TnxStatus newStatus, ResultCallback<Transaction> callback);
+    public void updateTransactionStatus(String transactionId, TnxStatus newStatus,
+            ResultCallback<Transaction> callback);
 
     // --------------------------------
     // Lay mot thong tin giao dich bang id
@@ -37,6 +42,15 @@ public interface TransactionRepository {
 
     interface OnTransactionChanged {
         void onChanged(Transaction transaction);
+
         void onError(Exception e);
     }
+
+    interface TransactionListCallback {
+        void onSuccess(List<Transaction> transactions);
+
+        void onFailure(Exception e);
+    }
+
+    void getTransactionsInRange(Date start, Date end, TransactionListCallback callback);
 }

@@ -1,6 +1,5 @@
 package com.example.tad_bank_t1.data.model;
 
-
 import com.example.tad_bank_t1.data.model.enums.saving.InterestPaymentMethod;
 import com.example.tad_bank_t1.data.model.enums.saving.SavingCapitalization;
 import com.example.tad_bank_t1.util.MapUtils;
@@ -18,21 +17,23 @@ import java.util.Map;
 public class SavingsAccount implements Serializable {
     public String policyId;
     public String policyName;
-    public double aprAtOpen;  // rate khi chọn gói tiết kiệm
+    public double aprAtOpen; // rate khi chọn gói tiết kiệm
 
     public Date startDate;
     public Date maturityDate;
 
     public SavingCapitalization capitalization; //
-    public InterestPaymentMethod interestPaymentMethod;  // cách trả lãi AT_MATURITY,   // trả lãi cuối kỳTO_CHECKING,   // trả lãi về tài khoản thanh toán REINVEST       // lãi nhập gốc
+    public InterestPaymentMethod interestPaymentMethod; // cách trả lãi AT_MATURITY, // trả lãi cuối kỳTO_CHECKING, //
+                                                        // trả lãi về tài khoản thanh toán REINVEST // lãi nhập gốc
 
-    public String payoutAccountId;  // account được nhận khi rút và nạp sổ
+    public String payoutAccountId; // account được nhận khi rút và nạp sổ
 
     public SavingsAccount() {
         super();
     }
 
-    public SavingsAccount(String policyId, Date startDate, Date maturityDate, SavingCapitalization capitalization, double aprAtOpen, InterestPaymentMethod interestPaymentMethod, String payoutAccountId) {
+    public SavingsAccount(String policyId, Date startDate, Date maturityDate, SavingCapitalization capitalization,
+            double aprAtOpen, InterestPaymentMethod interestPaymentMethod, String payoutAccountId) {
         this.policyId = policyId;
         this.startDate = startDate;
         this.maturityDate = maturityDate;
@@ -106,14 +107,15 @@ public class SavingsAccount implements Serializable {
         this.payoutAccountId = payoutAccountId;
     }
 
-    public Map<String, Object> toMap(){
+    public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
 
         MapUtils.putIfNotNull(map, "policyId", policyId);
         MapUtils.putIfNotNull(map, "policyName", policyName);
         MapUtils.putIfNotNull(map, "startDate", startDate);
         MapUtils.putIfNotNull(map, "maturityDate", maturityDate);
-        MapUtils.putIfNotNull(map, "aprAtOpen", aprAtOpen); MapUtils.putIfNotNull(map, "payoutAccountId", payoutAccountId);
+        MapUtils.putIfNotNull(map, "aprAtOpen", aprAtOpen);
+        MapUtils.putIfNotNull(map, "payoutAccountId", payoutAccountId);
 
         // enums
         map.put("capitalization", capitalization != null ? capitalization.name() : null);

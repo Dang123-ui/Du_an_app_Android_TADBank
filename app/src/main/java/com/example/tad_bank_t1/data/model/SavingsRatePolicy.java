@@ -1,48 +1,78 @@
 package com.example.tad_bank_t1.data.model;
 
+import androidx.annotation.NonNull;
+
+import com.example.tad_bank_t1.data.model.enums.UserSegment;
+import com.example.tad_bank_t1.data.model.enums.saving.DefaultRenewalPolicy;
+import com.example.tad_bank_t1.data.model.enums.saving.InterestPayoutOption;
+import com.example.tad_bank_t1.data.model.enums.saving.InterestReceivingOption;
+import com.example.tad_bank_t1.data.model.enums.saving.ProductType;
 import com.example.tad_bank_t1.data.model.enums.saving.SavingPolicyStatus;
 import com.example.tad_bank_t1.util.MapUtils;
+import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.Exclude;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SavingsRatePolicy {
-    private String savingPolicyId;
-    /**
-     * Tên gói tiết kiệm để hiển thị.
-     * Ví dụ: "Tiết kiệm 6 tháng", "Tiết kiệm 12 tháng lãi cuối kỳ".
-     */
-    private String policyName;
+    // ===== Identity / Basic Info =====
+    @DocumentId
+    private String savingPolicyId; // Firestore documentId
+    private String contractCode; // Mã hợp đồng
+    private String policyName; // Tên sản phẩm
+    private String shortDescription; // Mô tả ngắn
 
-    /**
-     * Kỳ hạn của gói tiết kiệm (đơn vị: tháng).
-     * Ví dụ: 1, 3, 6, 12, 24...
-     * - Dùng để tính maturityDate = startDate + termMonths (khi mở sổ).
-     */
+    // MASS / PREMIER / PRIORITY
+    private UserSegment targetSegment;
+
+    // ACTIVE / INACTIVE
+    private SavingPolicyStatus status;
+
+    // NON_TERM / TERM
+    private ProductType productType;
+
+    // ===== Non-term settings =====
+    private Double nonTermApr; // lãi suất không kỳ hạn (%/năm) - null nếu productType=TERM
+
+    // ===== Interest payout & receiving =====
+    private InterestPayoutOption interestPayoutOption; // Trả lãi theo phương thức nào
+    private InterestReceivingOption defaultInterestReceivingOption; // Nhận lãi ở đâu (checking/ tái tục)
+
     private int termMonths;
-
-    /**
-     * Lãi suất năm (APR) theo %/năm.
-     * Ví dụ: 6.5 nghĩa là 6.5%/năm (KHÔNG phải 0.065).
-     * - ProfitPerMonth (ước tính) = principal * interestRate/100 / 12.
-     */
     private double interestRate;
 
-    private SavingPolicyStatus status;
+    // Không tái tục / tái tục gốc / tái tục gốc + lãi
+    private DefaultRenewalPolicy defaultRenewalPolicy;
+
+    // ===== Limits & rules =====
+    private Long minDeposit;
+    private Long maxDeposit;
+
+    private Boolean allowOnlineOpening;
+    private Boolean allowAdditionalDeposits;
+
+    // ===== Partial withdrawals =====
+    private Boolean allowPartialWithdrawals;
+
+    // Số dư tối thiểu phải duy trì trong sổ (khi allowPartialWithdrawals = true)
+    private Long minBalanceToKeep;
+
+    // Bạn muốn input text thủ công thay vì select
+    private String partialWithdrawInterestCalcNote;
+
+    // ===== Audit =====
     private Date createdAt;
     private Date updatedAt;
-    private String createdBy;
-    private String updateBy;
-
-
-    // Constructor
-
 
     public SavingsRatePolicy() {
     }
 
-    public SavingsRatePolicy(String savingPolicyId, String policyName, int termMonths, double interestRate, SavingPolicyStatus status, Date createdAt, Date updatedAt, String createdBy, String updateBy) {
+    public SavingsRatePolicy(String savingPolicyId, String policyName, int termMonths, double interestRate,
+            SavingPolicyStatus status, Date createdAt, Date updatedAt, String createdBy, String updateBy) {
         this.savingPolicyId = savingPolicyId;
         this.policyName = policyName;
         this.termMonths = termMonths;
@@ -50,10 +80,9 @@ public class SavingsRatePolicy {
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.createdBy = createdBy;
-        this.updateBy = updateBy;
     }
 
+    @Exclude
     public String getSavingPolicyId() {
         return savingPolicyId;
     }
@@ -93,7 +122,6 @@ public class SavingsRatePolicy {
     public void setInterestRate(double interestRate) {
         this.interestRate = interestRate;
     }
- 
 
     public Date getCreatedAt() {
         return createdAt;
@@ -111,38 +139,39 @@ public class SavingsRatePolicy {
         this.updatedAt = updatedAt;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
+    public void setContractCode(String contractCode) {
+        this.contractCode = contractCode;
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
+    public String getContractCode() {
+        return contractCode;
     }
 
-    public String getUpdateBy() {
-        return updateBy;
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
     }
 
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
+    public String getShortDescription() {
+        return shortDescription;
     }
 
-    // to map
+    // ===== Firestore mapping =====
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
-        map.put("savingPolicyId", savingPolicyId);
         MapUtils.putIfNotNull(map, "policyName", policyName);
+        MapUtils.putIfNotNull(map, "contractCode", contractCode);
+        MapUtils.putIfNotNull(map, "shortDescription", shortDescription);
         map.put("termMonths", termMonths);
         map.put("interestRate", interestRate);
         MapUtils.putIfNotNull(map, "status", status);
+        map.put("productType", ProductType.TERM);
         MapUtils.putIfNotNull(map, "createdAt", createdAt);
         MapUtils.putIfNotNull(map, "updatedAt", updatedAt);
-        MapUtils.putIfNotNull(map, "createdBy", createdBy);
-        MapUtils.putIfNotNull(map, "updateBy", updateBy);
-
+        map.put("updateBy", "seed");
         return map;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "SavingsPolicy{" +
@@ -152,10 +181,6 @@ public class SavingsRatePolicy {
                 ", interestRate=" + interestRate +
                 ", status=" + status +
                 ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                ", createdBy='" + createdBy + '\'' +
-                ", updateBy='" + updateBy + '\'' +
-                '}';
+                ", updatedAt=" + updatedAt + '}';
     }
 }
-

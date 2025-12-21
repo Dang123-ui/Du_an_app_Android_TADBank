@@ -1,7 +1,6 @@
 package com.example.tad_bank_t1.data.repository.savingPolicy;
 
 import com.example.tad_bank_t1.data.adapterPattern.SavingPolicyAdapter;
-import com.example.tad_bank_t1.data.model.Bank;
 import com.example.tad_bank_t1.data.model.SavingsRatePolicy;
 import com.example.tad_bank_t1.data.model.Transaction;
 import com.example.tad_bank_t1.data.repository.callbacks.ResultCallback;
@@ -19,25 +18,46 @@ import java.util.Map;
 public class FirebaseSavingPolicyRepository implements SavingPolicyRepository {
     private final SavingPolicyAdapter adapter = new SavingPolicyAdapter();
 
-
     @Override
     public void create(SavingsRatePolicy savingPolicy, ResultCallback<SavingsRatePolicy> callback) {
-        Map<String, Object> txnMap = savingPolicy.toMap();
-        String colName = "SP";
+        Map<String, Object> map = savingPolicy.toMap();
 
-        String id = savingPolicy.getSavingPolicyId() != null ? savingPolicy.getSavingPolicyId() : colName + "-" + TransactionUtil.generateIdWithTime();
+        // 1) Nếu đã có id => upsert theo id đó
+        if (savingPolicy.getSavingPolicyId() != null && !savingPolicy.getSavingPolicyId().trim().isEmpty()) {
+            String id = savingPolicy.getSavingPolicyId().trim();
 
-
-        // upsert transaction
-        adapter.col()
-                .document(id)
-                .set(txnMap)
+            adapter.col()
+                    .document(id)
+                    .set(map)
+                    .continueWithTask(task -> {
+                        if (!task.isSuccessful())
+                            throw task.getException();
+                        return adapter.col().document(id).get();
+                    })
+                    .addOnSuccessListener(doc -> {
+                        SavingsRatePolicy saved = doc.toObject(SavingsRatePolicy.class);
+                        if (saved != null) {
+                            // đảm bảo object có id
+                            saved.setSavingPolicyId(doc.getId());
+                        }
+                        callback.onSuccess(saved);
+                    })
+                    .addOnFailureListener(e -> callback.onError(e.getMessage()));
+            return;
+        }
+        final var docRef = adapter.col().document(); // auto-id
+        final String newId = docRef.getId();
+        docRef.set(map)
                 .continueWithTask(task -> {
-                    if (!task.isSuccessful()) throw task.getException();
-                    return adapter.col().document(id).get();
+                    if (!task.isSuccessful())
+                        throw task.getException();
+                    return docRef.get();
                 })
                 .addOnSuccessListener(doc -> {
                     SavingsRatePolicy saved = doc.toObject(SavingsRatePolicy.class);
+                    if (saved != null) {
+                        saved.setSavingPolicyId(doc.getId());
+                    }
                     callback.onSuccess(saved);
                 })
                 .addOnFailureListener(e -> callback.onError(e.getMessage()));
@@ -49,13 +69,14 @@ public class FirebaseSavingPolicyRepository implements SavingPolicyRepository {
                 .orderBy("createdAt", Query.Direction.DESCENDING);
 
         q.get().addOnSuccessListener(queryDocumentSnapshots -> {
-                    List<SavingsRatePolicy> list = new ArrayList<>();
-                    for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
-                        SavingsRatePolicy obj = doc.toObject(SavingsRatePolicy.class);
-                        if (obj != null) list.add(obj);
-                    }
-                    callback.onSuccess(list);
-                })
+            List<SavingsRatePolicy> list = new ArrayList<>();
+            for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                SavingsRatePolicy obj = doc.toObject(SavingsRatePolicy.class);
+                if (obj != null)
+                    list.add(obj);
+            }
+            callback.onSuccess(list);
+        })
                 .addOnFailureListener(e -> callback.onError(e.getMessage()));
     }
 
@@ -86,7 +107,8 @@ public class FirebaseSavingPolicyRepository implements SavingPolicyRepository {
                 .document(savingPolicy.getSavingPolicyId())
                 .update(updateData)
                 .continueWithTask(task -> {
-                    if (!task.isSuccessful()) throw task.getException();
+                    if (!task.isSuccessful())
+                        throw task.getException();
                     return adapter.col().document(savingPolicy.getSavingPolicyId()).get();
                 })
                 .addOnSuccessListener(documentSnapshot -> {

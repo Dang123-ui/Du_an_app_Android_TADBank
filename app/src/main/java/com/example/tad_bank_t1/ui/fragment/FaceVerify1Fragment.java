@@ -89,13 +89,13 @@ public class FaceVerify1Fragment extends Fragment {
 
     public interface FaceVerifyCallback {
         void onFaceVerified();
+
         void onFaceFailed(String reason);
     }
 
     public static FaceVerify1Fragment newForTransaction(
             String uid,
-            FaceVerifyCallback callback
-    ) {
+            FaceVerifyCallback callback) {
         FaceVerify1Fragment fragment = new FaceVerify1Fragment();
         Bundle args = new Bundle();
         args.putInt(ARG_MODE, MODE_TRANSACTION);
@@ -104,9 +104,6 @@ public class FaceVerify1Fragment extends Fragment {
         fragment.callback = callback;
         return fragment;
     }
-
-
-
 
     public FaceVerify1Fragment() {
     }
@@ -123,6 +120,7 @@ public class FaceVerify1Fragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
     public static FaceVerify1Fragment newForFaceLogin(String uid) {
         FaceVerify1Fragment fragment = new FaceVerify1Fragment();
         Bundle args = new Bundle();
@@ -131,6 +129,7 @@ public class FaceVerify1Fragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,9 +146,10 @@ public class FaceVerify1Fragment extends Fragment {
             mode = getArguments().getInt(ARG_MODE, MODE_SIGNUP);
         }
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_face_verify1, container, false);
     }
 
@@ -163,7 +163,6 @@ public class FaceVerify1Fragment extends Fragment {
         registerActivityResultLaunchers();
         setupButtonListeners();
 
-
         // nếu là mode transaction thì sửa background
         if (mode == MODE_TRANSACTION) {
             View root = view.findViewById(R.id.main_face_verify1);
@@ -174,14 +173,15 @@ public class FaceVerify1Fragment extends Fragment {
                 int topInset = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top;
 
                 ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
-                lp.topMargin = topInset;    // ⭐ auto margin theo status bar
+                lp.topMargin = topInset; // ⭐ auto margin theo status bar
                 v.setLayoutParams(lp);
 
                 return WindowInsetsCompat.CONSUMED;
-//            return insets;
+                // return insets;
             });
         }
     }
+
     private void registerActivityResultLaunchers() {
         try {
             cameraPermissionLauncher = registerForActivityResult(
@@ -207,7 +207,8 @@ public class FaceVerify1Fragment extends Fragment {
             pickImageLauncher = registerForActivityResult(
                     new ActivityResultContracts.GetContent(),
                     uri -> {
-                        if (uri == null) return;
+                        if (uri == null)
+                            return;
                         try {
                             Bitmap bmp = loadBitmapFromUri(uri);
                             verifyAgainstReference(bmp);
@@ -225,8 +226,8 @@ public class FaceVerify1Fragment extends Fragment {
     private void setupButtonListeners() {
         btnTakePhoto.setOnClickListener(v -> {
             Log.d("FaceVerify", "Camera button clicked");
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
-                    == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(requireContext(),
+                    Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                 launchCamera();
             } else {
                 cameraPermissionLauncher.launch(Manifest.permission.CAMERA);
@@ -238,6 +239,7 @@ public class FaceVerify1Fragment extends Fragment {
             pickImageLauncher.launch("image/*");
         });
     }
+
     private void launchCamera() {
         try {
             takePreviewLauncher.launch(null);
@@ -248,112 +250,112 @@ public class FaceVerify1Fragment extends Fragment {
             // Fallback Intent cũ (nếu launcher fail)
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
-                startActivityForResult(takePictureIntent, 1001);  // REQUEST_IMAGE_CAPTURE
+                startActivityForResult(takePictureIntent, 1001); // REQUEST_IMAGE_CAPTURE
             }
         }
     }
 
     private void verifyAgainstReference(Bitmap captureBmp) {
-//        if (ekyc == null || ekyc.getFaceImagePath() == null || !ekyc.getFaceImagePath().startsWith("data:image/")) {
-//            toast("Thiếu ảnh tham chiếu.");
-//            return;
-//        }
-//        Bitmap refBmp = decodeDataUrlToBitmap(ekyc.getFaceImagePath());
-//        Bitmap softwareRef = ensureSoftwareBitmap(refBmp);
-//        if (softwareRef == null) {
-//            toast("Không thể xử lý ảnh tham chiếu.");
-//            return;
-//        }
-//        final Context appContext = requireContext().getApplicationContext();
-//        final FaceEmbeddingModel embeddingModel = FaceEmbeddingModel.getInstance(appContext);
-//        detectAndCropSingleFace(captureBmp)
-//                .addOnSuccessListener(capFace -> {
-//                    if (capFace == null) {
-//                        toast("Vui lòng chụp 1 khuôn mặt rõ ràng vào khung.");
-//                        return;
-//                    }
-//                    Bitmap softwareCap = ensureSoftwareBitmap(capFace);
-//                    if (softwareCap == null) {
-//                        toast("Không thể xử lý khuôn mặt chụp được.");
-//                        return;
-//                    }
-//                    Bitmap refScaled = null;
-//                    Bitmap capScaled = null;
-//                    try {
-//                        refScaled = Bitmap.createScaledBitmap(softwareRef, 160, 160, true);
-//                        capScaled = Bitmap.createScaledBitmap(softwareCap, 160, 160, true);
-//                        imgPicture.setImageBitmap(capScaled);
-//                        final Bitmap finalRef = refScaled;
-//                        final Bitmap finalCap = capScaled;
-//                        new Thread(() -> {
-//                            try {
-//                                float[] embRef = embeddingModel.embed(finalRef);
-//                                float[] embCap = embeddingModel.embed(finalCap);
-//                                if (embRef == null || embCap == null) {
-//                                    runOnUiThreadSafe(() -> toast("Không trích xuất được đặc trưng khuôn mặt."));
-//                                    return;
-//                                }
-//                                double similarity = cosineSimilarity(embRef, embCap);
-//                                boolean isMatch = similarity >= 0.60;
-//                                if(isMatch){
-//                                    ekyc.setVerified(true);
-//                                    ekyc.setVerifiedAt(new Date());
-//                                    FirebaseEkycRepository ekycRepository = new FirebaseEkycRepository();
-//                                    ekycRepository.update(ekyc.getId(), ekyc)
-//                                            .addOnSuccessListener(aVoid -> {
-//                                                runOnUiThreadSafe(() -> toast("Xác thực khuôn mặt thành công!"));
-//                                                success.setVisibility(View.VISIBLE);
-//                                                success.playAnimation();
-//                                                success.addAnimatorListener(new android.animation.AnimatorListenerAdapter() {
-//                                                    @Override
-//                                                    public void onAnimationEnd(Animator animation) {
-//                                                        super.onAnimationEnd(animation);
-//                                                        EmailVerifyFragment emailVerifyFragment =
-//                                                                EmailVerifyFragment.newInstance(ekyc, uid, phone, username, email);
-//
-//                                                        if (getActivity() instanceof SignUpActivity) {
-//                                                            ((SignUpActivity) getActivity()).navigateTo(emailVerifyFragment, true);
-//                                                        }
-//
-//                                                    }
-//                                                });
-//                                            })
-//                                            .addOnFailureListener(e -> {
-//                                                runOnUiThreadSafe(() ->
-//                                                        toast("Cập nhật EKYC thất bại: " + e.getMessage()));
-//                                            });
-//                                }else{
-//                                    runOnUiThreadSafe(() -> toast("Khuôn mặt không trùng khớp"));
-//                                }
-//
-////                                String message = isMatch
-////                                        ? String.format(Locale.US, "Xác thực thành công (%.3f)", similarity)
-////                                        : String.format(Locale.US, "Không khớp (%.3f)", similarity);
-////                                runOnUiThreadSafe(() -> toast(message));
-//
-//                            } catch (Exception e) {
-//                                String msg = e.getMessage() != null ? e.getMessage() : "Lỗi xác thực.";
-//                                runOnUiThreadSafe(() -> toast(msg));
-//                            }
-//                        }).start();
-//                    } catch (OutOfMemoryError oom) {
-//                        runOnUiThreadSafe(() -> toast("Bộ nhớ không đủ."));
-//                    } catch (Exception e) {
-//                        runOnUiThreadSafe(() -> toast("Lỗi xử lý ảnh."));
-//                    }
-//                })
-//                .addOnFailureListener(e -> {
-//                    toast("Lỗi nhận diện khuôn mặt: " + e.getMessage());
-//                });
+        // if (ekyc == null || ekyc.getFaceImagePath() == null ||
+        // !ekyc.getFaceImagePath().startsWith("data:image/")) {
+        // toast("Thiếu ảnh tham chiếu.");
+        // return;
+        // }
+        // Bitmap refBmp = decodeDataUrlToBitmap(ekyc.getFaceImagePath());
+        // Bitmap softwareRef = ensureSoftwareBitmap(refBmp);
+        // if (softwareRef == null) {
+        // toast("Không thể xử lý ảnh tham chiếu.");
+        // return;
+        // }
+        // final Context appContext = requireContext().getApplicationContext();
+        // final FaceEmbeddingModel embeddingModel =
+        // FaceEmbeddingModel.getInstance(appContext);
+        // detectAndCropSingleFace(captureBmp)
+        // .addOnSuccessListener(capFace -> {
+        // if (capFace == null) {
+        // toast("Vui lòng chụp 1 khuôn mặt rõ ràng vào khung.");
+        // return;
+        // }
+        // Bitmap softwareCap = ensureSoftwareBitmap(capFace);
+        // if (softwareCap == null) {
+        // toast("Không thể xử lý khuôn mặt chụp được.");
+        // return;
+        // }
+        // Bitmap refScaled = null;
+        // Bitmap capScaled = null;
+        // try {
+        // refScaled = Bitmap.createScaledBitmap(softwareRef, 160, 160, true);
+        // capScaled = Bitmap.createScaledBitmap(softwareCap, 160, 160, true);
+        // imgPicture.setImageBitmap(capScaled);
+        // final Bitmap finalRef = refScaled;
+        // final Bitmap finalCap = capScaled;
+        // new Thread(() -> {
+        // try {
+        // float[] embRef = embeddingModel.embed(finalRef);
+        // float[] embCap = embeddingModel.embed(finalCap);
+        // if (embRef == null || embCap == null) {
+        // runOnUiThreadSafe(() -> toast("Không trích xuất được đặc trưng khuôn mặt."));
+        // return;
+        // }
+        // double similarity = cosineSimilarity(embRef, embCap);
+        // boolean isMatch = similarity >= 0.60;
+        // if(isMatch){
+        // ekyc.setVerified(true);
+        // ekyc.setVerifiedAt(new Date());
+        // FirebaseEkycRepository ekycRepository = new FirebaseEkycRepository();
+        // ekycRepository.update(ekyc.getId(), ekyc)
+        // .addOnSuccessListener(aVoid -> {
+        // runOnUiThreadSafe(() -> toast("Xác thực khuôn mặt thành công!"));
+        // success.setVisibility(View.VISIBLE);
+        // success.playAnimation();
+        // success.addAnimatorListener(new android.animation.AnimatorListenerAdapter() {
+        // @Override
+        // public void onAnimationEnd(Animator animation) {
+        // super.onAnimationEnd(animation);
+        // EmailVerifyFragment emailVerifyFragment =
+        // EmailVerifyFragment.newInstance(ekyc, uid, phone, username, email);
+        //
+        // if (getActivity() instanceof SignUpActivity) {
+        // ((SignUpActivity) getActivity()).navigateTo(emailVerifyFragment, true);
+        // }
+        //
+        // }
+        // });
+        // })
+        // .addOnFailureListener(e -> {
+        // runOnUiThreadSafe(() ->
+        // toast("Cập nhật EKYC thất bại: " + e.getMessage()));
+        // });
+        // }else{
+        // runOnUiThreadSafe(() -> toast("Khuôn mặt không trùng khớp"));
+        // }
+        //
+        //// String message = isMatch
+        //// ? String.format(Locale.US, "Xác thực thành công (%.3f)", similarity)
+        //// : String.format(Locale.US, "Không khớp (%.3f)", similarity);
+        //// runOnUiThreadSafe(() -> toast(message));
+        //
+        // } catch (Exception e) {
+        // String msg = e.getMessage() != null ? e.getMessage() : "Lỗi xác thực.";
+        // runOnUiThreadSafe(() -> toast(msg));
+        // }
+        // }).start();
+        // } catch (OutOfMemoryError oom) {
+        // runOnUiThreadSafe(() -> toast("Bộ nhớ không đủ."));
+        // } catch (Exception e) {
+        // runOnUiThreadSafe(() -> toast("Lỗi xử lý ảnh."));
+        // }
+        // })
+        // .addOnFailureListener(e -> {
+        // toast("Lỗi nhận diện khuôn mặt: " + e.getMessage());
+        // });
         ensureReferenceLoadedThen(() -> {
-//            final String refDataUrl = (mode == MODE_FACE_LOGIN)
-//                    ? avatarDataUrl
-//                    : (ekyc != null ? ekyc.getFaceImagePath() : null);
-            final String refDataUrl =
-                    (mode == MODE_SIGNUP)
-                            ? (ekyc != null ? ekyc.getFaceImagePath() : null)
-                            : avatarDataUrl; // FACE_LOGIN & TRANSACTION
-
+            // final String refDataUrl = (mode == MODE_FACE_LOGIN)
+            // ? avatarDataUrl
+            // : (ekyc != null ? ekyc.getFaceImagePath() : null);
+            final String refDataUrl = (mode == MODE_SIGNUP)
+                    ? (ekyc != null ? ekyc.getFaceImagePath() : null)
+                    : avatarDataUrl; // FACE_LOGIN & TRANSACTION
 
             if (refDataUrl == null || !refDataUrl.startsWith("data:image/")) {
                 toast("Thiếu ảnh tham chiếu.");
@@ -421,22 +423,24 @@ public class FaceVerify1Fragment extends Fragment {
                                             FirebaseEkycRepository ekycRepository = new FirebaseEkycRepository();
                                             ekycRepository.update(ekyc.getId(), ekyc)
                                                     .addOnSuccessListener(aVoid -> {
-                                                        runOnUiThreadSafe(() -> toast("Xác thực khuôn mặt thành công!"));
+                                                        runOnUiThreadSafe(
+                                                                () -> toast("Xác thực khuôn mặt thành công!"));
                                                         success.setVisibility(View.VISIBLE);
                                                         success.playAnimation();
                                                         success.addAnimatorListener(new AnimatorListenerAdapter() {
                                                             @Override
                                                             public void onAnimationEnd(Animator animation) {
-                                                                EmailVerifyFragment emailVerifyFragment =
-                                                                        EmailVerifyFragment.newInstance(ekyc, uid, phone, username, email);
+                                                                EmailVerifyFragment emailVerifyFragment = EmailVerifyFragment
+                                                                        .newInstance(ekyc, uid, phone, username, email);
                                                                 if (getActivity() instanceof SignUpActivity) {
-                                                                    ((SignUpActivity) getActivity()).navigateTo(emailVerifyFragment, true);
+                                                                    ((SignUpActivity) getActivity())
+                                                                            .navigateTo(emailVerifyFragment, true);
                                                                 }
                                                             }
                                                         });
                                                     })
-                                                    .addOnFailureListener(e ->
-                                                            runOnUiThreadSafe(() -> toast("Cập nhật EKYC thất bại: " + e.getMessage())));
+                                                    .addOnFailureListener(e -> runOnUiThreadSafe(
+                                                            () -> toast("Cập nhật EKYC thất bại: " + e.getMessage())));
                                         }
 
                                         if (mode == MODE_FACE_LOGIN) {
@@ -445,22 +449,23 @@ public class FaceVerify1Fragment extends Fragment {
                                                 toast("Đăng nhập bằng Face ID thành công!");
                                                 success.setVisibility(View.VISIBLE);
                                                 success.playAnimation();
-                                                success.addAnimatorListener(new android.animation.AnimatorListenerAdapter(){
-                                                    @Override
-                                                    public void onAnimationEnd(Animator animation) {
-                                                        super.onAnimationEnd(animation);
-                                                        if (getActivity() != null) {
-                                                            Intent i = new Intent(getActivity(), MainActivity.class);
-                                                            i.putExtra(MainActivity.EXTRA_USERID, uid);
-                                                            startActivity(i);
-                                                            getActivity().finish();
-                                                        }
-                                                    }
-                                                });
+                                                success.addAnimatorListener(
+                                                        new android.animation.AnimatorListenerAdapter() {
+                                                            @Override
+                                                            public void onAnimationEnd(Animator animation) {
+                                                                super.onAnimationEnd(animation);
+                                                                if (getActivity() != null) {
+                                                                    Intent i = new Intent(getActivity(),
+                                                                            MainActivity.class);
+                                                                    i.putExtra(MainActivity.EXTRA_USERID, uid);
+                                                                    startActivity(i);
+                                                                    getActivity().finish();
+                                                                }
+                                                            }
+                                                        });
                                             });
                                         }
-                                    }
-                                    else {
+                                    } else {
                                         runOnUiThreadSafe(() -> toast("Khuôn mặt không trùng khớp"));
 
                                         if (mode == MODE_TRANSACTION && callback != null) {
@@ -468,7 +473,8 @@ public class FaceVerify1Fragment extends Fragment {
                                         }
                                     }
                                 } catch (Exception e) {
-                                    runOnUiThreadSafe(() -> toast(e.getMessage() != null ? e.getMessage() : "Lỗi xác thực."));
+                                    runOnUiThreadSafe(
+                                            () -> toast(e.getMessage() != null ? e.getMessage() : "Lỗi xác thực."));
                                 }
                             }).start();
 
@@ -481,6 +487,7 @@ public class FaceVerify1Fragment extends Fragment {
                     .addOnFailureListener(e -> toast("Lỗi nhận diện khuôn mặt: " + e.getMessage()));
         });
     }
+
     private void ensureReferenceLoadedThen(Runnable cont) {
         if (mode == MODE_SIGNUP) {
             cont.run();
@@ -513,7 +520,6 @@ public class FaceVerify1Fragment extends Fragment {
                 .addOnFailureListener(e -> toast("Lỗi tải tài khoản: " + e.getMessage()));
     }
 
-
     private Bitmap loadBitmapFromUri(Uri uri) throws IOException {
         if (Build.VERSION.SDK_INT >= 28) {
             ImageDecoder.Source src = ImageDecoder.createSource(requireContext().getContentResolver(), uri);
@@ -522,11 +528,14 @@ public class FaceVerify1Fragment extends Fragment {
             return MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), uri);
         }
     }
+
     private Bitmap decodeDataUrlToBitmap(String dataUrl) {
-        if (dataUrl == null) return null;
+        if (dataUrl == null)
+            return null;
         try {
             int comma = dataUrl.indexOf(',');
-            if (comma < 0) return null;
+            if (comma < 0)
+                return null;
             String b64 = dataUrl.substring(comma + 1);
             byte[] bytes = Base64.decode(b64, Base64.DEFAULT);
             return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
@@ -534,6 +543,7 @@ public class FaceVerify1Fragment extends Fragment {
             return null;
         }
     }
+
     private Task<Bitmap> detectAndCropSingleFace(Bitmap bitmap) {
         FaceDetectorOptions options = new FaceDetectorOptions.Builder()
                 .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
@@ -562,9 +572,9 @@ public class FaceVerify1Fragment extends Fragment {
                     Math.max(0, b.left),
                     Math.max(0, b.top),
                     Math.min(bitmap.getWidth(), b.right),
-                    Math.min(bitmap.getHeight(), b.bottom)
-            );
-            if (safe.width() <= 0 || safe.height() <= 0) return null;
+                    Math.min(bitmap.getHeight(), b.bottom));
+            if (safe.width() <= 0 || safe.height() <= 0)
+                return null;
             return Bitmap.createBitmap(bitmap, safe.left, safe.top, safe.width(), safe.height());
         });
     }
@@ -590,30 +600,36 @@ public class FaceVerify1Fragment extends Fragment {
     }
 
     private boolean isHardwareBitmap(Bitmap bitmap) {
-        if (bitmap == null) return false;
+        if (bitmap == null)
+            return false;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             return bitmap.getConfig() == Bitmap.Config.HARDWARE;
         }
         return false;
     }
+
     private Bitmap ensureSoftwareBitmap(Bitmap bitmap) {
-        if (bitmap == null) return null;
+        if (bitmap == null)
+            return null;
         if (!isHardwareBitmap(bitmap)) {
             return bitmap;
         }
         Bitmap software = bitmap.copy(Bitmap.Config.ARGB_8888, false);
-        if (software != null) return software;
+        if (software != null)
+            return software;
         // Fallback: draw the bitmap into a new ARGB_8888 bitmap using Canvas
         Bitmap fallback = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(fallback);
         canvas.drawBitmap(bitmap, 0, 0, null);
         return fallback;
     }
+
     private void runOnUiThreadSafe(Runnable runnable) {
         if (isAdded() && getActivity() != null && !getActivity().isFinishing() && !getActivity().isDestroyed()) {
             requireActivity().runOnUiThread(runnable);
         }
     }
+
     private void toast(String msg) {
         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }

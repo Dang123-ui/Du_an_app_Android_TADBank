@@ -30,20 +30,22 @@ import androidx.core.view.WindowInsetsCompat;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.model.User;
+import com.example.tad_bank_t1.data.model.enums.Role;
+import com.example.tad_bank_t1.data.model.enums.UserStatus;
 import com.example.tad_bank_t1.data.repository.users.FirebaseUserRepository;
 import com.example.tad_bank_t1.data.repository.users.UserRepository;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-
+import com.royrodriguez.transitionbutton.TransitionButton;
 public class LoginActivity2 extends AppCompatActivity {
     public static final String EXTRA_UID = "extra_userid";
     private ImageView logoLogin2;
     private TextView tvName;
     private TextInputLayout tilPassword, tilEmailorPhone;
     private TextInputEditText etPassword, etEmailorPhone;
-    private Button btnLogin2;
+    private TransitionButton btnLogin2;
     private ImageButton btnFaceId;
     private TextView tvForgotPassword;
     private LottieAnimationView animationView;
@@ -164,41 +166,68 @@ public class LoginActivity2 extends AppCompatActivity {
         });
         btnLogin2.setOnClickListener(v -> {
             if (isLoading) return;
+
             String pass = etPassword.getText() != null ? etPassword.getText().toString().trim() : "";
             if (TextUtils.isEmpty(pass)) {
                 tilPassword.setError("Mật khẩu không được để trống");
                 return;
             }
-            if(TextUtils.isEmpty(uid)){
+
+            if (TextUtils.isEmpty(uid)) {
                 String identifier = safeText(etEmailorPhone);
                 if (TextUtils.isEmpty(identifier)) {
                     tilEmailorPhone.setError("Vui lòng nhập Email hoặc SĐT");
                     return;
                 }
                 tilEmailorPhone.setError(null);
+
+                // Bắt đầu hiệu ứng loading
+                btnLogin2.startAnimation();
                 setLoading(true);
+
                 resolveUserByIdentifier(identifier).addOnSuccessListener(user -> {
                     if (user == null) {
+                        // Sai: không tìm thấy tài khoản -> SHAKE
+                        btnLogin2.stopAnimation(
+                                TransitionButton.StopAnimationStyle.SHAKE,
+                                null
+                        );
                         setLoading(false);
                         tilEmailorPhone.setError("Không tìm thấy tài khoản");
                         return;
                     }
                     uid = user.getUserId();
+                    // Kiểm tra mật khẩu, hàm này sẽ quyết định EXPAND hay SHAKE
                     checkPasswordThenLogin(user, pass);
                 }).addOnFailureListener(e -> {
+                    btnLogin2.stopAnimation(
+                            TransitionButton.StopAnimationStyle.SHAKE,
+                            null
+                    );
                     setLoading(false);
                     tilEmailorPhone.setError("Lỗi tra tài khoản: " + e.getMessage());
                 });
-            }else{
+            } else {
+                // Bắt đầu hiệu ứng loading
+                btnLogin2.startAnimation();
                 setLoading(true);
+
                 userRepo.getById(uid).addOnSuccessListener(user -> {
                     if (user == null) {
+                        btnLogin2.stopAnimation(
+                                TransitionButton.StopAnimationStyle.SHAKE,
+                                null
+                        );
                         setLoading(false);
                         tilPassword.setError("Tài khoản không tồn tại");
                         return;
                     }
                     checkPasswordThenLogin(user, pass);
                 }).addOnFailureListener(e -> {
+                    btnLogin2.stopAnimation(
+                            TransitionButton.StopAnimationStyle.SHAKE,
+                            null
+                    );
                     setLoading(false);
                     tilPassword.setError("Có lỗi khi kiểm tra. Thử lại.");
                 });
@@ -233,21 +262,85 @@ public class LoginActivity2 extends AppCompatActivity {
     }
     private void checkPasswordThenLogin(User user, String inputPass) {
         String savedPass = user.getPassword();
-        if (TextUtils.equals(inputPass, savedPass)) {
-            onLoginSuccess(user.getUserId());
-        } else {
-            setLoading(false);
-            tilPassword.setError("Mật khẩu không đúng");
+
+        if (!TextUtils.equals(inputPass, savedPass)) {
+            // SAI MẬT KHẨU → SHAKE
+            final int DELAY_BEFORE_STOP = 500;
+            btnLogin2.postDelayed(() -> {
+                btnLogin2.stopAnimation(
+                        TransitionButton.StopAnimationStyle.SHAKE,
+                        () -> {
+                            setLoading(false);
+                            tilPassword.setError("Mật khẩu không đúng");
+                        }
+                );
+            }, DELAY_BEFORE_STOP);
+            return;
         }
+        // ===== Cách 1: user có enum UserState =====
+        try {
+            if (user.getStatus() != UserStatus.ACTIVE) {
+                btnLogin2.stopAnimation(
+                        TransitionButton.StopAnimationStyle.SHAKE,
+                        () -> {
+                            setLoading(false);
+                            tilPassword.setError("Tài khoản bạn đã bị khóa vui lòng đến chi nhánh gần nhất");
+                        }
+                );
+                return;
+            }
+        } catch (Exception ignore) {
+            // ===== Cách 2: nếu status là String trong User model =====
+            // (Bạn dùng cái này nếu user.getStatus() trả về String)
+            String st = null;
+            try {
+                st = String.valueOf(user.getStatus());
+            } catch (Exception ignored) {}
+            if (st == null || !st.trim().equalsIgnoreCase("ACTIVE")) {
+                btnLogin2.stopAnimation(
+                        TransitionButton.StopAnimationStyle.SHAKE,
+                        () -> {
+                            setLoading(false);
+                            tilPassword.setError("Tài khoản bạn đã bị khóa vui lòng đến chi nhánh gần nhất");
+                        }
+                );
+                return;
+            }
+        }
+        animationView.setVisibility(View.INVISIBLE);
+        animationView.cancelAnimation();
+
+        btnLogin2.stopAnimation(
+                TransitionButton.StopAnimationStyle.EXPAND,
+                () -> onLoginSuccess(user)
+        );
     }
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(newBase);
     }
-    private void onLoginSuccess(String uid){
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(MainActivity.EXTRA_USERID, uid);
+    private void onLoginSuccess(User user){
+        String uid = user.getUserId();
+        Role role = user.getRole(); // giả sử model User có getRole()
+
+        Intent intent;
+        if (role == Role.OFFICER) {
+            // Nếu là nhân viên
+            intent = new Intent(this, OfficerMainActivity.class);
+            // Nếu OfficerMainActivity dùng extra khác thì đổi constant tương ứng
+            intent.putExtra(MainActivity.EXTRA_USERID, uid);
+        } else {
+            // Mặc định là CUSTOMER
+            intent = new Intent(this, MainActivity.class);
+            intent.putExtra(MainActivity.EXTRA_USERID, uid);
+        }
+        getSharedPreferences("AppPrefs", MODE_PRIVATE)
+                .edit()
+                .putBoolean("hasRegistered", true)
+                .putString("lastUserId", uid)
+                .apply();
         startActivity(intent);
+        overridePendingTransition(0, 0);
         finish();
     }
 
@@ -256,7 +349,13 @@ public class LoginActivity2 extends AppCompatActivity {
         btnLogin2.setEnabled(!loading && !TextUtils.isEmpty(etPassword.getText()));
         etPassword.setEnabled(!loading);
         tilPassword.setEnabled(!loading);
-        animationView.setVisibility(loading ? View.VISIBLE : View.INVISIBLE);
+        if (loading) {
+            animationView.setVisibility(View.VISIBLE);
+            animationView.playAnimation();
+        } else {
+            animationView.cancelAnimation();
+            animationView.setVisibility(View.INVISIBLE);
+        }
     }
     private static String safeText(TextInputEditText et) {
         return et.getText() == null ? "" : et.getText().toString().trim();

@@ -21,10 +21,14 @@ dependencyResolutionManagement {
     repositories {
         google()           // MUST
         mavenCentral()     // MUST
+        // google()
+        // mavenCentral()
+        maven(url = "https://jitpack.io")
     }
 }
 
 
 rootProject.name = "TAD_Bank_T1"
 include(":app")
- 
+include(":transitionbutton")
+include(":boommenu")

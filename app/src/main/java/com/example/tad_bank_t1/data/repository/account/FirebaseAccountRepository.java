@@ -4,16 +4,33 @@ import android.app.DownloadManager;
 
 import com.example.tad_bank_t1.data.adapterPattern.account.AccountAdapter;
 import com.example.tad_bank_t1.data.model.Account;
+<<<<<<< HEAD
 import com.example.tad_bank_t1.data.repository.callbacks.ResultCallback;
+=======
+import com.example.tad_bank_t1.data.model.enums.AccountStatus;
+>>>>>>> officer_1
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.Collections;
+<<<<<<< HEAD
 import java.util.Date;
+=======
+import java.util.HashMap;
+>>>>>>> officer_1
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class FirebaseAccountRepository implements AccountRepository {
     private final AccountAdapter adapter = new AccountAdapter();
@@ -223,4 +240,108 @@ public class FirebaseAccountRepository implements AccountRepository {
     // --------------------------------
     // end saving and mortgage
     // --------------------------------
+    @Override
+    public void getUserIdsByAccountIds(Set<String> accountIds, AccountUserMapCallback callback) {
+        if (accountIds == null || accountIds.isEmpty()) {
+            callback.onSuccess(Collections.emptyMap());
+            return;
+        }
+
+        final int BATCH_SIZE = 10;
+        List<String> ids = new ArrayList<>(accountIds);
+
+        List<List<String>> batches = new ArrayList<>();
+        for (int i = 0; i < ids.size(); i += BATCH_SIZE) {
+            batches.add(ids.subList(i, Math.min(i + BATCH_SIZE, ids.size())));
+        }
+
+        Map<String, String> merged = new HashMap<>();
+        java.util.concurrent.atomic.AtomicInteger done = new java.util.concurrent.atomic.AtomicInteger(0);
+        java.util.concurrent.atomic.AtomicBoolean failed = new java.util.concurrent.atomic.AtomicBoolean(false);
+
+        for (List<String> batch : batches) {
+            adapter.query()
+                    .whereIn(FieldPath.documentId(), batch)  // <= luôn <= 10 phần tử
+                    .get()
+                    .addOnSuccessListener(snap -> {
+                        for (DocumentSnapshot doc : snap.getDocuments()) {
+                            String accId = doc.getString("accountId");
+                            String userId = doc.getString("userId");
+                            if (accId != null && userId != null) {
+                                merged.put(accId, userId);
+                            }
+                        }
+
+                        if (done.incrementAndGet() == batches.size() && !failed.get()) {
+                            callback.onSuccess(merged);
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        if (failed.compareAndSet(false, true)) {
+                            callback.onFailure(e);
+                        }
+                    });
+        }
+    }
+
+    @Override
+    public Task<Void> freezeAccountsByUserId(String userId) {
+        return updateAccountsStatusByUserId(userId, AccountStatus.FROZEN, false);
+    }
+
+    @Override
+    public Task<Void> unfreezeAccountsByUserId(String userId) {
+        return updateAccountsStatusByUserId(userId, AccountStatus.OPEN, true);
+    }
+    private Task<Void> updateAccountsStatusByUserId(String userId,
+                                                    AccountStatus newStatus,
+                                                    boolean skipClosed) {
+
+        return adapter.query()
+                .whereEqualTo("userId", userId)
+                .get()
+                .continueWithTask(t -> {
+                    if (!t.isSuccessful() || t.getResult() == null) {
+                        Exception e = t.getException() != null ? t.getException()
+                                : new Exception("Query accounts failed");
+                        return Tasks.forException(e);
+                    }
+
+                    List<DocumentSnapshot> docs = t.getResult().getDocuments();
+                    if (docs.isEmpty()) return Tasks.forResult(null);
+
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    final int LIMIT = 450;
+
+                    Task<Void> chain = Tasks.forResult(null);
+
+                    for (int i = 0; i < docs.size(); i += LIMIT) {
+                        final int start = i; // ✅ phải final để dùng trong lambda
+                        final int end = Math.min(i + LIMIT, docs.size());
+
+                        chain = chain.continueWithTask(x -> {
+                            WriteBatch batch = db.batch();
+
+                            for (int j = start; j < end; j++) {
+                                DocumentSnapshot doc = docs.get(j);
+
+                                if (skipClosed) {
+                                    String cur = doc.getString("status");
+                                    if (AccountStatus.CLOSED.name().equalsIgnoreCase(cur)) continue;
+                                }
+
+                                batch.update(
+                                        doc.getReference(),
+                                        "status", newStatus.name(),
+                                        "updatedAt", FieldValue.serverTimestamp()
+                                );
+                            }
+
+                            return batch.commit();
+                        });
+                    }
+
+                    return chain;
+                });
+    }
 }

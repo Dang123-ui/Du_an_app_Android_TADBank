@@ -20,6 +20,6 @@ public interface SavingPolicyRepository {
     // update
     void update(SavingsRatePolicy savingPolicy, ResultCallback<SavingsRatePolicy> callback);
 
-//    // delete
-//    void delete(int id);
+    // // delete
+    // void delete(int id);
 }

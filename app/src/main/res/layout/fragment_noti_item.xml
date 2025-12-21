@@ -35,7 +35,7 @@
             android:textSize="15sp"
             android:layout_gravity="center_vertical"
 
-            />
+            tools:ignore="MissingClass" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

@@ -53,16 +53,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvUserId">
+
             <FrameLayout
                 android:id="@+id/frameBadgeChecking"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clipChildren="false"
-                android:clipToPadding="false"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:paddingEnd="16dp"
-                >
+                android:clipToPadding="false">
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipChecking"
@@ -80,21 +77,15 @@
                     android:text="0"
                     android:textColor="@android:color/white"
                     android:textSize="10sp"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
             </FrameLayout>
 
-            <!-- SAVING -->
             <FrameLayout
                 android:id="@+id/frameBadgeSaving"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clipChildren="false"
-                android:clipToPadding="false"
-                app:layout_constraintStart_toEndOf="@id/frameBadgeChecking"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginRight="16dp"
-                android:paddingEnd="16dp"
-                >
+                android:clipToPadding="false">
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipSaving"
@@ -115,17 +106,12 @@
                     android:visibility="gone" />
             </FrameLayout>
 
-            <!-- MORTGAGE -->
             <FrameLayout
                 android:id="@+id/frameBadgeMortgage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clipChildren="false"
-                android:clipToPadding="false"
-                app:layout_constraintStart_toEndOf="@id/frameBadgeSaving"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginRight="16dp"
-                >
+                android:clipToPadding="false">
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipMortgage"
@@ -145,6 +131,22 @@
                     android:textSize="10sp"
                     android:visibility="gone" />
             </FrameLayout>
+
+            <!-- Flow: tự wrap xuống dòng nếu không đủ chỗ -->
+            <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/chipFlow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="frameBadgeChecking,frameBadgeSaving,frameBadgeMortgage"
+                app:flow_wrapMode="chain"
+                app:flow_horizontalGap="12dp"
+                app:flow_verticalGap="8dp"
+                app:flow_horizontalStyle="packed"
+                app:flow_firstHorizontalStyle="packed"
+                app:flow_lastHorizontalStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -214,28 +216,30 @@
                 android:textColor="#1c1b1f"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvPhoneLabel"/>
+
             <TextView
                 android:id="@+id/tvEmail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="dang0582366729@gmail.com"
                 android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                 android:textColor="#1c1b1f"
+                app:layout_constraintEnd_toStartOf="@+id/bmbAccounts"
                 app:layout_constraintStart_toEndOf="@id/tvEmailLabel"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvPhone"/>
+                app:layout_constraintTop_toBottomOf="@id/tvPhone" />
+
             <TextView
                 android:id="@+id/tvSectionChecking"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:text="Checking"
-                android:textStyle="bold"
-                android:textColor="#c22449"
                 android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                android:textColor="#c22449"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvEmailLabel"/>
+                app:layout_constraintTop_toBottomOf="@+id/tvEmail" />
 
             <TextView
                 android:id="@+id/tvCheckingAccounts"

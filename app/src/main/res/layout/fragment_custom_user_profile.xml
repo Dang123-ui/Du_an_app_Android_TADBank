@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             app:title="Profile User"
             app:titleTextColor="#FF0000">
+
             <com.nightonke.boommenu.BoomMenuButton
                 android:id="@+id/bmbMore"
                 android:layout_width="80dp"
@@ -45,6 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp">
+
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardPersonal"
                 android:layout_width="match_parent"
@@ -119,6 +121,7 @@
                         app:layout_constraintEnd_toEndOf="@id/tvCustomerName"
                         app:layout_constraintStart_toStartOf="@id/tvCustomerName"
                         app:layout_constraintTop_toBottomOf="@id/tvCustomerName" />
+
                     <!-- Chips (Status / Segment / Risk) -->
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/chipGroupStatus"
@@ -188,7 +191,7 @@
                         app:iconTint="@android:color/white"
                         app:layout_constraintEnd_toStartOf="@id/btnEmail"
                         app:layout_constraintStart_toEndOf="@id/btnCall"
-                        app:layout_constraintTop_toBottomOf="@+id/chipGroupStatus" />
+                        app:layout_constraintTop_toBottomOf="@id/chipGroupStatus" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnEmail"
@@ -205,7 +208,8 @@
                         app:iconSize="24dp"
                         app:iconTint="@android:color/white"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/chipGroupStatus" />
+                        app:layout_constraintTop_toBottomOf="@id/chipGroupStatus" />
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layoutPersonalDetails"
                         android:layout_width="0dp"
@@ -224,7 +228,7 @@
                             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                             android:textColor="#86656d"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"/>
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/tvDobValue"
@@ -234,7 +238,7 @@
                             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                             android:textColor="#171213"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintBaseline_toBaselineOf="@id/tvDobLabel"/>
+                            app:layout_constraintBaseline_toBaselineOf="@id/tvDobLabel" />
 
                         <View
                             android:id="@+id/divDob"
@@ -244,7 +248,7 @@
                             android:background="#E6E6E6"
                             app:layout_constraintTop_toBottomOf="@id/tvDobLabel"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"/>
+                            app:layout_constraintEnd_toEndOf="parent" />
 
                         <!-- ROW 2: Gender -->
                         <TextView
@@ -256,7 +260,7 @@
                             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                             android:textColor="#86656d"
                             app:layout_constraintTop_toBottomOf="@id/divDob"
-                            app:layout_constraintStart_toStartOf="parent"/>
+                            app:layout_constraintStart_toStartOf="parent" />
 
                         <TextView
                             android:id="@+id/tvGenderValue"
@@ -266,7 +270,7 @@
                             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                             android:textColor="#171213"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintBaseline_toBaselineOf="@id/tvGenderLabel"/>
+                            app:layout_constraintBaseline_toBaselineOf="@id/tvGenderLabel" />
 
                         <View
                             android:id="@+id/divGender"
@@ -276,7 +280,7 @@
                             android:background="#E6E6E6"
                             app:layout_constraintTop_toBottomOf="@id/tvGenderLabel"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"/>
+                            app:layout_constraintEnd_toEndOf="parent" />
 
                         <!-- ROW 3: ID Number -->
                         <TextView
@@ -288,7 +292,7 @@
                             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                             android:textColor="#86656d"
                             app:layout_constraintTop_toBottomOf="@id/divGender"
-                            app:layout_constraintStart_toStartOf="parent"/>
+                            app:layout_constraintStart_toStartOf="parent" />
 
                         <TextView
                             android:id="@+id/tvIdValue"
@@ -298,7 +302,8 @@
                             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                             android:textColor="#171213"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintBaseline_toBaselineOf="@id/tvIdLabel"/>
+                            app:layout_constraintBaseline_toBaselineOf="@id/tvIdLabel" />
+
                         <View
                             android:id="@+id/divTitle"
                             android:layout_width="0dp"
@@ -314,25 +319,25 @@
                             android:id="@+id/tvPhoneLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
                             android:text="Phone"
-                            android:textColor="#c32248"
                             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                            app:layout_constraintTop_toBottomOf="@id/divTitle"
+                            android:textColor="#c32248"
                             app:layout_constraintBottom_toBottomOf="@id/tvPhoneValue"
                             app:layout_constraintStart_toStartOf="parent"
-                            android:layout_marginTop="16dp" />
+                            app:layout_constraintTop_toBottomOf="@id/divTitle" />
 
                         <TextView
                             android:id="@+id/tvPhoneValue"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="+1 (555) 123-4567"
-                            android:textColor="#111111"
-                            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                             android:gravity="end"
-                            app:layout_constraintTop_toTopOf="@id/tvPhoneLabel"
+                            android:text="+1 (555) 123-4567"
+                            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                            android:textColor="#111111"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent" />
+                            app:layout_constraintTop_toTopOf="@id/tvPhoneLabel" />
 
                         <View
                             android:id="@+id/divPhone"
@@ -340,33 +345,33 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="16dp"
                             android:background="#E6E6E6"
-                            app:layout_constraintTop_toBottomOf="@id/tvPhoneValue"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent" />
+                            app:layout_constraintTop_toBottomOf="@id/tvPhoneValue" />
 
                         <!-- ROW 2: Email -->
                         <TextView
                             android:id="@+id/tvEmailLabel2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Email"
-                            android:textColor="#c32248"
-                            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                             android:layout_marginTop="16dp"
-                            app:layout_constraintTop_toBottomOf="@id/divPhone"
-                            app:layout_constraintStart_toStartOf="parent" />
+                            android:text="Email"
+                            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                            android:textColor="#c32248"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/divPhone" />
 
                         <TextView
                             android:id="@+id/tvEmailValue2"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="alexei.volkov@email.com"
-                            android:textColor="#111111"
-                            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                             android:gravity="end"
-                            app:layout_constraintTop_toTopOf="@id/tvEmailLabel2"
+                            android:text="alexei.volkov@email.com"
+                            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                            android:textColor="#111111"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent" />
+                            app:layout_constraintTop_toTopOf="@id/tvEmailLabel2" />
 
                         <View
                             android:id="@+id/divEmail"
@@ -374,44 +379,42 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="16dp"
                             android:background="#E6E6E6"
-                            app:layout_constraintTop_toBottomOf="@id/tvEmailValue2"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent" />
+                            app:layout_constraintTop_toBottomOf="@id/tvEmailValue2" />
 
                         <!-- ROW 3: Address (clickable) -->
                         <TextView
                             android:id="@+id/tvAddressLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Address"
-                            android:textColor="#c32248"
-                            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                             android:layout_marginTop="16dp"
-                            app:layout_constraintTop_toBottomOf="@id/divEmail"
+                            android:text="Address"
+                            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                            android:textColor="#c32248"
+                            app:layout_constraintBottom_toBottomOf="@id/tvAddressValue"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintBottom_toBottomOf="@id/tvAddressValue" />
+                            app:layout_constraintTop_toBottomOf="@id/divEmail" />
 
                         <TextView
                             android:id="@+id/tvAddressValue"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="123 Liberty Ave, Capital City"
-                            android:textColor="#111111"
-                            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                            android:gravity="end"
                             android:clickable="true"
                             android:focusable="true"
                             android:foreground="?attr/selectableItemBackground"
+                            android:gravity="end"
                             android:paddingVertical="8dp"
-
-                            app:layout_constraintTop_toTopOf="@id/tvAddressLabel"
-                            app:layout_constraintStart_toStartOf="parent"
+                            android:text="123 Liberty Ave, Capital City"
+                            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                            android:textColor="#111111"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent" />
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/tvAddressLabel" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
-
 
             <!-- ============ CARD 3: ACCOUNTS & PRODUCTS ============ -->
             <com.google.android.material.card.MaterialCardView
@@ -421,10 +424,9 @@
                 android:layout_marginTop="16dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp"
-                app:layout_constraintTop_toBottomOf="@id/cardPersonal"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                >
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardPersonal">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -436,14 +438,13 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="Tài khoản và Sản phẩm"
-                        android:textStyle="bold"
-                        android:textColor="#c32248"
                         android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                        app:layout_constraintTop_toTopOf="parent"
+                        android:textColor="#c32248"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                    <!-- Horizontal chips (like HTML scroll chips) -->
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/chipContainer"
                         android:layout_width="0dp"
@@ -451,20 +452,16 @@
                         android:layout_marginTop="10dp"
                         android:clipChildren="false"
                         android:clipToPadding="false"
-                        app:layout_constraintTop_toBottomOf="@id/tvAccountsTitle"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent">
+                        app:layout_constraintTop_toBottomOf="@id/tvAccountsTitle">
 
-                        <!-- CHECKING -->
                         <FrameLayout
                             android:id="@+id/frameBadgeChecking"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="38dp"
                             android:clipChildren="false"
-                            android:clipToPadding="false"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
+                            android:clipToPadding="false">
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/chipChecking"
@@ -487,17 +484,12 @@
                                 android:visibility="gone" />
                         </FrameLayout>
 
-                        <!-- SAVING -->
                         <FrameLayout
                             android:id="@+id/frameBadgeSaving"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:clipChildren="false"
-                            android:clipToPadding="false"
-
-                            app:layout_constraintEnd_toStartOf="@+id/frameBadgeMortgage"
-                            app:layout_constraintStart_toEndOf="@id/frameBadgeChecking"
-                            app:layout_constraintTop_toTopOf="parent">
+                            android:clipToPadding="false">
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/chipSaving"
@@ -520,15 +512,12 @@
                                 android:visibility="gone" />
                         </FrameLayout>
 
-                        <!-- MORTGAGE -->
                         <FrameLayout
                             android:id="@+id/frameBadgeMortgage"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:clipChildren="false"
-                            android:clipToPadding="false"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
+                            android:clipToPadding="false">
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/chipMortgage"
@@ -551,9 +540,21 @@
                                 android:visibility="gone" />
                         </FrameLayout>
 
+                        <androidx.constraintlayout.helper.widget.Flow
+                            android:id="@+id/chipFlow"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:constraint_referenced_ids="frameBadgeChecking,frameBadgeSaving,frameBadgeMortgage"
+                            app:flow_horizontalBias="0"
+                            app:flow_horizontalGap="12dp"
+                            app:flow_horizontalStyle="packed"
+                            app:flow_verticalGap="8dp"
+                            app:flow_wrapMode="chain"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <!-- Mini accounts list (Premier Savings / Everyday Checking...) -->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvAccountsMini"
                         android:layout_width="0dp"
@@ -589,30 +590,6 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnMarkMediumRisk"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="Rủi ro trung bình"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/btnMarkHighRisk"
-                        app:layout_constraintStart_toEndOf="@id/btnMarkLowRisk"
-                        app:layout_constraintTop_toBottomOf="@id/rvRiskAlerts"
-                        app:layout_constraintVertical_bias="1.0" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnMarkHighRisk"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:text="Rủi ro cao"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/rvRiskAlerts" />
-
                     <TextView
                         android:id="@+id/tvSecurityTitle"
                         android:layout_width="0dp"
@@ -635,7 +612,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tvSecurityTitle" />
 
-                    <!-- ROW 1: Last Login -->
                     <TextView
                         android:id="@+id/tvLastLoginLabel"
                         android:layout_width="wrap_content"
@@ -669,7 +645,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tvLastLoginLabel" />
 
-                    <!-- ROW 2: OTP Status -->
                     <TextView
                         android:id="@+id/tvOtpLabel"
                         android:layout_width="wrap_content"
@@ -701,7 +676,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tvOtpLabel" />
 
-                    <!-- ROW 3: Risk Profile -->
                     <TextView
                         android:id="@+id/tvRiskLabel"
                         android:layout_width="wrap_content"
@@ -753,28 +727,64 @@
                         android:layout_marginTop="6dp"
                         android:layout_marginBottom="12dp"
                         android:nestedScrollingEnabled="true"
-                        app:layout_constraintBottom_toTopOf="@+id/btnMarkLowRisk"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tvRecentAlertsTitle"
                         tools:itemCount="2"
                         tools:listitem="@layout/item_risk_alert" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnMarkLowRisk"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="wrap_content"
+                    <!-- ===== Risk Buttons: wrap xuống dòng bằng Flow ===== -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/riskButtonsContainer"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:text="Rủi ro thấp"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/rvRiskAlerts" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/rvRiskAlerts"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnMarkLowRisk"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Rủi ro thấp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnMarkMediumRisk"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Rủi ro trung bình" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnMarkHighRisk"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Rủi ro cao" />
+
+                        <androidx.constraintlayout.helper.widget.Flow
+                            android:id="@+id/riskButtonsFlow"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:constraint_referenced_ids="btnMarkLowRisk,btnMarkMediumRisk,btnMarkHighRisk"
+                            app:flow_wrapMode="chain"
+                            app:flow_horizontalGap="12dp"
+                            app:flow_verticalGap="8dp"
+                            app:flow_horizontalStyle="packed"
+                            app:flow_horizontalBias="0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
-
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

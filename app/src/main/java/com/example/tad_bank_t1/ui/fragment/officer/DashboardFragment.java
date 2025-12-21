@@ -209,8 +209,11 @@ public class DashboardFragment extends Fragment {
 
             chartBarTop.setTouchEnabled(true);
             chartBarTop.setDragEnabled(true);
-            chartBarTop.setScaleXEnabled(false);
+            chartBarTop.setScaleEnabled(true);
+            chartBarTop.setScaleXEnabled(true);   // Cho phép zoom và kéo ngang (rất quan trọng!)
             chartBarTop.setScaleYEnabled(false);
+
+
             chartBarTop.getLegend().setEnabled(false);
 
             chartBarTop.animateY(500);

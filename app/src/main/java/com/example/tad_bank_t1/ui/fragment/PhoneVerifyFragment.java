@@ -156,7 +156,7 @@ public class PhoneVerifyFragment extends Fragment {
         // 1) Luồng test (Auth console: không gửi SMS, auto-fill)
         if (remoteTestBypass) {
             String newTestOtp = generateRandomOtp6();
-            String fakeUid = "test-" + normalizePhoneVN(phone);
+            String fakeUid = "test-" + random10Digits();
             ensureRepo();
             OtpCode otp = new OtpCode();
             otp.setUserId(fakeUid);
@@ -476,5 +476,11 @@ public class PhoneVerifyFragment extends Fragment {
     private String generateRandomOtp6() {
         int val = ThreadLocalRandom.current().nextInt(0, 1_000_000);
         return String.format(Locale.getDefault(), "%06d", val);
+    }
+    public static String random10Digits() {
+        long min = 1_000_000_000L;   // 10^9
+        long max = 9_999_999_999L;   // 10^10 - 1
+        long number = min + (long) (Math.random() * (max - min + 1));
+        return String.valueOf(number);
     }
 }

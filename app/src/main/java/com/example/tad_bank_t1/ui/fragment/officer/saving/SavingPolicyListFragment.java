@@ -26,6 +26,7 @@ import com.example.tad_bank_t1.ui.viewmodel.officer.saving.SavingContractListVie
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -106,10 +107,9 @@ public class SavingPolicyListFragment extends Fragment {
         setupSearch();
         setupActions();
         observe();
-
-        vm.start();
         vm.setChip(SavingContractListViewModel.FilterChip.ALL);
         vm.setQuery("");
+        vm.start();
     }
 
     private void bindViews(View v) {
@@ -128,13 +128,25 @@ public class SavingPolicyListFragment extends Fragment {
     }
     private void setupRecycler() {
         adapter = new SavingContractAdapter(item -> {
-            if (item == null || item.getSavingPolicyId() == null) {
+            if (item == null) {
+                Toast.makeText(requireContext(), "Item null", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Ưu tiên field savingPolicyId, fallback docId
+            String id = item.getSavingPolicyId();
+            if (id == null || id.trim().isEmpty()) {
+                id = item.getDocId();
+            }
+
+            if (id == null || id.trim().isEmpty()) {
                 Toast.makeText(requireContext(), "Không tìm thấy policyId", Toast.LENGTH_SHORT).show();
                 return;
             }
-            CreatSavingContractFragment creatSavingContractFragment = CreatSavingContractFragment.newInstance(item.getSavingPolicyId().toString());
+
+            CreatSavingContractFragment f = CreatSavingContractFragment.newInstance(id);
             if (getActivity() instanceof OfficerMainActivity) {
-                ((OfficerMainActivity) getActivity()).navigateTo(creatSavingContractFragment, true);
+                ((OfficerMainActivity) getActivity()).navigateTo(f, true);
             }
         });
 
@@ -173,7 +185,7 @@ public class SavingPolicyListFragment extends Fragment {
 
     private void observe() {
         vm.getFilteredList().observe(getViewLifecycleOwner(), list -> {
-            adapter.submitList(list);
+            adapter.submitList(list == null ? new ArrayList<>() : list);
             renderList(list);
         });
 

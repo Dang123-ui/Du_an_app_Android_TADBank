@@ -59,7 +59,17 @@ public class SavingContractAdapter extends ListAdapter<SavingsRatePolicy, Saving
 
     @Override
     public void onBindViewHolder(@NonNull VH h, int position) {
-        SavingsRatePolicy it = getItem(position);
+        final SavingsRatePolicy it = getItem(position);
+        if (it == null) {
+            h.tvCode.setText("");
+            h.tvName.setText("Đang tải...");
+            h.tvDesc.setText("");
+            h.tvTermRate.setText("");
+            h.chipStatus.setText("UNKNOWN");
+            h.itemView.setOnClickListener(null);
+            return;
+        }
+
 
         h.tvCode.setText(nullToEmpty(it.getContractCode()));
         h.tvName.setText(nullToEmpty(it.getPolicyName()));

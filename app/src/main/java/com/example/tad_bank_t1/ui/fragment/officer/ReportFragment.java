@@ -23,6 +23,7 @@ import com.example.tad_bank_t1.data.repository.account.AccountRepository;
 import com.example.tad_bank_t1.data.repository.account.FirebaseAccountRepository;
 import com.example.tad_bank_t1.data.repository.transaction.FirebaseTransactionRepository;
 import com.example.tad_bank_t1.data.repository.transaction.TransactionRepository;
+import com.example.tad_bank_t1.util.report.FileEmail;
 import com.example.tad_bank_t1.util.report.StatementExportUtil;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
@@ -370,8 +371,46 @@ public class ReportFragment extends Fragment {
                         : StatementExportUtil.exportCheckingPdfToCache(
                         requireContext(), "(ALL)", accountNumber, startDate, endDate, txns);
 
-                setLoading(false, "Xuất thành công: " + out.getName());
-                shareFile(out, asExcel);
+                String recipient = "dang0582366729@gmail.com";
+
+                String mime = asExcel
+                        ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                        : "application/pdf";
+
+                String subject = "TAD bank - Sao kê Checking (" + out.getName() + ")";
+                String body = "Đính kèm sao kê tài khoản checking.\n\n"
+                        + "Tài khoản: " + accountNumber + "\n"
+                        + "Từ ngày: " + DF.format(startDate) + "\n"
+                        + "Đến ngày: " + DF.format(endDate) + "\n"
+                        + "Số giao dịch: " + (txns == null ? 0 : txns.size()) + "\n\n"
+                        + "TAD bank";
+
+                setLoading(true, "Đang gửi email...");
+
+                FileEmail.sendEmailWithAttachmentAsync(
+                        recipient,
+                        subject,
+                        body,
+                        out,
+                        mime,
+                        new FileEmail.Callback() {
+                            @Override public void onSuccess() {
+                                if (!isAdded()) return;
+                                requireActivity().runOnUiThread(() -> {
+                                    setLoading(false, "Đã gửi email tới " + recipient);
+                                    Toast.makeText(requireContext(), "Đã gửi sao kê qua email!", Toast.LENGTH_SHORT).show();
+                                });
+                            }
+
+                            @Override public void onError(Exception e) {
+                                if (!isAdded()) return;
+                                requireActivity().runOnUiThread(() -> {
+                                    setLoading(false, "Gửi email lỗi: " + e.getMessage());
+                                    Toast.makeText(requireContext(), "Gửi email lỗi: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                });
+                            }
+                        }
+                );
 
             } catch (Exception e) {
                 setLoading(false, "Xuất lỗi: " + e.getMessage());
@@ -400,22 +439,56 @@ public class ReportFragment extends Fragment {
         return "";
     }
 
-    private void shareFile(File file, boolean isExcel) {
-        Uri uri = FileProvider.getUriForFile(
-                requireContext(),
-                requireContext().getPackageName() + ".fileprovider",
-                file
-        );
+    private void sendEmailWithAttachment(File file, boolean isExcel) {
+        Uri uri;
+        try {
+            uri = FileProvider.getUriForFile(
+                    requireContext(),
+                    requireContext().getPackageName() + ".fileprovider",
+                    file
+            );
+        } catch (Exception e) {
+            Toast.makeText(requireContext(), "FileProvider lỗi: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            return;
+        }
 
-        Intent share = new Intent(Intent.ACTION_SEND);
-        share.setType(isExcel
+        String mime = isExcel
                 ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                : "application/pdf");
-        share.putExtra(Intent.EXTRA_STREAM, uri);
-        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                : "application/pdf";
 
-        startActivity(Intent.createChooser(share, "Chia sẻ sao kê"));
+        String subject = "Sao kê Checking - TAD bank (" + file.getName() + ")";
+        String body = "Xin chào,\n\n"
+                + "Đính kèm sao kê tài khoản checking (TAD bank).\n"
+                + "File: " + file.getName() + "\n\n"
+                + "Trân trọng.";
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType(mime);
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"dang0582366729@gmail.com"});
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(Intent.EXTRA_TEXT, body);
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+        // grant permission cho các app mail có thể đọc file
+        List<android.content.pm.ResolveInfo> resInfoList =
+                requireContext().getPackageManager().queryIntentActivities(intent, 0);
+        for (android.content.pm.ResolveInfo resolveInfo : resInfoList) {
+            String packageName = resolveInfo.activityInfo.packageName;
+            requireContext().grantUriPermission(
+                    packageName,
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+            );
+        }
+
+        try {
+            startActivity(Intent.createChooser(intent, "Gửi sao kê qua Email"));
+        } catch (Exception e) {
+            Toast.makeText(requireContext(), "Không có app Email để gửi file", Toast.LENGTH_LONG).show();
+        }
     }
+
 
     private void setLoading(boolean loading, String status) {
         if (progressExport != null) progressExport.setVisibility(loading ? View.VISIBLE : View.GONE);

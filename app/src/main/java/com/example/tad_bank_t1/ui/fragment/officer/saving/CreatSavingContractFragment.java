@@ -137,6 +137,10 @@ public class CreatSavingContractFragment extends Fragment {
     }
 
     private void bindPolicyToUi(SavingsRatePolicy policy) {
+        if (policy == null) {
+            clearForm();
+            return;
+        }
         etCode.setText(safe(policy.getContractCode()));
         etName.setText(safe(policy.getPolicyName()));
         etDescription.setText(safe(policy.getShortDescription()));
@@ -173,6 +177,16 @@ public class CreatSavingContractFragment extends Fragment {
         if (!TextUtils.isEmpty(policy.getSavingPolicyId())) {
             currentPolicyId = policy.getSavingPolicyId();
         }
+    }
+    private void clearForm() {
+        etCode.setText("");
+        etName.setText("");
+        etDescription.setText("");
+        etTermMonths.setText("");
+        etTermRate.setText("");
+        etNoTermRate.setText("");
+        rbNoTerm.setChecked(true);
+        clearAllErrors();
     }
 
     private void bindViews(View v) {
@@ -395,6 +409,9 @@ public class CreatSavingContractFragment extends Fragment {
     }
 
     private void observeState() {
+        viewModel.getEditingPolicy().observe(getViewLifecycleOwner(), policy -> {
+            bindPolicyToUi(policy); // đã an toàn với null
+        });
         viewModel.getUiState().observe(getViewLifecycleOwner(), state -> {
             if (state == null) return;
 

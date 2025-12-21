@@ -7,6 +7,9 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.tad_bank_t1.data.model.SavingsRatePolicy;
 import com.example.tad_bank_t1.data.model.enums.saving.SavingPolicyStatus;
+import com.example.tad_bank_t1.data.repository.callbacks.ResultCallback;
+import com.example.tad_bank_t1.data.repository.savingPolicy.FirebaseSavingPolicyRepository;
+import com.example.tad_bank_t1.data.repository.savingPolicy.SavingPolicyRepository;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
@@ -41,8 +44,11 @@ public class SavingContractListViewModel extends ViewModel {
     private String query = "";
     private FilterChip chip = FilterChip.ALL;
 
+    private final SavingPolicyRepository repo;
     private ListenerRegistration registration;
-
+    public SavingContractListViewModel() {
+        this.repo = new FirebaseSavingPolicyRepository();
+    }
     public LiveData<UiState> getUiState() { return uiState; }
 
     public LiveData<List<SavingsRatePolicy>> getFilteredList() { return filteredList; }
@@ -57,28 +63,26 @@ public class SavingContractListViewModel extends ViewModel {
         if (registration != null) return;
 
         uiState.setValue(UiState.idle().withLoading(true));
-        registration = FirebaseFirestore.getInstance()
-                .collection("savingRatePolicies")
-                .addSnapshotListener((snap, e) -> {
-                    if (e != null) {
-                        uiState.setValue(new UiState(false, e.getMessage(), all.size(), safeSize(filteredList.getValue())));
-                        return;
-                    }
-                    all.clear();
-                    if (snap != null) {
-                        for (DocumentSnapshot doc : snap.getDocuments()) {
-                            SavingsRatePolicy p = doc.toObject(SavingsRatePolicy.class);
-                            if (p != null) {
-                                if (p.getSavingPolicyId() == null) {
-                                    p.setSavingPolicyId(doc.getId());
-                                }
-                                all.add(p);
-                            }
-                        }
-                    }
-                    applyFilter();
-                    uiState.setValue(new UiState(false, null, all.size(), safeSize(filteredList.getValue())));
-                });
+        registration = repo.listenAll(new ResultCallback<List<SavingsRatePolicy>>() {
+            @Override
+            public void onSuccess(List<SavingsRatePolicy> data) {
+                all.clear();
+                if (data != null) all.addAll(data);
+
+                applyFilter();
+                uiState.setValue(new UiState(false, null, all.size(), safeSize(filteredList.getValue())));
+            }
+
+            @Override
+            public void onError(String error) {
+                UiState cur = uiState.getValue();
+                if (cur == null) cur = UiState.idle();
+                uiState.setValue(new UiState(false,
+                        (error == null || error.trim().isEmpty()) ? "Realtime listen failed" : error,
+                        all.size(),
+                        safeSize(filteredList.getValue())));
+            }
+        });
     }
     public void stop() {
         if (registration != null) {

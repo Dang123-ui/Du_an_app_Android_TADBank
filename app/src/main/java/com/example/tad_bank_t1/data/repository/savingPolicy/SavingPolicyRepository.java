@@ -4,6 +4,7 @@ import com.example.tad_bank_t1.data.model.Bank;
 import com.example.tad_bank_t1.data.model.SavingsRatePolicy;
 import com.example.tad_bank_t1.data.repository.callbacks.ResultCallback;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.List;
 
@@ -19,7 +20,5 @@ public interface SavingPolicyRepository {
 
     // update
     void update(SavingsRatePolicy savingPolicy, ResultCallback<SavingsRatePolicy> callback);
-
-    // // delete
-    // void delete(int id);
+    ListenerRegistration listenAll(ResultCallback<List<SavingsRatePolicy>> callback);
 }

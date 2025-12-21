@@ -22,6 +22,7 @@ import com.example.tad_bank_t1.ui.fragment.ai.AIPredictFragment;
 import com.example.tad_bank_t1.ui.fragment.officer.AccountListOfficerFragment;
 import com.example.tad_bank_t1.ui.fragment.officer.DashboardFragment;
 import com.example.tad_bank_t1.ui.fragment.officer.MortgageAcountFragment;
+import com.example.tad_bank_t1.ui.fragment.officer.ReportFragment;
 import com.example.tad_bank_t1.ui.fragment.officer.SavingsAccountFragment;
 import com.example.tad_bank_t1.ui.fragment.officer.fragment_customer_profile;
 import com.example.tad_bank_t1.ui.fragment.officer.saving.SavingPolicyListFragment;
@@ -138,7 +139,7 @@ public class OfficerMainActivity extends AppCompatActivity {
                 navigateTo(new SavingPolicyListFragment(), false);
 
             } else if (id == R.id.nav_reports) {
-                navigateTo(new AIPredictFragment(), false);
+                navigateTo(new ReportFragment(), false);
             }
             return null;
         });

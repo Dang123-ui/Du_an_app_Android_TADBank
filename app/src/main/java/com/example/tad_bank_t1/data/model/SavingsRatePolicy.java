@@ -21,7 +21,8 @@ import java.util.Map;
 public class SavingsRatePolicy {
     // ===== Identity / Basic Info =====
     @DocumentId
-    private String savingPolicyId; // Firestore documentId
+    private String docId;
+    private String savingPolicyId;
     private String contractCode; // Mã hợp đồng
     private String policyName; // Tên sản phẩm
     private String shortDescription; // Mô tả ngắn
@@ -67,6 +68,15 @@ public class SavingsRatePolicy {
     // ===== Audit =====
     private Date createdAt;
     private Date updatedAt;
+    private String createdBy;
+    private String updateBy;
+
+    public String getCreatedBy() { return createdBy; }
+    public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
+
+    public String getUpdateBy() { return updateBy; }
+    public void setUpdateBy(String updateBy) { this.updateBy = updateBy; }
+
 
     public SavingsRatePolicy() {
     }
@@ -81,8 +91,8 @@ public class SavingsRatePolicy {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
-
     @Exclude
+    public String getDocId() { return docId; }
     public String getSavingPolicyId() {
         return savingPolicyId;
     }
@@ -158,6 +168,7 @@ public class SavingsRatePolicy {
     // ===== Firestore mapping =====
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
+        map.put("savingPolicyId", savingPolicyId);
         MapUtils.putIfNotNull(map, "policyName", policyName);
         MapUtils.putIfNotNull(map, "contractCode", contractCode);
         MapUtils.putIfNotNull(map, "shortDescription", shortDescription);

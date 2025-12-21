@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.example.tad_bank_t1.R;
@@ -23,6 +24,7 @@ import com.example.tad_bank_t1.databinding.FragmentHomeCustomerBinding;
 import com.example.tad_bank_t1.ui.activity.LoginActivity;
 import com.example.tad_bank_t1.ui.activity.MainActivity;
 import com.example.tad_bank_t1.ui.base.UiConfig;
+import com.example.tad_bank_t1.ui.fragment.ai.AIPredictFragment;
 import com.example.tad_bank_t1.ui.fragment.customer.account.AccountListByTypeFragment;
 import com.example.tad_bank_t1.ui.fragment.customer.account.AccountListFragment;
 import com.example.tad_bank_t1.ui.fragment.customer.ggmap.MapBranchOrsFragment;
@@ -51,6 +53,7 @@ public class HomeCustomerFragment extends Fragment implements UiConfig {
     private SessionViewModel sessionViewModel;
     private NotificationViewModel notificationViewModel;
     private BankViewModel bankViewModel;
+    private ImageButton imbAi;
 
     @Override
     public boolean showBottomNav() {
@@ -87,6 +90,13 @@ public class HomeCustomerFragment extends Fragment implements UiConfig {
         super.onViewCreated(view, savedInstanceState);
         ImageView homeLogo = view.findViewById(R.id.homeLogo);
         ViewCompat.setTransitionName(homeLogo, "app_logo");
+        imbAi = view.findViewById(R.id.imbAI);
+        imbAi.setOnClickListener(v -> {
+            Fragment aiFragment = new AIPredictFragment();
+
+            ((MainActivity) requireActivity())
+                    .openFeatureFragment(aiFragment, "AI Assistant");
+        });
         homeLogo.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {

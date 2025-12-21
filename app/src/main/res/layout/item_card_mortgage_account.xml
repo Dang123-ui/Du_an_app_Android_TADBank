@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Layout cho item danh sách khoản vay thế chấp.  Sử dụng kiểu
+    MaterialCardView giống như item danh sách tài khoản thường, nhưng
+    hiển thị các trường đặc thù: số tài khoản, số tiền cần trả mỗi kỳ
+    và ngày đến hạn tiếp theo.  Các thành phần được đặt tên theo
+    quy ước txtItemMortgage... để dễ nhận biết.  Những nhãn (labels)
+    được viết trực tiếp ở đây; bạn có thể chuyển sang strings.xml nếu
+    muốn dịch đa ngôn ngữ.
+-->
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:gravity="center"
+        android:background="@drawable/bg_primary_color">
+
+        <!-- Dòng 1: Số tài khoản -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingEnd="15dp">
+
+            <TextView
+                android:id="@+id/txtItemMortgageAccountNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MRG123456"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <!-- Có thể đặt thêm trạng thái ở đây nếu cần -->
+
+        </LinearLayout>
+
+        <!-- Dòng 2: Số tiền phải trả mỗi kỳ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingEnd="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thanh toán mỗi kỳ"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/txtItemMortgageAmountDue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5,000,000₫"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <!-- Dòng 3: Ngày đến hạn tiếp theo -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingEnd="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ngày đến hạn"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/txtItemMortgageNextDueDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10/01/2026"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

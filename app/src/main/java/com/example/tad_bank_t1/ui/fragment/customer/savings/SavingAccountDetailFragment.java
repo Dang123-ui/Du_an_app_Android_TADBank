@@ -1,6 +1,5 @@
 package com.example.tad_bank_t1.ui.fragment.customer.savings;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -33,7 +32,7 @@ import com.example.tad_bank_t1.ui.viewmodel.account.AccountViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.account.SavingViewModel;
 import com.example.tad_bank_t1.util.CurrencyUtil;
 import com.example.tad_bank_t1.util.DateTimeUtil;
-import com.example.tad_bank_t1.util.MockAccountFactory;
+import com.example.tad_bank_t1.util.mock.MockAccountFactory;
 import com.example.tad_bank_t1.util.SavingUtil;
 import com.example.tad_bank_t1.util.TransactionUtil;
 
@@ -238,8 +237,8 @@ public class SavingAccountDetailFragment extends Fragment implements UiConfig, B
 
             if (account.getSaving() != null){
                 SavingsAccount savingsAccount = account.getSaving();
-                binding.txtSavingDetailStartDate.setText(DateTimeUtil.formatDateToVNTime(savingsAccount.getStartDate()));
-                binding.txtSavingDetailMaturityDate.setText(DateTimeUtil.formatDateToVNTime(savingsAccount.getMaturityDate()));
+                binding.txtSavingDetailStartDate.setText(DateTimeUtil.formatDateToVNDate(savingsAccount.getStartDate()));
+                binding.txtSavingDetailMaturityDate.setText(DateTimeUtil.formatDateToVNDate(savingsAccount.getMaturityDate()));
 
                 binding.txtSavingDetailPolicyName.setText(savingsAccount.getPolicyName());
                 binding.txtSavingDetailInterestRate.setText(savingsAccount.getAprAtOpen() + "%");

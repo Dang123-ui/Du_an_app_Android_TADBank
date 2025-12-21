@@ -1,6 +1,8 @@
 package com.example.tad_bank_t1.util;
 
 
+import android.annotation.SuppressLint;
+
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -15,14 +17,22 @@ import java.util.Locale;
 public class DateTimeUtil {
     public static final ZoneId LOCAL_ZONE_ID = ZoneId.of("Asia/Ho_Chi_Minh");
 
-    // nhan vào giờ UTC +7 trả ra format dd-mm-YYYY hh:mm:ss
+    /** nhan vào giờ UTC +7 trả ra format dd-mm-YYYY hh:mm:ss */
     public static String formatDateToVNTime(Date date) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
         // Format the Date object into a String
-        String formattedDate = formatter.format(date);
 
-        return formattedDate;
+        return formatter.format(date);
+    }
+
+    /** nhan vào giờ UTC +7 trả ra format dd-mm-YYYY  */
+    public static String formatDateToVNDate(Date date) {
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+
+        // Format the Date object into a String
+
+        return formatter.format(date);
     }
 
     public static ZonedDateTime toUTC(LocalDateTime localDateTime, ZoneId zoneId) {
@@ -76,6 +86,8 @@ public class DateTimeUtil {
         return localDateTime;
     }
 
+
+    /** Nhận vào giờ VN trả ra giờ dd/MM/yyyy HH:mm */
     public static String localDateTimeToStr(Date dateUTC) {
         LocalDateTime localDateTime = dateUTCToLocalDate(dateUTC);
 

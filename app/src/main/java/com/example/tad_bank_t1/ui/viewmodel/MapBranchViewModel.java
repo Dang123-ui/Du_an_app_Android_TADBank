@@ -27,6 +27,7 @@ public class MapBranchViewModel extends ViewModel {
     private Branch lastRoutedBranch;
     private LatLng lastRoutedOrigin;
 
+
     public MapBranchViewModel(BranchRepository branchRepo, RoutesRepository routesRepo) {
         this.branchRepo = branchRepo;
         this.routesRepo = routesRepo;

@@ -1,7 +1,7 @@
 package com.example.tad_bank_t1.data.model;
 
 public class Branch {
-    public int branchId;     // PK (giữ nguyên tên "brandId" theo sơ đồ)
+    public String branchId;     // PK (giữ nguyên tên "brandId" theo sơ đồ)
     public String name;
     public String type;        // BRANCH | ATM
     public String address;
@@ -12,7 +12,9 @@ public class Branch {
     public String phone;
     public String email;
 
-    public Branch(int branchId, String name, String type, String address, String province, Double latitude, Double longitude, String phone, String email) {
+    public Branch() {}
+
+    public Branch(String branchId, String name, String type, String address, String province, Double latitude, Double longitude, String phone, String email) {
         this.branchId = branchId;
         this.name = name;
         this.type = type;
@@ -24,11 +26,12 @@ public class Branch {
         this.email = email;
     }
 
-    public int getBranchId() {
+
+    public String getBranchId() {
         return branchId;
     }
 
-    public void setBranchId(int branchId) {
+    public void setBranchId(String branchId) {
         this.branchId = branchId;
     }
 

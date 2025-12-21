@@ -44,7 +44,7 @@ public class SavingUtil {
             months = calculateFullMonths(startDate, maturityDate);
             appliedApr = aprAtOpen;
         } else {
-            // rút trước hạn: demo cho lãi 0 (hoặc đổi sang lãi không kỳ hạn)
+            // rút trước hạn: demo cho lãi 0.05 (hoặc đổi sang lãi không kỳ hạn)
             months = calculateFullMonths(startDate, closeDate);
             appliedApr = TadConstants.RATE_WHEN_CLOSE_SAVING_BEFORE_MATURITY;
         }

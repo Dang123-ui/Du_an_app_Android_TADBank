@@ -32,6 +32,8 @@ import com.example.tad_bank_t1.ui.viewmodel.PaymentReturnViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.SessionViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.maplibre.android.MapLibre;
+
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
@@ -84,6 +86,10 @@ public class MainActivity extends AppCompatActivity {
 
         // intent payment
         handleDeepLink(getIntent());
+
+        // map ors
+        // ✅ Bắt buộc: gọi trước khi inflate MapView
+        MapLibre.getInstance(this);
     }
 
     private int dpToPx(int dp) {

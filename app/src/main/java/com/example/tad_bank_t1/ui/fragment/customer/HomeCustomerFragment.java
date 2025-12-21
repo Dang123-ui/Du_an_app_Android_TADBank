@@ -1,8 +1,6 @@
 package com.example.tad_bank_t1.ui.fragment.customer;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.core.view.ViewCompat;
@@ -17,10 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.tad_bank_t1.R;
-import com.example.tad_bank_t1.data.model.SavingsRatePolicy;
+import com.example.tad_bank_t1.data.model.MortgagePaymentSchedule;
 import com.example.tad_bank_t1.data.model.enums.AccountType;
 import com.example.tad_bank_t1.databinding.FragmentHomeCustomerBinding;
 import com.example.tad_bank_t1.ui.activity.LoginActivity;
@@ -28,10 +25,9 @@ import com.example.tad_bank_t1.ui.activity.MainActivity;
 import com.example.tad_bank_t1.ui.base.UiConfig;
 import com.example.tad_bank_t1.ui.fragment.customer.account.AccountListByTypeFragment;
 import com.example.tad_bank_t1.ui.fragment.customer.account.AccountListFragment;
-import com.example.tad_bank_t1.ui.fragment.customer.ggmap.MapBranchFragment;
+import com.example.tad_bank_t1.ui.fragment.customer.ggmap.MapBranchOrsFragment;
 import com.example.tad_bank_t1.ui.fragment.customer.notification.NotiFragment;
 import com.example.tad_bank_t1.ui.fragment.customer.bills.BillsPaymentFragment;
-import com.example.tad_bank_t1.ui.fragment.customer.savings.SavingAccountDetailFragment;
 import com.example.tad_bank_t1.ui.fragment.customer.transaction.TransactionHistoryFragment;
 import com.example.tad_bank_t1.ui.fragment.customer.transfer.BankTransferFragment;
 import com.example.tad_bank_t1.ui.fragment.customer.topup.MobileTopupFragment;
@@ -41,9 +37,9 @@ import com.example.tad_bank_t1.ui.viewmodel.NotificationViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.SessionViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.TransactionPayloadViewModel;
 import com.example.tad_bank_t1.ui.viewmodel.TransactionViewModel;
-import com.example.tad_bank_t1.ui.viewmodel.account.SavingPolicyViewModel;
+import com.example.tad_bank_t1.ui.viewmodel.account.MortgageScheduleViewModel;
 import com.example.tad_bank_t1.util.CurrencyUtil;
-import com.example.tad_bank_t1.util.MockAccountFactory;
+import com.example.tad_bank_t1.util.mock.MortgageScheduleMockUtil;
 
 import java.util.List;
 
@@ -125,8 +121,13 @@ public class HomeCustomerFragment extends Fragment implements UiConfig {
         setUpEvents();
 
         // mock
+        mockDataToDB();
+    }
+
+    private void mockDataToDB(){
 
     }
+
 
     private void initView(View view){
     }
@@ -209,8 +210,8 @@ public class HomeCustomerFragment extends Fragment implements UiConfig {
         binding.lnloCardDepositPhone.setOnClickListener(v -> featureCardOnClick(new MobileTopupFragment(), getString(R.string.nap_tien_dien_thoai)));
         binding.lnloCardTransactionHistory.setOnClickListener(v -> featureCardOnClick(new TransactionHistoryFragment(), getString(R.string.lich_su_giao_dich)));
         binding.lnloCardBillPayment.setOnClickListener(v -> featureCardOnClick(new BillsPaymentFragment(), getString(R.string.thanh_toan_hoa_don)));
-        binding.lnloCardFindBranch.setOnClickListener(v -> featureCardOnClick(new MapBranchFragment(), getString(R.string.tim_kiem_chi_nhanh)));
-
+//        binding.lnloCardFindBranch.setOnClickListener(v -> featureCardOnClick(new MapBranchFragment(), getString(R.string.tim_kiem_chi_nhanh)));
+        binding.lnloCardFindBranch.setOnClickListener(v -> featureCardOnClick(new MapBranchOrsFragment(), getString(R.string.tim_kiem_chi_nhanh)));
         binding.lnloCardSavingAccount.setOnClickListener(v -> featureCardOnClick(
                 AccountListByTypeFragment.newInstance(sessionViewModel.getUserId().getValue(), AccountType.SAVING), getString(R.string.tai_khoan_tiet_kiem))
         );

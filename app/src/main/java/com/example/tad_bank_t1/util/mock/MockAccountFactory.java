@@ -1,13 +1,16 @@
-package com.example.tad_bank_t1.util;
+package com.example.tad_bank_t1.util.mock;
 
 import com.example.tad_bank_t1.data.model.Account;
+import com.example.tad_bank_t1.data.model.MortgageAccount;
 import com.example.tad_bank_t1.data.model.SavingsAccount;
 import com.example.tad_bank_t1.data.model.SavingsRatePolicy;
 import com.example.tad_bank_t1.data.model.enums.AccountStatus;
 import com.example.tad_bank_t1.data.model.enums.AccountType;
+import com.example.tad_bank_t1.data.model.enums.mortgage.MortgagePaymentFrequency;
 import com.example.tad_bank_t1.data.model.enums.saving.InterestPaymentMethod;
 import com.example.tad_bank_t1.data.model.enums.saving.SavingCapitalization;
 import com.example.tad_bank_t1.data.model.enums.saving.SavingPolicyStatus;
+import com.example.tad_bank_t1.util.TransactionUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -85,5 +88,69 @@ public final class MockAccountFactory {
         policy.setCreatedBy("seed");
         policy.setUpdateBy("seed");
         return policy;
+    }
+
+    /**
+     * Creates a list of mock mortgage accounts.  The resulting list will
+     * contain six accounts with varying principal amounts and start dates.
+     *
+     * @return a list of Accounts containing mortgage information
+     */
+    public static List<Account> createMockMortgageAccounts() {
+        List<Account> accounts = new ArrayList<>();
+        for (int i = 1; i <= 6; i++) {
+            accounts.add(createMockMortgageAccount(i));
+        }
+        return accounts;
+    }
+
+    /**
+     * Creates a single mock mortgage account with a sequence index.  The
+     * index is used to vary the principal and account number for demo
+     * purposes.
+     *
+     * @param index a sequence number used to vary the account fields
+     * @return an Account configured as a mortgage account
+     */
+    public static Account createMockMortgageAccount(int index) {
+        Account account = new Account();
+        // Basic account info
+        account.setAccountId("MORT" + TransactionUtil.generateIdWithTime());
+        account.setUserId("test-+84373436163");
+        account.setPinCode("037343");
+        account.setDefault(false);
+        account.setAccountName("Mortgage Account " + index);
+        account.setAccountNumber(String.format("MRG%03d%04d", index, index + 1000));
+        account.setBranchId("BR01");
+        account.setType(AccountType.MORTGAGE);
+        account.setCurrency("VND");
+        // Mortgage accounts typically have no liquid balance because the balance
+        // refers to deposits/withdrawals on checking and saving accounts
+        account.setBalance(0L);
+        account.setStatus(AccountStatus.OPEN);
+        Date now = new Date();
+        account.setCreatedAt(now);
+        account.setUpdatedAt(now);
+
+        // Create mortgage details
+        MortgageAccount mortgage = new MortgageAccount();
+        long basePrincipal = 300_000_000L; // 300 million VND
+        mortgage.setPrincipalAmount(basePrincipal + index * 50_000_000L);
+        mortgage.setInterestRateAnnual(9.5);
+        mortgage.setTermMonths(240); // 20 years
+        mortgage.setPaymentFrequency(MortgagePaymentFrequency.MONTHLY);
+        // Start date shifts back by index months
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(now);
+        cal.add(Calendar.MONTH, -index);
+        mortgage.setStartDate(cal.getTime());
+        // Next due date is one month after start date for demonstration
+        cal.add(Calendar.MONTH, 1);
+        mortgage.setNextDueDate(cal.getTime());
+        mortgage.setOfficerId("officer-001");
+
+        // Attach mortgage to account
+        account.setMortgage(mortgage);
+        return account;
     }
 }

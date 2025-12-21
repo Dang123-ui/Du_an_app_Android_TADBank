@@ -138,6 +138,8 @@
         // decode polyline
         implementation("com.google.maps.android:android-maps-utils:3.8.2")
 
+        // Map (OSM) - MapLibre
+        implementation("org.maplibre.gl:android-sdk:11.13.5")
 
         // material design,
     //    implementation ("com.google.android.material:material:1.13.0")

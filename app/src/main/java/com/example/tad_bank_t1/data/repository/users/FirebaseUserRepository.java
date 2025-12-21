@@ -3,12 +3,24 @@ package com.example.tad_bank_t1.data.repository.users;
 import com.example.tad_bank_t1.data.adapterPattern.users.UserAdapter;
 import com.example.tad_bank_t1.data.model.Ekyc;
 import com.example.tad_bank_t1.data.model.User;
+import com.example.tad_bank_t1.data.model.enums.Role;
 import com.example.tad_bank_t1.data.model.enums.UserStatus;
+import com.example.tad_bank_t1.data.model.enums.UserStatusOnlOff;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class FirebaseUserRepository implements UserRepository {
     private final UserAdapter adapter = new UserAdapter();
@@ -21,7 +33,6 @@ public class FirebaseUserRepository implements UserRepository {
             return adapter.addAutoId(user);
         }
     }
-
     @Override
     public Task<Void> update(String id, User user) {
         return adapter.set(id, user);
@@ -116,6 +127,59 @@ public class FirebaseUserRepository implements UserRepository {
             if (snap.isEmpty()) return null;
             DocumentSnapshot doc = snap.getDocuments().get(0);
             return doc.toObject(User.class);
+        });
+    }
+
+    @Override
+    public Task<Void> updateStatusOnlOff(String userId, UserStatusOnlOff statusOnlOff) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("statusOnlOff", statusOnlOff != null ? statusOnlOff.name() : null);
+        data.put("lastActiveAt", FieldValue.serverTimestamp());
+        // adapter.doc(userId) là DocumentReference; nếu tên khác thì đổi cho đúng
+        return adapter.doc(userId).update(data);
+    }
+
+    @Override
+    public ListenerRegistration listenUserOnlineOffline(UserOnlineOfflineListener listener) {
+        return adapter.query().addSnapshotListener((snap, e) -> {
+            if(e != null || snap == null) return;
+            int online = 0;
+            int offline = 0;
+            for (DocumentSnapshot doc : snap.getDocuments()) {
+                String statusStr = doc.getString("statusOnlOff");
+                if ("ONLINE".equals(statusStr)) {
+                    online++;
+                } else if ("OFFLINE".equals(statusStr)) {
+                    offline++;
+                }
+            }
+            listener.onChanged(online, offline);
+        });
+    }
+
+    @Override
+    public void getActiveUserIdsInRange(Date start, Date end, ActiveUsersCallback callback) {
+        adapter.query().whereGreaterThanOrEqualTo("lastActiveAt", start).whereLessThanOrEqualTo("lastActiveAt", end).get().addOnSuccessListener(snap ->{
+                    Set<String> ids = new HashSet<>();
+                    for (DocumentSnapshot doc : snap.getDocuments()) {
+                        ids.add(doc.getId());
+                    }
+                    callback.onSuccess(ids);
+                })
+                .addOnFailureListener(callback::onFailure);
+    }
+
+    @Override
+    public Task<List<User>> getCustomerActive() {
+        Query q = adapter.query().whereEqualTo("role", Role.CUSTOMER).whereEqualTo("status", UserStatus.ACTIVE);
+        return adapter.where(q).continueWith(t -> {
+            if(!t.isSuccessful() || t.getResult() == null || t.getResult().isEmpty()) return Collections.emptyList();
+            List<User> users = new ArrayList<>();
+            for(DocumentSnapshot doc : t.getResult().getDocuments()){
+                User u = doc.toObject(User.class);
+                if(u != null) users.add(u);
+            }
+            return users;
         });
     }
 }

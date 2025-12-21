@@ -1,5 +1,7 @@
 package com.example.tad_bank_t1.data.model;
 
+import androidx.annotation.NonNull;
+
 import com.example.tad_bank_t1.data.model.enums.AccountStatus;
 import com.example.tad_bank_t1.data.model.enums.AccountType;
 import com.google.firebase.firestore.DocumentId;
@@ -28,6 +30,11 @@ public class Account implements Serializable {
     public Date createdAt;
     private Date closedAt;
     private Date updatedAt;
+
+    public SavingsAccount saving;
+
+    //
+    public MortgageAccount mortgage;
 
     public Account() {}
     public Account(String id,
@@ -186,6 +193,51 @@ public class Account implements Serializable {
         map.put("createdAt", createdAt);
         map.put("closedAt", closedAt);
         map.put("updatedAt", updatedAt);
+        if (saving != null) {
+            map.put("saving", saving.toMap());
+        }
+
+        if (mortgage != null) {
+//            map.put("mortgage", mortgage.toMap());
+        }
+
         return map;
+    }
+
+    public SavingsAccount getSaving() {
+        return saving;
+    }
+
+    public void setSaving(SavingsAccount saving) {
+        this.saving = saving;
+    }
+
+    public MortgageAccount getMortgage() {
+        return mortgage;
+    }
+
+    public void setMortgage(MortgageAccount mortgage) {
+        this.mortgage = mortgage;
+    }
+
+    private static void putIfNotNull(Map<String, Object> map, String key, Object value) {
+        if (value != null) map.put(key, value);
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Account{" +
+                "accountId='" + accountId + '\'' +
+                ", accountName='" + accountName + '\'' +
+                ", accountNumber='" + accountNumber + '\'' +
+                ", type=" + type +
+                ", currency='" + currency + '\'' +
+                ", balance=" + balance +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                ", closedAt=" + closedAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }

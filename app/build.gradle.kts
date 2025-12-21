@@ -1,4 +1,3 @@
-import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
@@ -9,11 +8,14 @@ plugins {
 val localProps = Properties()
 val localPropsFile = rootProject.file("local.properties")
 if (localPropsFile.exists()) {
-    localProps.load(FileInputStream(localPropsFile))
+    localProps.load(localPropsFile.inputStream())
 }
 
 // Lấy giá trị biến
-val MAPS_API_KEY = localProps.getProperty("MAPS_API_KEY") ?: System.getenv("MAPS_API_KEY")
+val mapsApiKey: String =
+    localProps.getProperty("MAPS_API_KEY")
+        ?: System.getenv("MAPS_API_KEY")
+        ?: ""
 
 
 android {
@@ -27,7 +29,8 @@ android {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        manifestPlaceholders["mapsApiKey"] = MAPS_API_KEY
+        manifestPlaceholders["mapsApiKey"] = mapsApiKey
+        vectorDrawables.useSupportLibrary = true
     }
     
     packaging {
@@ -79,17 +82,18 @@ android {
     buildFeatures {
         viewBinding = true
         mlModelBinding = true
+        dataBinding = true
     }
 }
 
 dependencies {
     //  Firebase SDKs 
-    implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
+    implementation(platform("com.google.firebase:firebase-bom:34.6.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore") 
     implementation("com.google.firebase:firebase-storage")
-
+    implementation ("com.google.firebase:firebase-database")
     // skimmer skeleton loader
     implementation("com.facebook.shimmer:shimmer:0.5.0")
 
@@ -98,7 +102,7 @@ dependencies {
 
     // Google Maps and Places SDKs
     implementation("com.google.android.gms:play-services-maps:19.2.0")
-    implementation("com.google.android.libraries.places:places:5.0.0")
+    implementation("com.google.android.libraries.places:places:5.1.1")
 //    implementation("com.google.android.gms:play-services-location:21.3.0")
 
     // material design,     
@@ -110,7 +114,7 @@ dependencies {
 
     // Lottie for animations
     // implementation ("com.airbnb.android:lottie:6.0.0")
-    implementation ("com.airbnb.android:lottie:6.6.10")
+    implementation ("com.airbnb.android:lottie:6.7.1")
 
     // ML Kit for text recognition and face detection
     implementation("com.google.mlkit:text-recognition:16.0.1")
@@ -146,4 +150,12 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation(project(":transitionbutton"))
+    implementation("com.github.fazla-cloud:meow-bottom-nav:v1.0.0")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.2.0")
+    implementation("com.github.PhilJay:MPAndroidChart:3.1.0")
+    implementation (project(":boommenu"))
+    implementation("com.squareup.retrofit2:retrofit:3.0.0")
+    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.3.2")
 }

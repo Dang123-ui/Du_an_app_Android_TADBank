@@ -1,9 +1,11 @@
 package com.example.tad_bank_t1.ui.fragment;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
@@ -17,11 +19,13 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +76,7 @@ public class FaceVerify1Fragment extends Fragment {
 
     private ActivityResultLauncher<Void> takePreviewLauncher;
     private ActivityResultLauncher<String> pickImageLauncher;
+    private ActivityResultLauncher<String> cameraPermissionLauncher;
 
     public FaceVerify1Fragment() {
     }
@@ -111,22 +116,6 @@ public class FaceVerify1Fragment extends Fragment {
             email = getArguments().getString(ARG_EMAIL);
             mode = getArguments().getInt(ARG_MODE, MODE_SIGNUP);
         }
-        takePreviewLauncher = registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), bmp -> {
-            if (bmp == null) {
-                toast("Không chụp được ảnh.");
-                return;
-            }
-            verifyAgainstReference(bmp);
-        });
-        pickImageLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
-            if (uri == null) return;
-            try {
-                Bitmap bmp = loadBitmapFromUri(uri);
-                verifyAgainstReference(bmp);
-            } catch (IOException e) {
-                toast("Không đọc được ảnh đã chọn.");
-            }
-        });
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -140,10 +129,79 @@ public class FaceVerify1Fragment extends Fragment {
         btnTakePhoto = view.findViewById(R.id.btnTakePhoto);
         btnFile = view.findViewById(R.id.btnFile);
         imgPicture = view.findViewById(R.id.imgPicture);
-//        imgPicture.setImageBitmap(decodeDataUrlToBitmap(ekyc != null ? ekyc.getFaceImagePath() : null));
-        btnTakePhoto.setOnClickListener(v -> takePreviewLauncher.launch(null));
-        btnFile.setOnClickListener(v -> pickImageLauncher.launch("image/*"));
         success = view.findViewById(R.id.success);
+        registerActivityResultLaunchers();
+        setupButtonListeners();
+    }
+    private void registerActivityResultLaunchers() {
+        try {
+            cameraPermissionLauncher = registerForActivityResult(
+                    new ActivityResultContracts.RequestPermission(),
+                    isGranted -> {
+                        if (isGranted) {
+                            launchCamera();
+                        } else {
+                            toast("Cần quyền camera để chụp ảnh");
+                        }
+                    });
+
+            takePreviewLauncher = registerForActivityResult(
+                    new ActivityResultContracts.TakePicturePreview(),
+                    bmp -> {
+                        if (bmp == null) {
+                            toast("Không chụp được ảnh.");
+                            return;
+                        }
+                        verifyAgainstReference(bmp);
+                    });
+
+            pickImageLauncher = registerForActivityResult(
+                    new ActivityResultContracts.GetContent(),
+                    uri -> {
+                        if (uri == null) return;
+                        try {
+                            Bitmap bmp = loadBitmapFromUri(uri);
+                            verifyAgainstReference(bmp);
+                        } catch (IOException e) {
+                            Log.e("FaceVerify", "Lỗi load ảnh từ gallery", e);
+                            toast("Không đọc được ảnh đã chọn.");
+                        }
+                    });
+        } catch (Exception e) {
+            Log.e("FaceVerify", "Lỗi đăng ký launcher", e);
+            toast("Lỗi khởi tạo camera/gallery");
+        }
+    }
+
+    private void setupButtonListeners() {
+        btnTakePhoto.setOnClickListener(v -> {
+            Log.d("FaceVerify", "Camera button clicked");
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
+                    == PackageManager.PERMISSION_GRANTED) {
+                launchCamera();
+            } else {
+                cameraPermissionLauncher.launch(Manifest.permission.CAMERA);
+            }
+        });
+
+        btnFile.setOnClickListener(v -> {
+            Log.d("FaceVerify", "Gallery button clicked");
+            pickImageLauncher.launch("image/*");
+        });
+    }
+    private void launchCamera() {
+        try {
+            takePreviewLauncher.launch(null);
+        } catch (Exception e) {
+            Log.e("FaceVerify", "Lỗi mở camera", e);
+            toast("Lỗi mở camera: " + e.getMessage());
+
+            // Fallback Intent cũ (nếu launcher fail)
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
+                startActivityForResult(takePictureIntent, 1001);  // REQUEST_IMAGE_CAPTURE
+            }
+        }
     }
 
     private void verifyAgainstReference(Bitmap captureBmp) {

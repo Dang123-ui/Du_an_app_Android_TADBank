@@ -164,20 +164,20 @@
         app:layout_constraintEnd_toEndOf="@+id/imageView5"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
 
-    <Button
+
+    <com.royrodriguez.transitionbutton.TransitionButton
         android:id="@+id/btnLogin2"
         android:layout_width="242dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
         android:layout_marginTop="40dp"
         android:background="@drawable/btn_selector"
         android:backgroundTint="@null"
+        app:backgroundTint="@null"
         android:enabled="false"
         android:text="@string/login"
-        app:backgroundTint="@null"
+        app:layout_constraintEnd_toEndOf="@+id/imageView5"
         app:layout_constraintStart_toStartOf="@+id/imageView5"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
-
     <ImageButton
         android:id="@+id/btnFaceId"
         android:layout_width="64dp"
@@ -213,7 +213,6 @@
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView5" />
-
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/loading"
         android:layout_width="45dp"
@@ -227,6 +226,8 @@
         app:layout_constraintVertical_bias="0.0"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/loading" />
+        app:lottie_rawRes="@raw/loading"
+
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

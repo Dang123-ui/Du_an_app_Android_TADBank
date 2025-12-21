@@ -18,6 +18,9 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.model.Account;
 import com.example.tad_bank_t1.data.model.User;
+import com.example.tad_bank_t1.data.model.enums.UserStatusOnlOff;
+import com.example.tad_bank_t1.data.repository.users.FirebaseUserRepository;
+import com.example.tad_bank_t1.data.repository.users.UserRepository;
 import com.example.tad_bank_t1.ui.fragment.BankTransferFragment;
 import com.example.tad_bank_t1.ui.fragment.HomeCustomerFragment;
 import com.example.tad_bank_t1.ui.fragment.SettingFragment;
@@ -33,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private SessionViewModel sessionViewModel;
 
     public static final String EXTRA_USERID = "extra_userid";
-
+    private String currentUserId;
+    private final UserRepository userRepo = new FirebaseUserRepository();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,13 +81,13 @@ public class MainActivity extends AppCompatActivity {
         // load user account bang session viewmodel
         sessionViewModel = new ViewModelProvider(this).get(SessionViewModel.class);
         Intent intent = getIntent();
-        String userId = null;
+        currentUserId = null;
         if (intent != null) {
-            userId = intent.getStringExtra(EXTRA_USERID);
+            currentUserId = intent.getStringExtra(EXTRA_USERID);
         }
-        if (userId != null) {
-            sessionViewModel.loadCurrentUserAndAccounts(userId);
-            sessionViewModel.observeUserAndAccountsRealtime(userId);
+        if (currentUserId != null) {
+            sessionViewModel.loadCurrentUserAndAccounts(currentUserId);
+            sessionViewModel.observeUserAndAccountsRealtime(currentUserId);
             sessionViewModel.isLoading.observe(this, isLoading -> {
                 if (isLoading) {
                     showLoading(true);
@@ -121,6 +125,22 @@ public class MainActivity extends AppCompatActivity {
         // Nút back trên toolbar
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(currentUserId != null){
+            userRepo.updateStatusOnlOff(currentUserId, UserStatusOnlOff.ONLINE);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (currentUserId != null) {
+            userRepo.updateStatusOnlOff(currentUserId, UserStatusOnlOff.OFFLINE);
+        }
     }
 
     @Override
@@ -218,5 +238,6 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     }
+
 
 }

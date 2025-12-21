@@ -64,7 +64,7 @@ public class InfoSignUpFragment extends Fragment {
         btnNextToPhoneVerify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!validAll(true) && !cbAgreeWithPolicy.isChecked()){
+                if(!validAll(true) || !cbAgreeWithPolicy.isChecked()){
                     return;
                 }
                 final String email = etEmail.getText().toString().trim();

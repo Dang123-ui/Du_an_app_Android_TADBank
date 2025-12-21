@@ -41,7 +41,6 @@ public class Congratulation_Fragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_USERID = "key_userid";
     private String userid;
-    private final UserRepository userRepo = new FirebaseUserRepository();
     private ImageView imgLogo;
 
     public Congratulation_Fragment() {
@@ -90,7 +89,7 @@ public class Congratulation_Fragment extends Fragment {
                 .getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
                 .edit()
                 .putBoolean("hasRegistered", true)
-                .putString("lastUserId", userid)   // 👈 sửa đúng key
+                .putString("lastUserId", userid)
                 .apply();
         new Handler(Looper.getMainLooper()).postDelayed(() -> goToMainActivity(imgLogo), 2500);
     }

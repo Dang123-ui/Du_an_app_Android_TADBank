@@ -276,5 +276,6 @@
     <string name="tai_khoan_duoc_tao">Created account</string>
     <string name="tai_khoan_thanh_toan_nguon">Source payment account</string>
     <string name="so_tien_phai_tra">Amount to paid</string>
+    <string name="ve_xem_phim">Movie ticket</string>
 
 </resources>

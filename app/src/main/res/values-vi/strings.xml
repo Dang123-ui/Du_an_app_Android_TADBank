@@ -277,5 +277,6 @@
     <string name="tai_khoan_duoc_tao">Tài khoản được tạo</string>
     <string name="tai_khoan_thanh_toan_nguon">Tài khoản thanh toán nguồn</string>
     <string name="so_tien_phai_tra">Số tiền phải trả</string>
+    <string name="ve_xem_phim">Vé xem phim</string>
 
 </resources>

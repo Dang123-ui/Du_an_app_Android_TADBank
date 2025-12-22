@@ -85,16 +85,15 @@
 
                     <TextView
                         android:id="@+id/text_electricity"
-                        style="@style/TextAppearance.Material3.BodySmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:ellipsize="end"
-                        android:maxLines="2"
                         android:text="@string/tien_dien"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="14sp" />
+                        android:minLines="2"
+                        android:ellipsize="middle"
+                        android:maxLines="2" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -132,16 +131,15 @@
                         android:src="@drawable/ic_bill_water" />
 
                     <TextView
-                        style="@style/TextAppearance.Material3.BodySmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:ellipsize="end"
-                        android:maxLines="2"
                         android:text="@string/tien_nuoc"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="14sp" />
+                        android:minLines="2"
+                        android:ellipsize="middle"
+                        android:maxLines="2" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -179,16 +177,15 @@
                         android:src="@drawable/ic_bill_tuition" />
 
                     <TextView
-                        style="@style/TextAppearance.Material3.BodySmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:ellipsize="end"
-                        android:maxLines="2"
                         android:text="@string/hoc_phi"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="14sp" />
+                        android:minLines="2"
+                        android:ellipsize="middle"
+                        android:maxLines="2" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -226,16 +223,15 @@
                         android:src="@drawable/ic_bill_plane" />
 
                     <TextView
-                        style="@style/TextAppearance.Material3.BodySmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:ellipsize="end"
-                        android:maxLines="2"
                         android:text="@string/ve_may_bay"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="14sp" />
+                        android:minLines="2"
+                        android:ellipsize="middle"
+                        android:maxLines="2" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -273,16 +269,15 @@
                         android:src="@drawable/ic_bill_train_ticket" />
 
                     <TextView
-                        style="@style/TextAppearance.Material3.BodySmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:ellipsize="end"
-                        android:maxLines="2"
                         android:text="@string/ve_tau"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="14sp" />
+                        android:minLines="2"
+                        android:ellipsize="middle"
+                        android:maxLines="2" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -320,16 +315,15 @@
                         android:src="@drawable/ic_bill_movie_ticket" />
 
                     <TextView
-                        style="@style/TextAppearance.Material3.BodySmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:ellipsize="end"
-                        android:maxLines="2"
-                        android:text="Vé xem phim"
+                        android:text="@string/ve_xem_phim"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="14sp" />
+                        android:minLines="2"
+                        android:ellipsize="middle"
+                        android:maxLines="2" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

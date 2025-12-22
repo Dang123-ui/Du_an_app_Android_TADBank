@@ -70,7 +70,7 @@ public class PayAccountPickAdapter extends RecyclerView.Adapter<PayAccountPickAd
 
         h.tvSub.setTextColor(isSelected
                 ? h.itemView.getContext().getColor(R.color.primaryColor)
-                : h.itemView.getContext().getColor(R.color.white)
+                : h.itemView.getContext().getColor(R.color.black)
         );
         // end bind
 

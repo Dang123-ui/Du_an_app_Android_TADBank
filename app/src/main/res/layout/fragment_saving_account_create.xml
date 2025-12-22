@@ -201,21 +201,36 @@
                         android:textColor="@color/text_primary"
                         android:layout_marginBottom="8dp" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnSelectDate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/label_select_start_date"
-                        android:background="@drawable/bg_button_outline"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="14sp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/label_select_date"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+
                         android:gravity="start|center_vertical"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
-                        android:drawableStart="@drawable/ic_calendar_cus"
-                        android:drawableTint="@color/text_secondary"
-                        android:drawablePadding="8dp"
-                        android:textAllCaps="false" />
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+
+                        app:icon="@drawable/ic_signup_calendar"
+                        app:iconGravity="start"
+                        app:iconPadding="10dp"
+                        app:iconSize="20dp"
+                        app:iconTint="@null"
+
+                        android:background="@drawable/bg_card_white_with_ripple"
+                        app:backgroundTint="@null"
+                        app:cornerRadius="28dp"
+                        app:elevation="8dp"
+
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
 
                 </LinearLayout>
 

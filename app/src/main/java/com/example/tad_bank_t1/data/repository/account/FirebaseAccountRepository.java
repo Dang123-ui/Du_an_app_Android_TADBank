@@ -77,7 +77,8 @@ public class FirebaseAccountRepository implements AccountRepository {
     @Override
     public Task<List<Account>> getAccountsByUserId(String userId) {
         Query q = adapter.query()
-                .whereEqualTo("userId", userId);
+                .whereEqualTo("userId", userId)
+                ;
 
         return adapter.where(q).continueWith(t -> {
             if (!t.isSuccessful() || t.getResult() == null || t.getResult().isEmpty()) {

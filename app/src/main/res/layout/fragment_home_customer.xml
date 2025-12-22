@@ -535,75 +535,76 @@
 
 
                 <!-- Ô 5 -->
-                <LinearLayout
-                    android:id="@+id/lnloCardWithdraw"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/bg_card_white_with_ripple"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="8dp"
-                    android:elevation="8dp"
-                    >
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/lnloCardWithdraw"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_rowWeight="1"-->
+<!--                    android:layout_columnWeight="1"-->
+<!--                    android:layout_margin="10dp"-->
+<!--                    android:background="@drawable/bg_card_white_with_ripple"-->
+<!--                    android:clickable="true"-->
+<!--                    android:focusable="true"-->
+<!--                    android:gravity="center"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:padding="8dp"-->
+<!--                    android:elevation="8dp"-->
+<!--                    android:visibility=""-->
+<!--                    >-->
 
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@android:color/transparent"
-                        android:src="@drawable/ic_home_card_withdraw" />
+<!--                    <ImageView-->
+<!--                        android:layout_width="40dp"-->
+<!--                        android:layout_height="40dp"-->
+<!--                        android:background="@android:color/transparent"-->
+<!--                        android:src="@drawable/ic_home_card_withdraw" />-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center"
-                        android:text="@string/rut_tien"
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="8dp"-->
+<!--                        android:gravity="center"-->
+<!--                        android:text="@string/rut_tien"-->
 
-                        android:minLines="2"
-                        android:ellipsize="middle"
-                        android:maxLines="2" />
-                </LinearLayout>
+<!--                        android:minLines="2"-->
+<!--                        android:ellipsize="middle"-->
+<!--                        android:maxLines="2" />-->
+<!--                </LinearLayout>-->
 
 
                 <!-- Ô 6 -->
-                <LinearLayout
-                    android:id="@+id/lnloCardDeposit"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/bg_card_white_with_ripple"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="8dp"
-                    android:elevation="8dp"
-                    >
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/lnloCardDeposit"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_rowWeight="1"-->
+<!--                    android:layout_columnWeight="1"-->
+<!--                    android:layout_margin="10dp"-->
+<!--                    android:background="@drawable/bg_card_white_with_ripple"-->
+<!--                    android:clickable="true"-->
+<!--                    android:focusable="true"-->
+<!--                    android:gravity="center"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:padding="8dp"-->
+<!--                    android:elevation="8dp"-->
+<!--                    >-->
 
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@android:color/transparent"
-                        android:src="@drawable/ic_home_card_creditdeposit" />
+<!--                    <ImageView-->
+<!--                        android:layout_width="40dp"-->
+<!--                        android:layout_height="40dp"-->
+<!--                        android:background="@android:color/transparent"-->
+<!--                        android:src="@drawable/ic_home_card_creditdeposit" />-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center"
-                        android:text="@string/nap_tien"
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="8dp"-->
+<!--                        android:gravity="center"-->
+<!--                        android:text="@string/nap_tien"-->
 
-                        android:minLines="2"
-                        android:ellipsize="middle"
-                        android:maxLines="2" />
-                </LinearLayout>
+<!--                        android:minLines="2"-->
+<!--                        android:ellipsize="middle"-->
+<!--                        android:maxLines="2" />-->
+<!--                </LinearLayout>-->
 
                 <!-- Ô 7 -->
                 <LinearLayout
@@ -717,7 +718,7 @@
             <!-- View de lắp đầy navbar-->
             <View
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="100dp"
                 android:background="@color/white" />
         </LinearLayout>
 

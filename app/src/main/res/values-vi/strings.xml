@@ -276,5 +276,6 @@
     <string name="so_du_kha_dung_mac_dinh">Số dư khả dụng: --</string>
     <string name="tai_khoan_duoc_tao">Tài khoản được tạo</string>
     <string name="tai_khoan_thanh_toan_nguon">Tài khoản thanh toán nguồn</string>
+    <string name="so_tien_phai_tra">Số tiền phải trả</string>
 
 </resources>

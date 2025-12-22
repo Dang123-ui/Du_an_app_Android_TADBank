@@ -122,6 +122,7 @@ public class BankTransferFragment extends Fragment implements UiConfig {
         binding.imbtShowListBank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                binding.fragmentContainerSearch.setVisibility(View.VISIBLE);
                 SearchTransferInfomationFragment searchTransferInfomationFragment = SearchTransferInfomationFragment.newInstance(
                         "Chọn ngân hàng nhận",
                         "Nhập ngân hàng",
@@ -381,6 +382,8 @@ public class BankTransferFragment extends Fragment implements UiConfig {
 
             boolean changed = (selectedBank == null) || !selectedBank.getBankId().equalsIgnoreCase(bank.getBankId());
             selectedBank = bank;
+            binding.fragmentContainerSearch.setVisibility(View.GONE);
+
 
             String bankNameUppercase = bank.getBankName().toUpperCase();
             binding.txtReceiverBankName.setText(bankNameUppercase + " - " + bank.getBankLongName());

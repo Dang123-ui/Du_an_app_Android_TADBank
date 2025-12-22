@@ -10,10 +10,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.model.Account;
+import com.example.tad_bank_t1.data.model.enums.AccountType;
 import com.example.tad_bank_t1.util.CurrencyUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PayAccountPickAdapter extends RecyclerView.Adapter<PayAccountPickAdapter.VH> {
 
@@ -30,8 +32,12 @@ public class PayAccountPickAdapter extends RecyclerView.Adapter<PayAccountPickAd
     }
 
     public void setData(List<Account> list) {
+        List<Account> onlyChecking = new ArrayList<>();
+
         data.clear();
-        if (list != null) data.addAll(list);
+        if (list != null) {
+            data.addAll(list.stream().filter(a -> a.getType() == AccountType.CHECKING).collect(Collectors.toList()));
+        }
         notifyDataSetChanged();
     }
 

@@ -21,322 +21,335 @@
 <!--        app:layout_constraintTop_toTopOf="parent">-->
 
 <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/ctloConfirmTransaction"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        android:background="@drawable/bg_card_white"
-        android:padding="12dp"
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:paddingBottom="12dp"
+        app:layout_constraintBottom_toTopOf="@id/btnConfirmTransfer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/txtConfirmTransactionTitle"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ctloConfirmTransaction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:text="@string/xac_nhan_gd"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/bg_card_white"
+            android:padding="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <View
-            android:id="@+id/underlineConfirm1"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/underlineOrBorderGray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtConfirmTransactionTitle" />
-
-        <LinearLayout
-            android:id="@+id/lnloConfirmTrans1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:padding="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/underlineConfirm1">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/txtConfirmTransactionTitle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:text="@string/tai_khoan_nguon" />
-
-<!--            <View-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="1dp"-->
-<!--                android:layout_weight="1" />-->
-
-            <TextView
-                android:id="@+id/txtConfirmTransactionAccountSource"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:maxLines="2"
-                android:ellipsize="end"
+                android:padding="5dp"
+                android:text="@string/xac_nhan_gd"
+                android:textAlignment="center"
+                android:textSize="18sp"
                 android:textStyle="bold"
-                android:text="Vietcombank siêu " />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/lnloConfirmTrans2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:padding="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lnloConfirmTrans1">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:layout_gravity="center_vertical"
-                android:text="@string/tai_khoan_nhan_ck" />
-
-
-            <TextView
-                android:id="@+id/txtConfirmTransactionAccountReceiver"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:gravity="end"
-                android:maxLines="2"
-                android:ellipsize="end"
-                android:textStyle="bold"
-                android:text="Vietcombank siêu dài siêu dài xxxxxxxxxxxsssss ssss ssssssssssssssssxxxxxxx." />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/lnloConfirmTrans3TenNguoiNhan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:padding="5dp"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lnloConfirmTrans2">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:layout_height="wrap_content"
-                android:text="@string/ten_nguoi_nhan_ck" />
-
-<!--            <View-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="1dp"-->
-<!--                android:layout_weight="1" />-->
-
-            <TextView
-                android:id="@+id/txtConfirmTransactionNameReceiver"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:textStyle="bold"
-                android:text="Vietcombank siêu dài siêu dài..." />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/lnloConfirmTrans4NganHangNhanCk"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:padding="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lnloConfirmTrans3TenNguoiNhan">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:layout_gravity="center_vertical"
-                android:text="@string/ngan_hang_nhan_ck" />
-
-<!--            <View-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="1dp"-->
-<!--                android:layout_weight="1" />-->
-
-            <TextView
-                android:id="@+id/txtConfirmTransactionBankReceiver"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:maxLines="2"
-                android:ellipsize="end"
-                android:textStyle="bold"
-                android:text="Vietcombank siêu dài siêu dài  eee\neeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/lnloConfirmTrans5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:padding="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lnloConfirmTrans4NganHangNhanCk">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:layout_gravity="center_vertical"
-                android:text="@string/noi_dung_chuyen_khoan" />
-
-<!--            <View-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="1dp"-->
-<!--                android:layout_weight="1" />-->
-
-            <TextView
-                android:id="@+id/txtConfirmTransactionContent"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:maxLines="4"
-                android:ellipsize="end"
-                android:textStyle="bold"
-                android:text="Vietcombank siêu dài siêu dài  eee\neeeeeeeeeeeeeeeedđeeeeeeeeeeeeeee" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/lnloConfirmTrans6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:ellipsize="end"
-            android:maxWidth="200dp"
-            android:padding="5dp"
-            android:textAlignment="textEnd"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lnloConfirmTrans5">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:layout_height="wrap_content"
-                android:text="@string/phi_chuyen_tien" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <View
-                android:layout_width="0dp"
+                android:id="@+id/underlineConfirm1"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_weight="1" />
+                android:background="@color/underlineOrBorderGray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtConfirmTransactionTitle" />
 
-            <TextView
-                android:id="@+id/txtConfirmTransactionFeeAmount"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/lnloConfirmTrans1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="1235678"
-                android:textStyle="bold" />
-        </LinearLayout>
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/underlineConfirm1">
 
-        <View
-            android:id="@+id/underlineConfirm2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/underlineOrBorderGray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lnloConfirmTrans6" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:text="@string/tai_khoan_nguon" />
 
-        <LinearLayout
-            android:id="@+id/lnloConfirmTrans7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:padding="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lnloConfirmTrans6">
+                <!--            <View-->
+                <!--                android:layout_width="0dp"-->
+                <!--                android:layout_height="1dp"-->
+                <!--                android:layout_weight="1" />-->
 
-            <TextView
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/txtConfirmTransactionAccountSource"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:textStyle="bold"
+                    android:text="Vietcombank siêu " />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lnloConfirmTrans2"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:text="@string/so_tien_chuyen_khoan" />
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lnloConfirmTrans1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/tai_khoan_nhan_ck" />
+
+
+                <TextView
+                    android:id="@+id/txtConfirmTransactionAccountReceiver"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:gravity="end"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:textStyle="bold"
+                    android:text="Vietcombank siêu dài siêu dài " />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lnloConfirmTrans3TenNguoiNhan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lnloConfirmTrans2">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ten_nguoi_nhan_ck" />
+
+                <!--            <View-->
+                <!--                android:layout_width="0dp"-->
+                <!--                android:layout_height="1dp"-->
+                <!--                android:layout_weight="1" />-->
+
+                <TextView
+                    android:id="@+id/txtConfirmTransactionNameReceiver"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textStyle="bold"
+                    android:text="Vietcombank siêu dài siêu dài..." />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lnloConfirmTrans4NganHangNhanCk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lnloConfirmTrans3TenNguoiNhan">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/ngan_hang_nhan_ck" />
+
+                <!--            <View-->
+                <!--                android:layout_width="0dp"-->
+                <!--                android:layout_height="1dp"-->
+                <!--                android:layout_weight="1" />-->
+
+                <TextView
+                    android:id="@+id/txtConfirmTransactionBankReceiver"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:textStyle="bold"
+                    android:text="Vietcombank siêu dài siêu dài " />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lnloConfirmTrans5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lnloConfirmTrans4NganHangNhanCk">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/noi_dung_chuyen_khoan" />
+
+                <!--            <View-->
+                <!--                android:layout_width="0dp"-->
+                <!--                android:layout_height="1dp"-->
+                <!--                android:layout_weight="1" />-->
+
+                <TextView
+                    android:id="@+id/txtConfirmTransactionContent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:maxLines="4"
+                    android:ellipsize="end"
+                    android:textStyle="bold"
+                    android:text="Vietcombank siêu dài siêu dài " />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lnloConfirmTrans6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:ellipsize="end"
+                android:maxWidth="200dp"
+                android:padding="5dp"
+                android:textAlignment="textEnd"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lnloConfirmTrans5">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/phi_chuyen_tien" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/txtConfirmTransactionFeeAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1235678"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <View
-                android:layout_width="0dp"
+                android:id="@+id/underlineConfirm2"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_weight="1" />
+                android:background="@color/underlineOrBorderGray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lnloConfirmTrans6" />
 
-            <TextView
-                android:id="@+id/txtConfirmTransactionAmount"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/lnloConfirmTrans7"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="10, 000, 000 VNĐ"
-                android:textColor="@color/primaryColor"
-                android:textStyle="bold" />
-        </LinearLayout>
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lnloConfirmTrans6">
 
-        <LinearLayout
-            android:id="@+id/lnloConfirmTrans8"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:padding="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lnloConfirmTrans7">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:text="@string/so_tien_chuyen_khoan" />
 
-            <TextView
-                android:layout_width="wrap_content"
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/txtConfirmTransactionAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10, 000, 000 VNĐ"
+                    android:textColor="@color/primaryColor"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lnloConfirmTrans8"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/phuong_thuc_xac_thuc"
-                android:textColor="@color/primaryColor"
-                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lnloConfirmTrans7">
 
-                />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/phuong_thuc_xac_thuc"
+                    android:textColor="@color/primaryColor"
+                    android:textStyle="bold"
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
+                    />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:background="@android:color/transparent"
-                android:padding="0dp"
-                android:text="OTP"
-                android:textColor="@color/primaryColor"
-                android:textStyle="bold" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
 
-            <ImageButton
-                android:id="@+id/imbtConfirmTransMethod"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center_vertical"
-                android:background="@android:color/transparent"
-                android:padding="0dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_transfer_downarrow_red"
-                android:tooltipText="Chọn hình thức xác thực" />
-        </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:background="@android:color/transparent"
+                    android:padding="0dp"
+                    android:text="PIN + OTP"
+                    android:textColor="@color/primaryColor"
+                    android:textStyle="bold" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageButton
+                    android:id="@+id/imbtConfirmTransMethod"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@android:color/transparent"
+                    android:padding="0dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_transfer_downarrow_red"
+                    android:tooltipText="Chọn hình thức xác thực" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
     <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
     <!--            android:id="@+id/ctloBtnContinue_Waiting"-->
@@ -370,7 +383,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ctloConfirmTransaction"
         app:layout_constraintVertical_bias="1" />
 
 

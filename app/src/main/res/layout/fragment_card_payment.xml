@@ -16,7 +16,7 @@
 
     <LinearLayout
         android:background="@drawable/bg_transfer_card_tad"
-        android:layout_height="90dp"
+        android:layout_height="100dp"
         android:padding="8dp"
 
         android:layout_width="match_parent"

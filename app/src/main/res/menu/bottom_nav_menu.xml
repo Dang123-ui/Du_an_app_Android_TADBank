@@ -10,6 +10,6 @@
         android:title="@string/chuyen_tien"/>
     <item
         android:id="@+id/nav_setting"
-        android:icon="@drawable/ic_home_settings"
+        android:icon="@drawable/ic_bottom_account"
         android:title="@string/cai_dat_nav"/>
 </menu>

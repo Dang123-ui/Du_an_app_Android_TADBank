@@ -133,6 +133,8 @@ public class AccountListByTypeFragment extends Fragment implements UiConfig, Bas
         // Khởi tạo adapter theo loại tài khoản. Nếu là MORTGAGE thì dùng adapter riêng,
         // ngược lại vẫn dùng adapter chung cho checking/saving.
         if (Objects.equals(accountType, AccountType.MORTGAGE.name())) {
+            // an create button
+            binding.btnCreateNewAccountByType.setVisibility(View.GONE);
             // Adapter hiển thị khoản vay thế chấp
             mortgageAccountListAdapter = new MortgageAccountListAdapter(java.util.List.of());
             mortgageAccountListAdapter.setOnClickMortgageListener(account -> {
@@ -189,7 +191,7 @@ public class AccountListByTypeFragment extends Fragment implements UiConfig, Bas
             }
 
             if (state.getData() != null) {
-                accounts = state.getData();
+                accounts = state.getData().stream().filter(account -> account.getStatus() == AccountStatus.OPEN).toList();
                 setUpAdapter(accounts);
             }
         });

@@ -276,5 +276,6 @@
     <string name="so_du_kha_dung_mac_dinh">Available balance: --</string>
     <string name="tai_khoan_duoc_tao">Created account</string>
     <string name="tai_khoan_thanh_toan_nguon">Source payment account</string>
+    <string name="so_tien_phai_tra">Amount to paid</string>
 
 </resources>

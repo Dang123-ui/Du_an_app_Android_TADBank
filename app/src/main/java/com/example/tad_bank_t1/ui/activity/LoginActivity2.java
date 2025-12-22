@@ -49,6 +49,7 @@ public class LoginActivity2 extends AppCompatActivity {
     private ImageButton btnFaceId;
     private TextView tvForgotPassword;
     private LottieAnimationView animationView;
+    private TextView tvSignup;
 
     private boolean isLoading = false;
     private String uid;
@@ -73,15 +74,17 @@ public class LoginActivity2 extends AppCompatActivity {
         tvName = findViewById(R.id.tvName);
         logoLogin2 = findViewById(R.id.logoLogin2);
         etPassword = findViewById(R.id.etPassword);
-        etPassword.setText("Thuyentad20@");
+
         etEmailorPhone = findViewById(R.id.edtNumberAccount);
-        etEmailorPhone.setText("0373436163");
+
         tilPassword = findViewById(R.id.textInputLayout);
         tilEmailorPhone = findViewById(R.id.tlUsername);
         btnLogin2 = findViewById(R.id.btnLogin2);
         animationView = findViewById(R.id.loading);
         tvForgotPassword = findViewById(R.id.tvForgotPassword);
         btnFaceId = findViewById(R.id.btnFaceId);
+        tvSignup = findViewById(R.id.tvSignup);
+
         ViewCompat.setTransitionName(logoLogin2, "app_logo");
         logoLogin2.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
@@ -258,6 +261,14 @@ public class LoginActivity2 extends AppCompatActivity {
                 setLoading(false);
                 tilEmailorPhone.setError("Lỗi tra tài khoản: " + e.getMessage());
             });
+        });
+
+        tvSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity2.this, LoginActivity.class);
+                startActivity(intent);
+            }
         });
     }
     private void checkPasswordThenLogin(User user, String inputPass) {

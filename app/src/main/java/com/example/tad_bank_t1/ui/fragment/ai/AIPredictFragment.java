@@ -19,6 +19,7 @@ import com.example.tad_bank_t1.R;
 import com.example.tad_bank_t1.data.model.ai.ApiClient;
 import com.example.tad_bank_t1.data.model.ai.PredictAutoRequest;
 import com.example.tad_bank_t1.data.model.ai.PredictAutoResponse;
+import com.example.tad_bank_t1.ui.base.UiConfig;
 import com.example.tad_bank_t1.ui.viewadapter.ai.HeadlineAdapter;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -33,7 +34,7 @@ import retrofit2.Response;
  * Use the {@link AIPredictFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AIPredictFragment extends Fragment {
+public class AIPredictFragment extends Fragment implements UiConfig {
     private TextInputEditText etAsset;
     private TextView tvStatus, tvResult, tvStats;
     private Button btnPredict;
